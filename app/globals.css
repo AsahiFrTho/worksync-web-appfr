@@ -50,8 +50,7 @@
   --radius-4xl: calc(var(--radius) * 2.2);
 }
 
-:root,
-.dark {
+:root {
   color-scheme: dark;
 
   --background: #0a0a0a;
@@ -101,6 +100,54 @@
   --sidebar-ring: #c5a059;
 }
 
+.light {
+  color-scheme: light;
+
+  --background: #fafafa;
+  --foreground: #18181b;
+
+  --card: #ffffff;
+  --card-foreground: #18181b;
+
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+
+  --primary: #c5a059;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+
+  --accent: #f5f0e6;
+  --accent-foreground: #9c7f3a;
+
+  --destructive: #dc2626;
+  --success: #16a34a;
+  --warning: #d97706;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.1);
+  --ring: #c5a059;
+
+  --chart-1: #c5a059;
+  --chart-2: #d4c4a0;
+  --chart-3: #8a7344;
+  --chart-4: #a1a1aa;
+  --chart-5: #71717a;
+
+  --sidebar: #fafafa;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #c5a059;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #c5a059;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -133,6 +180,12 @@
   textarea {
     color-scheme: dark;
   }
+
+  .light select,
+  .light input,
+  .light textarea {
+    color-scheme: light;
+  }
 }
 
 @layer utilities {
@@ -163,207 +216,416 @@
 }
 
 /* Legacy light-utility remap so remaining pages inherit the dark skin */
-.text-slate-950,
-.text-slate-900,
-.text-slate-800,
-.text-zinc-950,
-.text-zinc-900,
-.text-blue-950,
-.text-indigo-950,
-.text-purple-950 {
+.dark .text-slate-950,
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-zinc-950,
+.dark .text-zinc-900,
+.dark .text-blue-950,
+.dark .text-indigo-950,
+.dark .text-purple-950 {
   color: var(--foreground) !important;
 }
-.text-slate-700,
-.text-slate-600,
-.text-slate-500,
-.text-slate-400,
-.text-slate-300,
-.text-zinc-600,
-.text-zinc-500 {
+.light .text-slate-950,
+.light .text-slate-900,
+.light .text-slate-800,
+.light .text-zinc-950,
+.light .text-zinc-900,
+.light .text-blue-950,
+.light .text-indigo-950,
+.light .text-purple-950 {
+  color: var(--foreground) !important;
+}
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-slate-300,
+.dark .text-zinc-600,
+.dark .text-zinc-500 {
   color: var(--muted-foreground) !important;
 }
-.text-blue-900,
-.text-blue-800,
-.text-blue-700,
-.text-blue-600,
-.text-blue-400,
-.text-blue-300,
-.text-indigo-900,
-.text-indigo-800,
-.text-indigo-700,
-.text-purple-900,
-.text-purple-800,
-.text-purple-700 {
+.light .text-slate-700,
+.light .text-slate-600,
+.light .text-slate-500,
+.light .text-slate-400,
+.light .text-slate-300,
+.light .text-zinc-600,
+.light .text-zinc-500 {
+  color: var(--muted-foreground) !important;
+}
+.dark .text-blue-900,
+.dark .text-blue-800,
+.dark .text-blue-700,
+.dark .text-blue-600,
+.dark .text-blue-400,
+.dark .text-blue-300,
+.dark .text-indigo-900,
+.dark .text-indigo-800,
+.dark .text-indigo-700,
+.dark .text-purple-900,
+.dark .text-purple-800,
+.dark .text-purple-700 {
   color: var(--primary) !important;
 }
-.text-blue-900\/80,
-.text-emerald-900\/80,
-.text-purple-900\/80,
-.text-amber-900\/80 {
+.light .text-blue-900,
+.light .text-blue-800,
+.light .text-blue-700,
+.light .text-blue-600,
+.light .text-blue-400,
+.light .text-blue-300,
+.light .text-indigo-900,
+.light .text-indigo-800,
+.light .text-indigo-700,
+.light .text-purple-900,
+.light .text-purple-800,
+.light .text-purple-700 {
+  color: var(--primary) !important;
+}
+.dark .text-blue-900\/80,
+.dark .text-emerald-900\/80,
+.dark .text-purple-900\/80,
+.dark .text-amber-900\/80 {
   color: var(--muted-foreground) !important;
 }
-.text-emerald-950,
-.text-emerald-900,
-.text-emerald-800,
-.text-emerald-700,
-.text-emerald-600,
-.text-emerald-400,
-.text-emerald-300 {
+.light .text-blue-900\/80,
+.light .text-emerald-900\/80,
+.light .text-purple-900\/80,
+.light .text-amber-900\/80 {
+  color: var(--muted-foreground) !important;
+}
+.dark .text-emerald-950,
+.dark .text-emerald-900,
+.dark .text-emerald-800,
+.dark .text-emerald-700,
+.dark .text-emerald-600,
+.dark .text-emerald-400,
+.dark .text-emerald-300 {
   color: var(--success) !important;
 }
-.text-amber-950,
-.text-amber-900,
-.text-amber-800,
-.text-amber-700,
-.text-amber-600,
-.text-amber-400,
-.text-amber-300 {
+.light .text-emerald-950,
+.light .text-emerald-900,
+.light .text-emerald-800,
+.light .text-emerald-700,
+.light .text-emerald-600,
+.light .text-emerald-400,
+.light .text-emerald-300 {
+  color: var(--success) !important;
+}
+.dark .text-amber-950,
+.dark .text-amber-900,
+.dark .text-amber-800,
+.dark .text-amber-700,
+.dark .text-amber-600,
+.dark .text-amber-400,
+.dark .text-amber-300 {
   color: var(--warning) !important;
 }
-.text-rose-950,
-.text-rose-900,
-.text-rose-800,
-.text-rose-700,
-.text-rose-600 {
+.light .text-amber-950,
+.light .text-amber-900,
+.light .text-amber-800,
+.light .text-amber-700,
+.light .text-amber-600,
+.light .text-amber-400,
+.light .text-amber-300 {
+  color: var(--warning) !important;
+}
+.dark .text-rose-950,
+.dark .text-rose-900,
+.dark .text-rose-800,
+.dark .text-rose-700,
+.dark .text-rose-600 {
   color: var(--destructive) !important;
 }
-.bg-white,
-.bg-white\/95 {
+.light .text-rose-950,
+.light .text-rose-900,
+.light .text-rose-800,
+.light .text-rose-700,
+.light .text-rose-600 {
+  color: var(--destructive) !important;
+}
+.dark .bg-white,
+.dark .bg-white\/95 {
   background-color: var(--card) !important;
 }
-.bg-slate-50,
-.bg-slate-50\/90,
-.bg-slate-50\/80,
-.bg-slate-50\/70,
-.bg-slate-50\/60,
-.bg-slate-50\/50,
-.bg-slate-100,
-.bg-slate-100\/80,
-.bg-slate-100\/70,
-.bg-zinc-50,
-.hover\:bg-slate-50:hover,
-.hover\:bg-slate-50\/60:hover,
-.hover\:bg-slate-100:hover {
+.light .bg-white,
+.light .bg-white\/95 {
+  background-color: var(--card) !important;
+}
+.dark .bg-slate-50,
+.dark .bg-slate-50\/90,
+.dark .bg-slate-50\/80,
+.dark .bg-slate-50\/70,
+.dark .bg-slate-50\/60,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-100,
+.dark .bg-slate-100\/80,
+.dark .bg-slate-100\/70,
+.dark .bg-zinc-50,
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-50\/60:hover,
+.dark .hover\:bg-slate-100:hover {
   background-color: var(--muted) !important;
 }
-.bg-slate-100\/70 {
+.light .bg-slate-50,
+.light .bg-slate-50\/90,
+.light .bg-slate-50\/80,
+.light .bg-slate-50\/70,
+.light .bg-slate-50\/60,
+.light .bg-slate-50\/50,
+.light .bg-slate-100,
+.light .bg-slate-100\/80,
+.light .bg-slate-100\/70,
+.light .bg-zinc-50,
+.light .hover\:bg-slate-50:hover,
+.light .hover\:bg-slate-50\/60:hover,
+.light .hover\:bg-slate-100:hover {
+  background-color: var(--muted) !important;
+}
+.dark .bg-slate-100\/70 {
   background-color: var(--background) !important;
 }
-.bg-blue-50,
-.bg-blue-50\/90,
-.bg-blue-50\/80,
-.bg-blue-50\/70,
-.bg-blue-50\/60,
-.bg-blue-50\/50,
-.bg-blue-50\/40,
-.bg-blue-50\/30,
-.bg-blue-100,
-.bg-indigo-50,
-.bg-indigo-50\/70,
-.bg-indigo-50\/40,
-.bg-indigo-100,
-.bg-purple-50,
-.bg-purple-50\/80,
-.bg-purple-50\/70,
-.bg-purple-50\/40,
-.bg-purple-100,
-.hover\:bg-blue-50\/70:hover,
-.hover\:bg-blue-50\/40:hover,
-.hover\:bg-blue-100:hover,
-.hover\:bg-indigo-50:hover,
-.hover\:bg-purple-50\/70:hover {
+.light .bg-slate-100\/70 {
+  background-color: var(--background) !important;
+}
+.dark .bg-blue-50,
+.dark .bg-blue-50\/90,
+.dark .bg-blue-50\/80,
+.dark .bg-blue-50\/70,
+.dark .bg-blue-50\/60,
+.dark .bg-blue-50\/50,
+.dark .bg-blue-50\/40,
+.dark .bg-blue-50\/30,
+.dark .bg-blue-100,
+.dark .bg-indigo-50,
+.dark .bg-indigo-50\/70,
+.dark .bg-indigo-50\/40,
+.dark .bg-indigo-100,
+.dark .bg-purple-50,
+.dark .bg-purple-50\/80,
+.dark .bg-purple-50\/70,
+.dark .bg-purple-50\/40,
+.dark .bg-purple-100,
+.dark .hover\:bg-blue-50\/70:hover,
+.dark .hover\:bg-blue-50\/40:hover,
+.dark .hover\:bg-blue-100:hover,
+.dark .hover\:bg-indigo-50:hover,
+.dark .hover\:bg-purple-50\/70:hover {
   background-color: color-mix(in srgb, var(--primary) 10%, transparent) !important;
 }
-.bg-emerald-50,
-.bg-emerald-50\/80,
-.bg-emerald-50\/50,
-.bg-emerald-50\/40,
-.bg-emerald-50\/20,
-.bg-emerald-100,
-.bg-emerald-200,
-.hover\:bg-emerald-50\/80:hover,
-.hover\:bg-emerald-50\/40:hover {
+.light .bg-blue-50,
+.light .bg-blue-50\/90,
+.light .bg-blue-50\/80,
+.light .bg-blue-50\/70,
+.light .bg-blue-50\/60,
+.light .bg-blue-50\/50,
+.light .bg-blue-50\/40,
+.light .bg-blue-50\/30,
+.light .bg-blue-100,
+.light .bg-indigo-50,
+.light .bg-indigo-50\/70,
+.light .bg-indigo-50\/40,
+.light .bg-indigo-100,
+.light .bg-purple-50,
+.light .bg-purple-50\/80,
+.light .bg-purple-50\/70,
+.light .bg-purple-50\/40,
+.light .bg-purple-100,
+.light .hover\:bg-blue-50\/70:hover,
+.light .hover\:bg-blue-50\/40:hover,
+.light .hover\:bg-blue-100:hover,
+.light .hover\:bg-indigo-50:hover,
+.light .hover\:bg-purple-50\/70:hover {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent) !important;
+}
+.dark .bg-emerald-50,
+.dark .bg-emerald-50\/80,
+.dark .bg-emerald-50\/50,
+.dark .bg-emerald-50\/40,
+.dark .bg-emerald-50\/20,
+.dark .bg-emerald-100,
+.dark .bg-emerald-200,
+.dark .hover\:bg-emerald-50\/80:hover,
+.dark .hover\:bg-emerald-50\/40:hover {
   background-color: color-mix(in srgb, var(--success) 8%, transparent) !important;
 }
-.bg-amber-50,
-.bg-amber-50\/80,
-.bg-amber-50\/50,
-.bg-amber-50\/40,
-.bg-amber-50\/20,
-.bg-amber-100,
-.hover\:bg-amber-50\/80:hover,
-.hover\:bg-amber-50\/40:hover {
+.light .bg-emerald-50,
+.light .bg-emerald-50\/80,
+.light .bg-emerald-50\/50,
+.light .bg-emerald-50\/40,
+.light .bg-emerald-50\/20,
+.light .bg-emerald-100,
+.light .bg-emerald-200,
+.light .hover\:bg-emerald-50\/80:hover,
+.light .hover\:bg-emerald-50\/40:hover {
+  background-color: color-mix(in srgb, var(--success) 6%, transparent) !important;
+}
+.dark .bg-amber-50,
+.dark .bg-amber-50\/80,
+.dark .bg-amber-50\/50,
+.dark .bg-amber-50\/40,
+.dark .bg-amber-50\/20,
+.dark .bg-amber-100,
+.dark .hover\:bg-amber-50\/80:hover,
+.dark .hover\:bg-amber-50\/40:hover {
   background-color: color-mix(in srgb, var(--warning) 8%, transparent) !important;
 }
-.bg-rose-50,
-.bg-rose-50\/20,
-.bg-rose-100,
-.hover\:bg-rose-50\/40:hover {
+.light .bg-amber-50,
+.light .bg-amber-50\/80,
+.light .bg-amber-50\/50,
+.light .bg-amber-50\/40,
+.light .bg-amber-50\/20,
+.light .bg-amber-100,
+.light .hover\:bg-amber-50\/80:hover,
+.light .hover\:bg-amber-50\/40:hover {
+  background-color: color-mix(in srgb, var(--warning) 6%, transparent) !important;
+}
+.dark .bg-rose-50,
+.dark .bg-rose-50\/20,
+.dark .bg-rose-100,
+.dark .hover\:bg-rose-50\/40:hover {
   background-color: color-mix(in srgb, var(--destructive) 8%, transparent) !important;
 }
-.bg-blue-900,
-.bg-blue-800,
-.bg-blue-700,
-.bg-blue-600,
-.bg-indigo-700,
-.bg-indigo-600,
-.bg-purple-700 {
+.light .bg-rose-50,
+.light .bg-rose-50\/20,
+.light .bg-rose-100,
+.light .hover\:bg-rose-50\/40:hover {
+  background-color: color-mix(in srgb, var(--destructive) 6%, transparent) !important;
+}
+.dark .bg-blue-900,
+.dark .bg-blue-800,
+.dark .bg-blue-700,
+.dark .bg-blue-600,
+.dark .bg-indigo-700,
+.dark .bg-indigo-600,
+.dark .bg-purple-700 {
   background-color: var(--primary) !important;
   color: var(--primary-foreground);
 }
-.bg-blue-200 {
+.light .bg-blue-900,
+.light .bg-blue-800,
+.light .bg-blue-700,
+.light .bg-blue-600,
+.light .bg-indigo-700,
+.light .bg-indigo-600,
+.light .bg-purple-700 {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground);
+}
+.dark .bg-blue-200 {
   background-color: color-mix(in srgb, var(--primary) 20%, transparent) !important;
 }
-.border-slate-200,
-.border-slate-200\/90,
-.border-slate-200\/80,
-.border-slate-200\/70,
-.border-slate-200\/60,
-.border-slate-100,
-.border-slate-300,
-.border-blue-200,
-.border-blue-200\/90,
-.border-blue-200\/80,
-.border-blue-300,
-.border-indigo-200,
-.border-indigo-200\/90,
-.border-indigo-300,
-.border-indigo-100,
-.border-purple-200,
-.border-purple-200\/90,
-.border-purple-300,
-.border-emerald-200,
-.border-emerald-200\/90,
-.border-emerald-300,
-.border-amber-200,
-.border-amber-200\/90,
-.border-amber-300,
-.border-rose-200,
-.border-rose-300,
-.divide-slate-100 > :not(:hidden) ~ :not(:hidden) {
+.light .bg-blue-200 {
+  background-color: color-mix(in srgb, var(--primary) 15%, transparent) !important;
+}
+.dark .border-slate-200,
+.dark .border-slate-200\/90,
+.dark .border-slate-200\/80,
+.dark .border-slate-200\/70,
+.dark .border-slate-200\/60,
+.dark .border-slate-100,
+.dark .border-slate-300,
+.dark .border-blue-200,
+.dark .border-blue-200\/90,
+.dark .border-blue-200\/80,
+.dark .border-blue-300,
+.dark .border-indigo-200,
+.dark .border-indigo-200\/90,
+.dark .border-indigo-300,
+.dark .border-indigo-100,
+.dark .border-purple-200,
+.dark .border-purple-200\/90,
+.dark .border-purple-300,
+.dark .border-emerald-200,
+.dark .border-emerald-200\/90,
+.dark .border-emerald-300,
+.dark .border-amber-200,
+.dark .border-amber-200\/90,
+.dark .border-amber-300,
+.dark .border-rose-200,
+.dark .border-rose-300 {
   border-color: var(--border) !important;
 }
-.border-blue-600,
-.border-l-blue-700,
-.border-l-purple-700 {
+
+.dark .divide-slate-100 > * {
+  border-color: var(--border) !important;
+}
+.light .border-slate-200,
+.light .border-slate-200\/90,
+.light .border-slate-200\/80,
+.light .border-slate-200\/70,
+.light .border-slate-200\/60,
+.light .border-slate-100,
+.light .border-slate-300,
+.light .border-blue-200,
+.light .border-blue-200\/90,
+.light .border-blue-200\/80,
+.light .border-blue-300,
+.light .border-indigo-200,
+.light .border-indigo-200\/90,
+.light .border-indigo-300,
+.light .border-indigo-100,
+.light .border-purple-200,
+.light .border-purple-200\/90,
+.light .border-purple-300,
+.light .border-emerald-200,
+.light .border-emerald-200\/90,
+.light .border-emerald-300,
+.light .border-amber-200,
+.light .border-amber-200\/90,
+.light .border-amber-300,
+.light .border-rose-200,
+.light .border-rose-300 {
+  border-color: var(--border) !important;
+}
+
+.light .divide-slate-100 > * {
+  border-color: var(--border) !important;
+}
+.dark .border-blue-600,
+.dark .border-l-blue-700,
+.dark .border-l-purple-700 {
   border-color: var(--primary) !important;
 }
-.border-l-emerald-600 {
+.light .border-blue-600,
+.light .border-l-blue-700,
+.light .border-l-purple-700 {
+  border-color: var(--primary) !important;
+}
+.dark .border-l-emerald-600 {
   border-color: var(--success) !important;
 }
-.border-l-amber-600,
-.border-l-amber-500 {
+.light .border-l-emerald-600 {
+  border-color: var(--success) !important;
+}
+.dark .border-l-amber-600,
+.dark .border-l-amber-500 {
   border-color: var(--warning) !important;
 }
-.border-l-rose-600 {
+.light .border-l-amber-600,
+.light .border-l-amber-500 {
+  border-color: var(--warning) !important;
+}
+.dark .border-l-rose-600 {
   border-color: var(--destructive) !important;
 }
-.bg-slate-200,
-.bg-slate-200\/90,
-.bg-slate-200\/80 {
+.light .border-l-rose-600 {
+  border-color: var(--destructive) !important;
+}
+.dark .bg-slate-200,
+.dark .bg-slate-200\/90,
+.dark .bg-slate-200\/80 {
   background-color: var(--muted) !important;
 }
-.hover\:bg-blue-50\/40:hover {
+.light .bg-slate-200,
+.light .bg-slate-200\/90,
+.light .bg-slate-200\/80 {
+  background-color: var(--muted) !important;
+}
+.dark .hover\:bg-blue-50\/40:hover {
+  background-color: var(--muted) !important;
+}
+.light .hover\:bg-blue-50\/40:hover {
   background-color: var(--muted) !important;
 }
 

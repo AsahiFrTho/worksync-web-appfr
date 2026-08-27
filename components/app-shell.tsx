@@ -17,6 +17,7 @@ import {
   Users,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 const stakeholderPortals = [
   {
@@ -320,13 +321,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <header className="sticky top-0 z-20 border-b border-border bg-card/95 backdrop-blur lg:hidden">
           <div className="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
             <Brand />
-            <Link
-              href="/login"
-              className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-border bg-muted/40 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors duration-200 ease-in-out"
-            >
-              <ArrowLeftRight className="size-3 text-primary" />
-              <span>Switch Role</span>
-            </Link>
+            <div className="flex items-center gap-1.5">
+              <ThemeToggle />
+              <Link
+                href="/login"
+                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-border bg-muted/40 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors duration-200 ease-in-out"
+              >
+                <ArrowLeftRight className="size-3 text-primary" />
+                <span>Switch Role</span>
+              </Link>
+            </div>
           </div>
 
           <div className="flex items-center justify-between border-t border-border bg-muted/30 px-4 py-2 text-xs">
@@ -386,6 +390,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <span className="rounded px-2 py-0.5 text-[10px] font-medium border border-border text-muted-foreground">
               {activePersona.roleCategory}
             </span>
+            <ThemeToggle />
             <Link
               href="/login"
               className="inline-flex items-center gap-1.5 font-medium text-primary hover:opacity-90 border border-border px-2.5 py-1 rounded-md text-xs transition-colors duration-200 ease-in-out hover:bg-muted"

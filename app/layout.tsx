@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist_Mono, Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/lib/theme-context'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
+  colorScheme: 'dark light',
   themeColor: '#0A0A0A',
 }
 
@@ -45,12 +46,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark bg-background">
+    <html lang="en" className="dark bg-background" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        {children}
-        <Analytics />
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
