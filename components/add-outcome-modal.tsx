@@ -188,7 +188,7 @@ export function AddOutcomeModal({
                 className={cn(
                   'rounded-lg border px-2.5 py-1.5 text-[11.5px] font-medium transition-colors',
                   type === t
-                    ? 'border-primary/40 bg-primary/10 text-primary ring-1 ring-primary/30'
+                  ? 'border-primary/40 bg-primary/10 text-primary ring-1 ring-primary/30'
                     : 'border-border text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >

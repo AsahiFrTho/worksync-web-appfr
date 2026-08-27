@@ -24,7 +24,7 @@ export function Modal({
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:p-6 backdrop-blur-sm animate-fade-in"
+className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:p-6 backdrop-blur-sm animate-fade-in"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}

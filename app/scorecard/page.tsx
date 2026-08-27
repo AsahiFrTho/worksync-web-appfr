@@ -165,8 +165,8 @@ export default function ScorecardPage() {
                     <Td>{c.verifiedRate}%</Td>
                     <Td>{c.retentionRate}%</Td>
                     <Td className={cn('font-semibold', c.wageGrowth >= 0 ? 'text-success' : 'text-destructive')}>
-  {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
-</Td>
+                      {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
+                    </Td>
                     <Td>{c.completeness}%</Td>
                     <Td>{c.followUpRate}%</Td>
                     <Td>{c.employerVerRate}%</Td>

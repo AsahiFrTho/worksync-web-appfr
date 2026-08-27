@@ -30,7 +30,7 @@ export function BarHorizontal({
   xFormatter?: (v: number) => string
 }) {
   return (
-    <div style={{ height }} className="w-full animate-fade-in">
+<div style={{ height }} className="w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}

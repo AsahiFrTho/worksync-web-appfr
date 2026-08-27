@@ -16,7 +16,6 @@ import type {
 } from "@/lib/types";
 import type { ComputeDB } from "@/lib/compute-types";
 import { generateDemoData } from "@/lib/demo-data";
-
 const EMPTY: ProgramData = {
   trainees: [],
   details: [],
@@ -77,7 +76,6 @@ export function useProgramData(): UseProgramDataResult {
   useEffect(() => {
     void refresh();
   }, [refresh]);
-
   // Demo-mode fallback: if the aggregate API fails (no MongoDB), populate
   // the modules with realistic client-side demo data.
   useEffect(() => {

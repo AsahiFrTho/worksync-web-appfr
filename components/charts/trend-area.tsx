@@ -22,7 +22,7 @@ export function TrendArea({
   yFormatter?: (v: number) => string
 }) {
   return (
-    <div style={{ height }} className="w-full animate-fade-in">
+<div style={{ height }} className="w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ left: 8, right: 12, top: 8, bottom: 0 }}>
           <defs>

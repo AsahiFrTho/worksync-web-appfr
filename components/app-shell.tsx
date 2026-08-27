@@ -438,6 +438,62 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               })}
             </nav>
           </div>
+
+          {/* --- NEW CODE ADDED: Programme Operations section ------------ */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between px-2.5">
+              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
+                Programme Operations
+              </p>
+            </div>
+            <nav className="flex flex-col gap-0.5" aria-label="Programme operations">
+              {operationsTools.map((item) => {
+                const active = pathname === item.href || pathname.startsWith(item.href + '/')
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
+                      active
+                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
+                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
+                    )}
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      {Icon && (
+                        <Icon
+                          className={cn(
+                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="flex flex-col leading-tight truncate">
+                        <span className="text-xs tracking-tight">{item.label}</span>
+                        <span className="text-[10px] font-normal text-muted-foreground truncate">
+                          {item.hint}
+                        </span>
+                      </span>
+                    </div>
+                    <span
+                      className={cn(
+                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
+                        active
+                          ? 'border-primary/25 bg-primary/10 text-primary'
+                          : 'border-border bg-muted text-muted-foreground',
+                      )}
+                    >
+                      {item.roleBadge}
+                    </span>
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
         </div>
 
         <div className="border-t border-border p-4 space-y-2.5">

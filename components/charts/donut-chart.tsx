@@ -22,7 +22,7 @@ export function DonutChart({
             outerRadius={82}
             paddingAngle={2}
             strokeWidth={2}
-            stroke="var(--card)"
+stroke="var(--card)"
           >
             {data.map((entry, i) => (
               <Cell
@@ -59,7 +59,6 @@ export function DonutChart({
     </div>
   )
 }
-
 // Refined mid-tone palette — legible on both dark and light surfaces.
 const KEY_COLORS: Record<string, string> = {
   placed: '#10b981',
@@ -77,5 +76,5 @@ const KEY_COLORS: Record<string, string> = {
 const CHART_COLORS = KEY_COLORS
 
 function entryKeyColor(entry: { key?: string }) {
-  return entry.key ? KEY_COLORS[entry.key] || 'var(--chart-1)' : 'var(--chart-1)'
+return entry.key ? KEY_COLORS[entry.key] || 'var(--chart-1)' : 'var(--chart-1)'
 }

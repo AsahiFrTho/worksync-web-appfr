@@ -19,7 +19,6 @@ export interface ComputeDB {
   skillGaps: SkillGapReport[];
   settings: ProgramSettings | null;
 }
-
 // Tone → Tailwind classes for outcome badges — mode-aware so the label
 // text stays high-contrast in both light and dark themes (dark: 300-level
 // on tinted 500/12; light: 700-level on tinted 500/12).

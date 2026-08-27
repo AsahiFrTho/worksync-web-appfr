@@ -47,7 +47,7 @@ export function BarVertical({
             angle={angle}
             height={angle ? 52 : 30}
             textAnchor={angle ? 'end' : 'middle'}
-            tick={{ fontSize: 10.5, fill: 'var(--muted-foreground)', fontWeight: 500 }}
+tick={{ fontSize: 10.5, fill: 'var(--muted-foreground)', fontWeight: 500 }}
           />
           <YAxis
             tickLine={false}
