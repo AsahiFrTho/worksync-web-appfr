@@ -48,32 +48,32 @@ export function WageProgressionChart() {
             <AreaChart data={wageProgression} margin={{ left: 8, right: 12, top: 8, bottom: 0 }}>
               <defs>
                 <linearGradient id="wageFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#C5A059" stopOpacity={0.22} />
-                  <stop offset="100%" stopColor="#C5A059" stopOpacity={0.02} />
+                  <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.22} />
+                  <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis
                 dataKey="month"
                 tickLine={false}
-                axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                tick={{ fontSize: 11, fill: '#A1A1AA', fontWeight: 500 }}
+                axisLine={{ stroke: 'var(--border)' }}
+                tick={{ fontSize: 11, fill: 'var(--muted-foreground)', fontWeight: 500 }}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 width={58}
                 domain={['auto', 'auto']}
-                tick={{ fontSize: 11, fill: '#A1A1AA', fontWeight: 500 }}
+                tick={{ fontSize: 11, fill: 'var(--muted-foreground)', fontWeight: 500 }}
                 tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`}
               />
               <Tooltip
-                cursor={{ stroke: '#6B6B70', strokeWidth: 1, strokeDasharray: '4 4' }}
+                cursor={{ stroke: 'var(--muted-foreground)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 contentStyle={{
                   borderRadius: 8,
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  background: '#121212',
-                  color: '#F5F5F7',
+                  border: '1px solid var(--border)',
+                  background: 'var(--popover)',
+                  color: 'var(--popover-foreground)',
                   fontSize: 12,
                   fontWeight: 500,
                   padding: '6px 10px',
@@ -83,10 +83,10 @@ export function WageProgressionChart() {
               <Area
                 type="monotone"
                 dataKey="wage"
-                stroke="#C5A059"
+                stroke="var(--chart-1)"
                 strokeWidth={2}
-                dot={{ fill: '#C5A059', r: 3.5, strokeWidth: 1.5, stroke: '#121212' }}
-                activeDot={{ r: 5.5, stroke: '#C5A059', strokeWidth: 2, fill: '#121212' }}
+                dot={{ fill: 'var(--chart-1)', r: 3.5, strokeWidth: 1.5, stroke: 'var(--card)' }}
+                activeDot={{ r: 5.5, stroke: 'var(--chart-1)', strokeWidth: 2, fill: 'var(--card)' }}
                 fill="url(#wageFill)"
               />
             </AreaChart>

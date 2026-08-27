@@ -1,4 +1,4 @@
-﻿import type * as React from 'react'
+import type * as React from 'react'
 import { cn } from '@/lib/utils'
 
 interface ProgressProps extends React.ComponentProps<'div'> {
@@ -26,7 +26,7 @@ function Progress({
       {...props}
     >
       <div
-        className={cn('h-full rounded-full bg-primary transition-all duration-200 ease-in-out', indicatorClassName)}
+        className={cn('h-full rounded-full bg-primary transition-[width] duration-500 ease-premium', indicatorClassName)}
         style={{ width: `${clamped}%` }}
       />
     </div>

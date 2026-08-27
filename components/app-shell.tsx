@@ -1,6 +1,7 @@
-﻿'use client'
+'use client'
 
 import type * as React from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -15,9 +16,16 @@ import {
   GraduationCap,
   Briefcase,
   Users,
+  PhoneCall,
+  BadgeCheck,
+  Puzzle,
+  ClipboardCheck,
+  Settings as SettingsIcon,
+  RefreshCw,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { GlobalSearch } from '@/components/global-search'
 
 const stakeholderPortals = [
   {
@@ -60,6 +68,59 @@ const intelligenceTools = [
   },
 ]
 
+// --- NEW CODE ADDED: Programme Operations modules (ported from Source) -----
+const operationsTools = [
+  {
+    label: 'Learners',
+    href: '/learners',
+    icon: Users,
+    hint: 'Registry & consent records',
+    roleBadge: 'Registry',
+  },
+  {
+    label: 'Follow-ups',
+    href: '/followups',
+    icon: PhoneCall,
+    hint: 'Contact queue & outcomes',
+    roleBadge: 'Field',
+  },
+  {
+    label: 'Employer Verification',
+    href: '/verification',
+    icon: BadgeCheck,
+    hint: 'Approve / reject / evidence',
+    roleBadge: 'Verifier',
+  },
+  {
+    label: 'Skill Gaps',
+    href: '/skillgaps',
+    icon: Puzzle,
+    hint: 'Gap analysis & recommendations',
+    roleBadge: 'Curriculum',
+  },
+  {
+    label: 'Provider Scorecard',
+    href: '/scorecard',
+    icon: Building2,
+    hint: 'Provider accountability',
+    roleBadge: 'Pulse',
+  },
+  {
+    label: 'Data Quality',
+    href: '/dataquality',
+    icon: ClipboardCheck,
+    hint: 'Audit & completeness',
+    roleBadge: 'Audit',
+  },
+  {
+    label: 'Settings',
+    href: '/settings',
+    icon: SettingsIcon,
+    hint: 'Programme configuration',
+    roleBadge: 'Admin',
+  },
+]
+
 interface DemoPersona {
   roleTitle: string
   name: string
@@ -70,6 +131,30 @@ interface DemoPersona {
 }
 
 function getPersonaForPath(pathname: string): DemoPersona {
+  // --- NEW CODE ADDED: personas for the ported operational modules --------
+  if (
+    pathname.startsWith('/followups') ||
+    pathname.startsWith('/learners')
+  ) {
+    return {
+      roleTitle: 'Field Coordinator',
+      name: 'Sunita Wagh',
+      organization: 'Field Team — Nashik Division',
+      roleCategory: 'Field Operations',
+      shortRole: 'Coordinator',
+      icon: PhoneCall,
+    }
+  }
+  if (pathname.startsWith('/verification')) {
+    return {
+      roleTitle: 'Employer Verifier',
+      name: 'Arjun Pawar',
+      organization: 'Employer Verification Cell',
+      roleCategory: 'Verification',
+      shortRole: 'Verifier',
+      icon: BadgeCheck,
+    }
+  }
   if (pathname.startsWith('/analytics')) {
     return {
       roleTitle: 'Training Provider',
@@ -144,6 +229,34 @@ function Brand() {
         </span>
       </div>
     </Link>
+  )
+}
+
+// --- NEW CODE ADDED: reset-demo button for the sidebar footer --------------
+function ResetDataButton() {
+  const [busy, setBusy] = useState(false)
+  const reset = async () => {
+    if (!window.confirm('Reset all demo data to the original sample dataset?')) return
+    setBusy(true)
+    try {
+      const res = await fetch('/api/seed/operations', { method: 'POST' })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.error || 'Could not reset demo data')
+      window.location.reload()
+    } catch (err) {
+      window.alert(err instanceof Error ? err.message : 'Could not reset demo data')
+      setBusy(false)
+    }
+  }
+  return (
+    <button
+      onClick={() => void reset()}
+      disabled={busy}
+      className="flex w-full items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-[11px] font-medium text-muted-foreground transition-colors duration-200 ease-in-out hover:bg-muted hover:text-foreground disabled:opacity-50"
+    >
+      <RefreshCw className={cn('size-3.5 text-primary', busy && 'animate-spin')} />
+      Reset demo data
+    </button>
   )
 }
 
@@ -269,6 +382,62 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               })}
             </nav>
           </div>
+
+          {/* --- NEW CODE ADDED: Programme Operations section ------------ */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between px-2.5">
+              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
+                Programme Operations
+              </p>
+            </div>
+            <nav className="flex flex-col gap-0.5" aria-label="Programme operations">
+              {operationsTools.map((item) => {
+                const active = pathname === item.href || pathname.startsWith(item.href + '/')
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
+                      active
+                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
+                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
+                    )}
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      {Icon && (
+                        <Icon
+                          className={cn(
+                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="flex flex-col leading-tight truncate">
+                        <span className="text-xs tracking-tight">{item.label}</span>
+                        <span className="text-[10px] font-normal text-muted-foreground truncate">
+                          {item.hint}
+                        </span>
+                      </span>
+                    </div>
+                    <span
+                      className={cn(
+                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
+                        active
+                          ? 'border-primary/25 bg-primary/10 text-primary'
+                          : 'border-border bg-muted text-muted-foreground',
+                      )}
+                    >
+                      {item.roleBadge}
+                    </span>
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
         </div>
 
         <div className="border-t border-border p-4 space-y-2.5">
@@ -311,6 +480,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
 
+          {/* --- NEW CODE ADDED: Reset demo data button --- */}
+          <ResetDataButton />
+
           <p className="px-1 text-[10px] leading-tight text-muted-foreground font-normal">
             Evaluation Platform • MSSDS Skilling Intelligence
           </p>
@@ -349,7 +521,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className="flex gap-1.5 overflow-x-auto border-t border-border px-3 py-2 bg-card"
             aria-label="Primary mobile"
           >
-            {[...stakeholderPortals, ...intelligenceTools].map((item) => {
+            {[...stakeholderPortals, ...intelligenceTools, ...operationsTools].map((item) => {
               const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
               const Icon = item.icon
               return (
@@ -384,6 +556,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <span className="truncate text-muted-foreground font-normal">
               {activePersona.name} <span className="text-muted-foreground/80">({activePersona.organization})</span>
             </span>
+            {/* --- NEW CODE ADDED: global search in top bar --- */}
+            <GlobalSearch className="ml-auto w-full max-w-xs mr-4" />
           </div>
 
           <div className="flex shrink-0 items-center gap-2.5">
