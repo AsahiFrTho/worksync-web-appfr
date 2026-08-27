@@ -14,9 +14,9 @@ import { providerScorecards } from '@/lib/compute'
 import { cn } from '@/lib/utils'
 
 const BADGE_STYLES: Record<string, string> = {
-  Strong: 'bg-emerald-600 text-white',
-  Improving: 'bg-amber-500 text-white',
-  'Needs attention': 'bg-rose-600 text-white',
+  Strong: 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white',
+  Improving: 'bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500 text-white',
+  'Needs attention': 'bg-gradient-to-r from-rose-600 via-rose-600 to-red-800 text-white',
 }
 
 const BADGE_TONES: Record<string, 'success' | 'warning' | 'destructive'> = {
@@ -109,7 +109,7 @@ export default function ScorecardPage() {
                         c.wageGrowth >= 0 ? 'text-success' : 'text-destructive'
                       )}
                     >
-                      +{c.wageGrowth}%
+                      {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
                     </span>
                     <span className="ml-6 text-[11px] text-muted-foreground">Skill gap score</span>
                     <span className="text-xs font-bold text-foreground">{c.gapScore}</span>
@@ -164,7 +164,9 @@ export default function ScorecardPage() {
                     <Td>{c.placementRate}%</Td>
                     <Td>{c.verifiedRate}%</Td>
                     <Td>{c.retentionRate}%</Td>
-                    <Td className="font-semibold text-success">+{c.wageGrowth}%</Td>
+                    <Td className={cn('font-semibold', c.wageGrowth >= 0 ? 'text-success' : 'text-destructive')}>
+                      {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
+                    </Td>
                     <Td>{c.completeness}%</Td>
                     <Td>{c.followUpRate}%</Td>
                     <Td>{c.employerVerRate}%</Td>

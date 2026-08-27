@@ -24,7 +24,7 @@ export function Modal({
   if (!open) return null
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:p-6 backdrop-blur-sm"
+className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:p-6 backdrop-blur-sm animate-fade-in"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -33,7 +33,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative mt-8 w-full rounded-xl border border-border bg-card text-card-foreground shadow-2xl',
+          'relative mt-8 w-full rounded-xl border border-border bg-card text-card-foreground shadow-2xl animate-modal-in',
           wide ? 'max-w-3xl' : 'max-w-xl',
           className,
         )}

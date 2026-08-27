@@ -33,9 +33,9 @@ export function useToast() {
         <div
           key={t.id}
           className={cn(
-            'pointer-events-auto flex items-start gap-2.5 rounded-xl border px-3.5 py-3 text-xs shadow-lg backdrop-blur',
-            t.tone === 'success' && 'border-success/30 bg-[#101a14]/95 text-success',
-            t.tone === 'error' && 'border-destructive/30 bg-[#1a1010]/95 text-destructive',
+            'pointer-events-auto flex items-start gap-2.5 rounded-xl border px-3.5 py-3 text-xs shadow-card backdrop-blur animate-toast-in',
+            t.tone === 'success' && 'border-success/30 bg-white/95 dark:bg-[#0d1a12]/95 text-success',
+            t.tone === 'error' && 'border-destructive/30 bg-white/95 dark:bg-[#1a0f0f]/95 text-destructive',
             t.tone === 'info' && 'border-border bg-card/95 text-foreground',
           )}
         >

@@ -4,7 +4,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { nonPlacementReasons } from '@/lib/mock-data'
 
-const COLORS = ['#C5A059', '#8A7344', '#D4C4A0', '#6B6B70', '#3F3F46']
+const COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)', 'var(--chart-5)']
 
 export function NonPlacementChart() {
   return (
@@ -28,7 +28,7 @@ export function NonPlacementChart() {
                   outerRadius={84}
                   paddingAngle={3}
                   strokeWidth={2}
-                  stroke="#121212"
+                  stroke="var(--card)"
                 >
                   {nonPlacementReasons.map((entry, i) => (
                     <Cell key={entry.reason} fill={COLORS[i % COLORS.length]} />
@@ -36,13 +36,14 @@ export function NonPlacementChart() {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    borderRadius: 8,
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    background: '#121212',
-                    color: '#F5F5F7',
+                    borderRadius: 10,
+                    border: '1px solid var(--border)',
+                    background: 'var(--popover)',
+                    color: 'var(--popover-foreground)',
                     fontSize: 12,
                     fontWeight: 500,
-                    padding: '6px 10px',
+                    padding: '8px 12px',
+                    boxShadow: 'var(--shadow-card)',
                   }}
                   formatter={(v, n) => [typeof v === 'number' ? `${v}%` : String(v ?? ''), n ?? '']}
                 />

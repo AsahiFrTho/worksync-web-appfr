@@ -30,19 +30,19 @@ export function BarHorizontal({
   xFormatter?: (v: number) => string
 }) {
   return (
-    <div style={{ height }} className="w-full">
+<div style={{ height }} className="w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           layout="vertical"
           margin={{ left: 4, right: 28, top: 4, bottom: 4 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" horizontal={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
           <XAxis
             type="number"
             tickLine={false}
-            axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-            tick={{ fontSize: 10.5, fill: '#A1A1AA', fontWeight: 500 }}
+            axisLine={{ stroke: 'var(--border)' }}
+            tick={{ fontSize: 10.5, fill: 'var(--muted-foreground)', fontWeight: 500 }}
             tickFormatter={(v) => (xFormatter ? xFormatter(Number(v)) : String(v))}
           />
           <YAxis
@@ -52,18 +52,19 @@ export function BarHorizontal({
             tickLine={false}
             axisLine={false}
             interval={0}
-            tick={{ fontSize: 11, fill: '#E4E4E7', fontWeight: 500 }}
+            tick={{ fontSize: 11, fill: 'var(--foreground)', fontWeight: 500 }}
           />
           <Tooltip
-            cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+            cursor={{ fill: 'color-mix(in srgb, var(--muted) 55%, transparent)' }}
             contentStyle={{
-              borderRadius: 8,
-              border: '1px solid rgba(255,255,255,0.1)',
-              background: '#121212',
-              color: '#F5F5F7',
+              borderRadius: 10,
+              border: '1px solid var(--border)',
+              background: 'var(--popover)',
+              color: 'var(--popover-foreground)',
               fontSize: 12,
               fontWeight: 500,
-              padding: '6px 10px',
+              padding: '8px 12px',
+              boxShadow: 'var(--shadow-card)',
             }}
           />
           <Bar dataKey={barKey} name={name} fill={color} radius={[0, 4, 4, 0]} barSize={barSize} />

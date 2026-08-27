@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
@@ -12,24 +11,18 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
-  Activity,
   Users,
   Sparkles,
-  Info,
   Check,
-  TrendingUp,
-  Award,
-  Layers,
   Lock,
-  FileCheck,
   MapPin,
   Loader2,
-  ShieldAlert,
+  Info,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { summary, inr, compact } from '@/lib/mock-data'
+import { summary } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 
 interface RoleOption {
@@ -49,15 +42,6 @@ interface RoleOption {
   highlights: string[]
   badgeText: string
   primaryActionLabel: string
-  accentColor: {
-    bg: string
-    border: string
-    text: string
-    badgeBg: string
-    badgeText: string
-    activeBorder: string
-    activeRing: string
-  }
 }
 
 const roles: RoleOption[] = [
@@ -83,15 +67,6 @@ const roles: RoleOption[] = [
     ],
     badgeText: 'Executive Oversight',
     primaryActionLabel: 'Enter Administrator Portal',
-    accentColor: {
-      bg: 'bg-blue-100',
-      border: 'border-blue-300',
-      text: 'text-blue-800',
-      badgeBg: 'bg-blue-100 border-blue-200',
-      badgeText: 'text-blue-900',
-      activeBorder: 'border-blue-600',
-      activeRing: 'ring-2 ring-blue-500/30',
-    },
   },
   {
     id: 'provider',
@@ -115,15 +90,6 @@ const roles: RoleOption[] = [
     ],
     badgeText: 'Curriculum & Gaps',
     primaryActionLabel: 'Enter Provider Analytics',
-    accentColor: {
-      bg: 'bg-indigo-100',
-      border: 'border-indigo-300',
-      text: 'text-indigo-800',
-      badgeBg: 'bg-indigo-100 border-indigo-200',
-      badgeText: 'text-indigo-900',
-      activeBorder: 'border-indigo-600',
-      activeRing: 'ring-2 ring-indigo-500/30',
-    },
   },
   {
     id: 'employer',
@@ -147,15 +113,6 @@ const roles: RoleOption[] = [
     ],
     badgeText: 'Verification & Retention',
     primaryActionLabel: 'Enter Employer Portal',
-    accentColor: {
-      bg: 'bg-emerald-100',
-      border: 'border-emerald-300',
-      text: 'text-emerald-800',
-      badgeBg: 'bg-emerald-100 border-emerald-200',
-      badgeText: 'text-emerald-900',
-      activeBorder: 'border-emerald-600',
-      activeRing: 'ring-2 ring-emerald-500/30',
-    },
   },
   {
     id: 'trainee',
@@ -179,16 +136,16 @@ const roles: RoleOption[] = [
     ],
     badgeText: 'Outcome Passport',
     primaryActionLabel: 'Enter Trainee Passport',
-    accentColor: {
-      bg: 'bg-amber-100',
-      border: 'border-amber-300',
-      text: 'text-amber-800',
-      badgeBg: 'bg-amber-100 border-amber-200',
-      badgeText: 'text-amber-900',
-      activeBorder: 'border-amber-600',
-      activeRing: 'ring-2 ring-amber-500/30',
-    },
   },
+]
+
+const JOURNEY_STEPS = [
+  { label: 'Train', tint: '' },
+  { label: 'Certify', tint: '' },
+  { label: 'Place', tint: '' },
+  { label: 'Verify', tint: 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300' },
+  { label: 'Retain', tint: 'border-amber-400/40 bg-amber-400/10 text-amber-300' },
+  { label: 'Progress', tint: 'border-violet-400/40 bg-violet-400/10 text-violet-300' },
 ]
 
 export default function LoginPage() {
@@ -205,15 +162,14 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
-      {/* 2-PANEL INSTITUTIONAL COMPOSITION */}
       <div className="grid min-h-screen lg:grid-cols-12">
         {/* ========================================================================= */}
-        {/* LEFT / BRAND & INSTITUTIONAL PANEL (5 of 12 Columns on Large Screens)     */}
+        {/* LEFT — always-dark institutional brand panel (readable in both themes)    */}
         {/* ========================================================================= */}
-        <div className="relative flex flex-col justify-between overflow-hidden bg-background p-6 text-foreground sm:p-8 lg:col-span-5 lg:p-12 border-r border-border">
-          {/* Decorative Institutional Background Asset */}
+        <div className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-b from-[#0e1424] via-[#0b101c] to-[#0a0e17] p-6 text-white sm:p-8 lg:col-span-5 lg:p-12">
+          {/* Decorative background asset */}
           <div
-            className="pointer-events-none absolute inset-0 z-0 bg-cover bg-no-repeat opacity-55 select-none"
+            className="pointer-events-none absolute inset-0 z-0 bg-cover bg-no-repeat opacity-40 select-none"
             style={{
               backgroundImage: "url('/login-bg.png')",
               backgroundPosition: 'center bottom',
@@ -221,214 +177,201 @@ export default function LoginPage() {
             }}
             aria-hidden="true"
           />
-
-          {/* Subtle Central Atmospheric Glow for Depth & Visual Integration */}
+          {/* Soft primary glow for depth */}
           <div
-            className="pointer-events-none absolute inset-0 z-0 select-none opacity-35"
+            className="pointer-events-none absolute inset-0 z-0 opacity-60 select-none"
             style={{
               background:
-                'radial-gradient(circle at 60% 42%, rgba(197, 160, 89, 0.12) 0%, rgba(10, 10, 10, 0.08) 45%, transparent 70%)',
+                'radial-gradient(circle at 62% 38%, rgba(140,160,248,0.18) 0%, rgba(11,15,23,0.1) 45%, transparent 72%)',
             }}
             aria-hidden="true"
           />
+          {/* Subtle top sheen */}
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-40 bg-gradient-to-b from-white/[0.06] to-transparent"
+            aria-hidden="true"
+          />
 
-          {/* Top Brand Header */}
           <div className="relative z-10">
+            {/* Brand */}
             <div className="flex items-center gap-3.5">
-              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 shadow-md ring-2 ring-white/20">
+              <div className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/[0.06] p-1 shadow-soft backdrop-blur-sm">
                 <Image
                   src="/favicon1.png"
                   alt="Kaushal Emblem"
-                  width={48}
-                  height={48}
+                  width={40}
+                  height={40}
                   className="size-full object-contain"
                   priority
                 />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-black tracking-tight text-white">
-                    KAUSHAL
+                  <span className="text-base font-semibold tracking-tight text-white">
+                    KAUSHAL<span className="text-[#a5b4fc]">PULSE</span>
                   </span>
-                  <span className="text-slate-600">|</span>
-                  <span className="text-xs font-bold text-slate-300">
+                  <span className="text-white/25">|</span>
+                  <span className="text-[11px] font-medium text-white/60">
                     महाराष्ट्र शासन
                   </span>
                 </div>
-                <p className="text-[11px] font-semibold text-slate-400">
+                <p className="text-[11px] font-normal text-white/50">
                   Department of Skills, Employment & Innovation
                 </p>
               </div>
             </div>
 
-            {/* Platform Identity & Value Proposition */}
-            <div className="mt-7 lg:mt-9">
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/35 bg-blue-950/70 px-3.5 py-1 text-xs font-bold text-blue-300 backdrop-blur-xs">
-                <Sparkles className="size-3.5 text-blue-400" />
+            {/* Identity */}
+            <div className="mt-8 lg:mt-10">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1 text-[11px] font-medium text-white/85 backdrop-blur-sm">
+                <Sparkles className="size-3.5 text-[#a5b4fc]" />
                 <span>Skilling Outcome Intelligence Platform</span>
               </div>
 
-              <h1 className="mt-3.5 text-2xl sm:text-3xl lg:text-[31px] font-extrabold tracking-tight text-white leading-[1.22] text-balance">
+              <h1 className="mt-4 text-2xl font-semibold leading-[1.2] tracking-tight text-white text-balance sm:text-3xl">
                 From training and certification to verified employment, retention and wage progression.
               </h1>
 
-              <p className="mt-2.5 text-xs sm:text-sm font-normal leading-relaxed text-slate-300">
+              <p className="mt-3 text-xs font-normal leading-relaxed text-white/55 sm:text-sm">
                 A unified, verifiable outcome monitoring platform tracking every candidate across the longitudinal skill-to-employment trajectory in Maharashtra.
               </p>
             </div>
 
-            {/* Compact Longitudinal Outcome Journey */}
-            <div className="mt-5 rounded-xl border border-slate-800/90 bg-slate-900/85 p-3.5 backdrop-blur-sm shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2.5">
+            {/* Longitudinal journey */}
+            <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm">
+              <span className="mb-3 block text-[10px] font-semibold uppercase tracking-wider text-white/45">
                 Longitudinal Skilling Journey
               </span>
-              <div className="grid grid-cols-6 gap-1.5 text-center text-[10px] font-bold">
-                <div className="rounded-lg bg-slate-800/85 p-2 text-slate-300 border border-slate-700/60">
-                  <span className="block text-slate-400 text-[8px]">01</span>
-                  <span>Train</span>
-                </div>
-                <div className="rounded-lg bg-slate-800/85 p-2 text-slate-300 border border-slate-700/60">
-                  <span className="block text-slate-400 text-[8px]">02</span>
-                  <span>Certify</span>
-                </div>
-                <div className="rounded-lg bg-slate-800/85 p-2 text-slate-300 border border-slate-700/60">
-                  <span className="block text-slate-400 text-[8px]">03</span>
-                  <span>Place</span>
-                </div>
-                <div className="rounded-lg bg-emerald-950/90 p-2 text-emerald-300 border border-emerald-700/70">
-                  <span className="block text-emerald-400 text-[8px]">04</span>
-                  <span>Verify</span>
-                </div>
-                <div className="rounded-lg bg-amber-950/90 p-2 text-amber-300 border border-amber-700/70">
-                  <span className="block text-amber-400 text-[8px]">05</span>
-                  <span>Retain</span>
-                </div>
-                <div className="rounded-lg bg-purple-950/90 p-2 text-purple-300 border border-purple-700/70">
-                  <span className="block text-purple-400 text-[8px]">06</span>
-                  <span>Progress</span>
-                </div>
+              <div className="grid grid-cols-6 gap-1.5 text-center text-[10px] font-medium">
+                {JOURNEY_STEPS.map((step, i) => (
+                  <div
+                    key={step.label}
+                    className={cn(
+                      'rounded-lg border p-2 text-white/75 transition-all duration-300 ease-premium hover:-translate-y-0.5',
+                      step.tint || 'border-white/10 bg-white/[0.05]',
+                    )}
+                  >
+                    <span className={cn('block pb-1 text-[8px] font-semibold', step.tint ? '' : 'text-white/35')}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {step.label}
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Trust & Evidence Pillars */}
-            <div className="mt-3.5 space-y-2 rounded-xl border border-slate-800/90 bg-slate-900/85 p-3.5 text-xs backdrop-blur-sm shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">
+            {/* Evidence pillars */}
+            <div className="mt-3.5 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-xs backdrop-blur-sm">
+              <span className="mb-2.5 block text-[10px] font-semibold uppercase tracking-wider text-white/45">
                 Evidence-Led Outcome Monitoring
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-200 font-medium">
-                <div className="flex items-center gap-1.5">
-                  <Check className="size-3.5 text-emerald-400 stroke-[3]" />
-                  <span>Verified Employment</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="size-3.5 text-emerald-400 stroke-[3]" />
-                  <span>Longitudinal Retention</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="size-3.5 text-emerald-400 stroke-[3]" />
-                  <span>Wage Progression</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="size-3.5 text-emerald-400 stroke-[3]" />
-                  <span>Programme Intelligence</span>
-                </div>
+              <div className="grid grid-cols-1 gap-2 font-medium text-white/75 sm:grid-cols-2">
+                {['Verified Employment', 'Longitudinal Retention', 'Wage Progression', 'Programme Intelligence'].map(
+                  (item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-emerald-400/15 border border-emerald-400/30">
+                        <Check className="size-2.5 text-emerald-300 stroke-[3]" />
+                      </span>
+                      <span>{item}</span>
+                    </div>
+                  ),
+                )}
               </div>
             </div>
 
-            {/* Statewide Aggregates Metric Highlights */}
+            {/* Aggregate metrics */}
             <div className="mt-3.5 grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-slate-800/90 bg-slate-900/85 p-3 backdrop-blur-sm shadow-xs">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wide text-slate-400">
+              <div className="rounded-xl border border-white/10 bg-white/[0.05] p-3.5 backdrop-blur-sm transition-all duration-300 ease-premium hover:border-blue-400/30">
+                <div className="flex items-center justify-between text-[10px] font-medium uppercase tracking-wide text-white/45">
                   <span>Tracked Candidates</span>
-                  <Users className="size-3 text-blue-400" />
+                  <Users className="size-3 text-[#a5b4fc]" />
                 </div>
-                <p className="mt-0.5 text-xl font-black text-white tabular-nums">
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-white">
                   {summary.totalTrainees.toLocaleString('en-IN')}
                 </p>
-                <span className="text-[10px] text-slate-400 font-medium">{summary.activeDistricts} Active Districts</span>
+                <span className="text-[10px] font-normal text-white/40">
+                  {summary.activeDistricts} Active Districts
+                </span>
               </div>
 
-              <div className="rounded-xl border border-emerald-900/70 bg-slate-900/90 p-3 backdrop-blur-sm shadow-xs ring-1 ring-emerald-500/25">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wide text-emerald-400">
+              <div className="rounded-xl border border-emerald-400/25 bg-white/[0.05] p-3.5 backdrop-blur-sm transition-all duration-300 ease-premium hover:border-emerald-400/40">
+                <div className="flex items-center justify-between text-[10px] font-medium uppercase tracking-wide text-emerald-300/80">
                   <span>Verified Retention</span>
-                  <ShieldCheck className="size-3.5 text-emerald-400" />
+                  <ShieldCheck className="size-3.5 text-emerald-300" />
                 </div>
-                <p className="mt-0.5 text-xl font-black text-emerald-400 tabular-nums">
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-emerald-300">
                   {summary.retentionRate}%
                 </p>
-                <span className="text-[10px] text-slate-400 font-medium">6-Month Stability</span>
+                <span className="text-[10px] font-normal text-white/40">6-Month Stability</span>
               </div>
             </div>
           </div>
 
-          {/* Left Panel Footer */}
-          <div className="relative z-10 mt-6 pt-4 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
+          {/* Left footer */}
+          <div className="relative z-10 mt-8 flex items-center justify-between border-t border-white/10 pt-4 text-[11px] font-normal text-white/40">
             <span>Maharashtra State Skill Development Society (MSSDS)</span>
-            <span className="font-mono text-[10px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-300">
+            <span className="rounded border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[10px] text-white/60">
               MSSDS • EVALUATION
             </span>
           </div>
         </div>
 
         {/* ========================================================================= */}
-        {/* RIGHT / LOGIN & STAKEHOLDER PORTAL GATEWAY PANEL (7 of 12 Columns)         */}
+        {/* RIGHT — theme-token login panel                                            */}
         {/* ========================================================================= */}
         <div className="flex flex-col justify-between bg-card p-6 sm:p-8 lg:col-span-7 lg:p-12">
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
-            {/* Header & Security Badge Strip */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/70 pb-4">
+            {/* Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-5">
               <div>
-                <h2 className="text-2xl sm:text-[26px] font-black tracking-tight text-slate-950">
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[26px]">
                   Sign in to Kaushal
                 </h2>
-                <p className="mt-0.5 text-xs sm:text-sm font-medium text-slate-500">
+                <p className="mt-1 text-xs font-normal text-muted-foreground sm:text-sm">
                   Access your skilling outcome intelligence workspace.
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50/80 px-3 py-1 text-xs font-bold text-blue-900 shadow-2xs">
-                <ShieldCheck className="size-3.5 text-blue-600" />
+              <div className="flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                <ShieldCheck className="size-3.5" />
                 <span>Authorized Gateway</span>
               </div>
             </div>
 
-            {/* Persona Switcher / Role Selector Grid */}
+            {/* Role selector */}
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 Select Stakeholder Persona:
               </span>
-
-              <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="mt-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 {roles.map((role) => {
                   const Icon = role.icon
                   const isSelected = selectedRoleId === role.id
-
                   return (
                     <button
                       key={role.id}
                       type="button"
                       onClick={() => setSelectedRoleId(role.id)}
                       className={cn(
-                        'flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer',
+                        'flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-300 ease-premium cursor-pointer',
                         isSelected
-                          ? 'border-primary bg-primary/10 ring-1 ring-primary/30'
-                          : 'border-border bg-card hover:border-white/15 hover:bg-muted/40'
+                          ? 'border-primary/40 bg-primary/10 ring-1 ring-primary/30 shadow-soft'
+                          : 'border-border bg-card hover:border-primary/25 hover:bg-muted/40',
                       )}
                     >
                       <span
                         className={cn(
-                          'flex size-9 shrink-0 items-center justify-center rounded-lg border text-xs font-bold transition-colors',
+                          'flex size-9 shrink-0 items-center justify-center rounded-lg border transition-all duration-300 ease-premium',
                           isSelected
-                            ? 'border-primary/30 bg-primary text-primary-foreground'
-                            : 'border-border bg-muted text-muted-foreground'
+                            ? 'border-primary/40 bg-primary text-primary-foreground shadow-soft'
+                            : 'border-border bg-muted text-muted-foreground',
                         )}
                       >
-                        <Icon className="size-4.5" />
+                        <Icon className="size-4" />
                       </span>
-
-                      <div className="flex flex-1 flex-col min-w-0">
+                      <div className="flex min-w-0 flex-1 flex-col">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-bold text-xs sm:text-sm text-slate-950 truncate">
+                          <span className="truncate text-xs font-semibold text-foreground sm:text-sm">
                             {role.title.split('/')[0].trim()}
                           </span>
                           {isSelected && (
@@ -437,7 +380,7 @@ export default function LoginPage() {
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] font-medium text-slate-500 truncate mt-0.5">
+                        <span className="mt-0.5 truncate text-[11px] font-normal text-muted-foreground">
                           {role.marathiTitle}
                         </span>
                       </div>
@@ -447,86 +390,86 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Selected Stakeholder Detail Dossier Card */}
-            <div className="rounded-2xl border border-border bg-card p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shrink-0">
-                    {selectedRole.icon && <selectedRole.icon className="size-5" />}
-                  </span>
-                  <div>
-                    <h3 className="text-base font-black text-slate-950 leading-tight">
-                      {selectedRole.persona.name}
-                    </h3>
-                    <p className="text-xs font-semibold text-slate-600 mt-0.5">
-                      {selectedRole.persona.designation}
-                    </p>
+            {/* Dossier */}
+            <Card className="shadow-card">
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex flex-col justify-between gap-3 border-b border-border pb-4 sm:flex-row sm:items-center">
+                  <div className="flex items-center gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 border border-primary/25 text-primary">
+                      {selectedRole.icon && <selectedRole.icon className="size-5" />}
+                    </span>
+                    <div>
+                      <h3 className="text-base font-semibold leading-tight text-foreground">
+                        {selectedRole.persona.name}
+                      </h3>
+                      <p className="mt-0.5 text-xs font-normal text-muted-foreground">
+                        {selectedRole.persona.designation}
+                      </p>
+                    </div>
                   </div>
+                  <Badge variant="default" className="self-start text-[11px] sm:self-auto">
+                    {selectedRole.badgeText}
+                  </Badge>
                 </div>
 
-                <Badge variant="default" className="text-xs font-bold self-start sm:self-auto py-0.5 px-2.5 bg-blue-50 text-blue-900 border-blue-200/80">
-                  {selectedRole.badgeText}
-                </Badge>
-              </div>
-
-              {/* Organization & Location Strip */}
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-500">
-                <span className="flex items-center gap-1.5 text-slate-700 font-semibold">
-                  <Building2 className="size-3.5 text-blue-600 shrink-0" />
-                  <span>{selectedRole.persona.organization}</span>
-                </span>
-                <span className="flex items-center gap-1.5 text-slate-500">
-                  <MapPin className="size-3.5 text-slate-400 shrink-0" />
-                  <span>{selectedRole.persona.location}</span>
-                </span>
-              </div>
-
-              {/* Persona Description */}
-              <p className="mt-2.5 text-xs leading-relaxed font-normal text-slate-600">
-                {selectedRole.description}
-              </p>
-
-              {/* Key Capabilities */}
-              <div className="mt-3.5 space-y-1.5 border-t border-slate-100 pt-3">
-                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">
-                  Operational Capabilities:
-                </span>
-                {selectedRole.highlights.map((h, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-xs font-medium text-slate-800">
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
-                    <span>{h}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Primary Action Button */}
-              <div className="mt-5 pt-3.5 border-t border-slate-100">
-                <Button
-                  type="button"
-                  size="lg"
-                  onClick={() => handleQuickLaunch(selectedRole.targetHref)}
-                  disabled={isLoading}
-                  className="w-full justify-between font-medium text-sm h-12 rounded-xl transition-all duration-200 ease-in-out cursor-pointer"
-                >
-                  <span className="flex items-center gap-2">
-                    {isLoading ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      <Lock className="size-4" />
-                    )}
-                    <span>{isLoading ? 'Authenticating...' : selectedRole.primaryActionLabel}</span>
+                <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs">
+                  <span className="flex items-center gap-1.5 font-medium text-foreground">
+                    <Building2 className="size-3.5 shrink-0 text-primary" />
+                    <span>{selectedRole.persona.organization}</span>
                   </span>
-                  <ArrowRight className="size-4" />
-                </Button>
-              </div>
-            </div>
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
+                    <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+                    <span>{selectedRole.persona.location}</span>
+                  </span>
+                </div>
 
-            {/* Prototype & Governance Notice */}
-            <div className="rounded-xl border border-slate-200/70 bg-slate-50/70 p-3.5 text-xs">
+                <p className="mt-3 text-xs leading-relaxed font-normal text-muted-foreground">
+                  {selectedRole.description}
+                </p>
+
+                <div className="mt-4 space-y-1.5 border-t border-border pt-4">
+                  <span className="mb-1 block text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                    Operational Capabilities:
+                  </span>
+                  {selectedRole.highlights.map((h, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-2 text-xs font-medium text-foreground/85"
+                    >
+                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-success" />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 border-t border-border pt-4">
+                  <Button
+                    type="button"
+                    size="lg"
+                    onClick={() => handleQuickLaunch(selectedRole.targetHref)}
+                    disabled={isLoading}
+                    className="h-12 w-full justify-between rounded-xl text-sm font-medium"
+                  >
+                    <span className="flex items-center gap-2">
+                      {isLoading ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Lock className="size-4" />
+                      )}
+                      <span>{isLoading ? 'Authenticating...' : selectedRole.primaryActionLabel}</span>
+                    </span>
+                    <ArrowRight className="size-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Governance notice */}
+            <div className="rounded-xl border border-border bg-muted/40 p-3.5 text-xs">
               <div className="flex items-start gap-2.5">
-                <Info className="size-4 text-blue-600 shrink-0 mt-0.5" />
-                <div className="text-slate-500 font-normal leading-relaxed text-[11px] sm:text-xs">
-                  <strong className="font-semibold text-slate-800">Prototype Access Architecture: </strong>
+                <Info className="mt-0.5 size-4 shrink-0 text-primary" />
+                <div className="text-[11px] leading-relaxed font-normal text-muted-foreground sm:text-xs">
+                  <strong className="font-semibold text-foreground">Prototype Access Architecture: </strong>
                   This evaluation portal provides immediate role-based inspection of Maharashtra skilling outcome data.
                   In production, authentication connects to State Single Sign-On (SSO) and Aadhaar e-KYC verified candidate registries.
                 </div>
@@ -534,8 +477,8 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Right Panel Footer */}
-          <footer className="mx-auto mt-6 w-full max-w-2xl border-t border-slate-200/80 pt-4 text-center text-xs text-slate-400 font-medium">
+          {/* Right footer */}
+          <footer className="mx-auto mt-8 w-full max-w-2xl border-t border-border pt-4 text-center text-xs font-normal text-muted-foreground">
             <p>
               Department of Skills, Employment, Entrepreneurship & Innovation • Government of Maharashtra
             </p>

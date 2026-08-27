@@ -273,8 +273,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between px-2.5">
-              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
-                Stakeholder Portals
+              <p className="flex items-center gap-1.5 px-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
+                <span className="size-1.5 rounded-full bg-primary/70" aria-hidden="true" />Stakeholder Portals
               </p>
             </div>
             <nav className="flex flex-col gap-0.5" aria-label="Stakeholder portals">
@@ -287,17 +287,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
-                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
+                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-300 ease-premium',
                       active
-                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
-                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
+                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium shadow-soft'
+                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted/70 hover:text-foreground font-normal',
                     )}
                   >
                     <div className="flex items-start gap-2.5 min-w-0">
                       {Icon && (
                         <Icon
                           className={cn(
-                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                            'mt-0.5 size-4 shrink-0 transition-all duration-300 ease-premium group-hover:scale-110',
                             active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
                           )}
                           aria-hidden="true"
@@ -312,7 +312,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     </div>
                     <span
                       className={cn(
-                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                        'ml-1.5 mt-0.5 rounded-md border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
                         active
                           ? 'border-primary/25 bg-primary/10 text-primary'
                           : 'border-border bg-muted text-muted-foreground',
@@ -330,8 +330,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between px-2.5">
-              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
-                Intelligence & Signals
+              <p className="flex items-center gap-1.5 px-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
+                <span className="size-1.5 rounded-full bg-primary/70" aria-hidden="true" />Intelligence & Signals
               </p>
             </div>
             <nav className="flex flex-col gap-0.5" aria-label="Intelligence tools">
@@ -344,17 +344,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
-                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
+                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-300 ease-premium',
                       active
-                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
-                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
+                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium shadow-soft'
+                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted/70 hover:text-foreground font-normal',
                     )}
                   >
                     <div className="flex items-start gap-2.5 min-w-0">
                       {Icon && (
                         <Icon
                           className={cn(
-                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                            'mt-0.5 size-4 shrink-0 transition-all duration-300 ease-premium group-hover:scale-110',
                             active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
                           )}
                           aria-hidden="true"
@@ -369,7 +369,63 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     </div>
                     <span
                       className={cn(
-                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                        'ml-1.5 mt-0.5 rounded-md border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
+                        active
+                          ? 'border-primary/25 bg-primary/10 text-primary'
+                          : 'border-border bg-muted text-muted-foreground',
+                      )}
+                    >
+                      {item.roleBadge}
+                    </span>
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
+
+          {/* --- NEW CODE ADDED: Programme Operations section ------------ */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between px-2.5">
+              <p className="flex items-center gap-1.5 px-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
+                <span className="size-1.5 rounded-full bg-primary/70" aria-hidden="true" />Programme Operations
+              </p>
+            </div>
+            <nav className="flex flex-col gap-0.5" aria-label="Programme operations">
+              {operationsTools.map((item) => {
+                const active = pathname === item.href || pathname.startsWith(item.href + '/')
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-300 ease-premium',
+                      active
+                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium shadow-soft'
+                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted/70 hover:text-foreground font-normal',
+                    )}
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0">
+                      {Icon && (
+                        <Icon
+                          className={cn(
+                            'mt-0.5 size-4 shrink-0 transition-all duration-300 ease-premium group-hover:scale-110',
+                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="flex flex-col leading-tight truncate">
+                        <span className="text-xs tracking-tight">{item.label}</span>
+                        <span className="text-[10px] font-normal text-muted-foreground truncate">
+                          {item.hint}
+                        </span>
+                      </span>
+                    </div>
+                    <span
+                      className={cn(
+                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
                         active
                           ? 'border-primary/25 bg-primary/10 text-primary'
                           : 'border-border bg-muted text-muted-foreground',
@@ -441,10 +497,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="border-t border-border p-4 space-y-2.5">
-          <div className="rounded-xl border border-border bg-card p-3">
+          <div className="rounded-xl border border-border bg-gradient-to-b from-card to-muted/25 p-3 shadow-soft">
             <div className="flex items-center justify-between gap-1 mb-1.5">
               <span className="flex items-center gap-1.5 text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
-                <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
+                <span className="size-1.5 rounded-full bg-success shadow-[0_0_0_3px_rgba(134,239,172,0.16)]" aria-hidden="true" />
                 Active Session
               </span>
               <span className="rounded px-1.5 py-0.2 text-[9px] font-medium border border-primary/25 bg-primary/10 text-primary">
@@ -469,7 +525,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           <Link
             href="/login"
-            className="flex items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-foreground transition-colors duration-200 ease-in-out hover:bg-muted"
+            className="flex items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-foreground transition-all duration-300 ease-premium hover:bg-muted hover:shadow-soft"
           >
             <span className="flex items-center gap-1.5">
               <ArrowLeftRight className="size-3.5 text-primary" />
@@ -542,7 +598,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </nav>
         </header>
 
-        <div className="hidden lg:flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-5 xl:px-8 py-3 text-xs">
+        <div className="hidden lg:flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border bg-card/80 backdrop-blur-sm px-5 xl:px-8 py-3 text-xs">
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <div className="flex shrink-0 items-center gap-2 font-normal text-muted-foreground">
               <span className="flex size-6 items-center justify-center rounded-md border border-border bg-muted text-primary">
@@ -575,7 +631,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <main className="flex-1 min-w-0 lg:min-h-0 lg:overflow-y-auto">{children}</main>
+        <main className="flex-1 min-w-0 animate-page lg:min-h-0 lg:overflow-y-auto">{children}</main>
       </div>
     </div>
   )

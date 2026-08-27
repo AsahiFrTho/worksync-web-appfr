@@ -297,7 +297,7 @@ export default function LearnerProfilePage() {
                         <div className="absolute bottom-0 left-[15px] top-8 w-px bg-border" />
                       )}
                       <div
-                        className={`z-10 flex size-8 shrink-0 items-center justify-center rounded-full ${t.color || 'bg-muted'} text-sm text-white ring-4 ring-card`}
+className={`z-10 flex size-8 shrink-0 items-center justify-center rounded-full ${t.color || 'bg-muted'} text-sm text-white shadow-soft ring-4 ring-card`}
                       >
                         {t.icon}
                       </div>

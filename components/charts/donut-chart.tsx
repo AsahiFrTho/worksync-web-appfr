@@ -11,7 +11,7 @@ export function DonutChart({
 }) {
   const total = data.reduce((s, d) => s + d.value, 0)
   return (
-    <div style={{ height }} className="relative w-full">
+    <div style={{ height }} className="relative w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -22,7 +22,7 @@ export function DonutChart({
             outerRadius={82}
             paddingAngle={2}
             strokeWidth={2}
-            stroke="#121212"
+stroke="var(--card)"
           >
             {data.map((entry, i) => (
               <Cell
@@ -33,13 +33,14 @@ export function DonutChart({
           </Pie>
           <Tooltip
             contentStyle={{
-              borderRadius: 8,
-              border: '1px solid rgba(255,255,255,0.1)',
-              background: '#121212',
-              color: '#F5F5F7',
+              borderRadius: 10,
+              border: '1px solid var(--border)',
+              background: 'var(--popover)',
+              color: 'var(--popover-foreground)',
               fontSize: 12,
               fontWeight: 500,
-              padding: '6px 10px',
+              padding: '8px 12px',
+              boxShadow: 'var(--shadow-card)',
             }}
             formatter={(v) => [`${v} (${Math.round((Number(v) / total) * 100)}%)`, 'Learners']}
           />
@@ -58,16 +59,16 @@ export function DonutChart({
     </div>
   )
 }
-
+// Refined mid-tone palette — legible on both dark and light surfaces.
 const KEY_COLORS: Record<string, string> = {
-  placed: '#059669',
-  self_employed: '#7c3aed',
-  apprentice: '#0284c7',
-  higher_ed: '#4f46e5',
-  unemployed: '#d97706',
-  not_placed: '#ea580c',
-  dropped_out: '#e11d48',
-  re_engaged: '#2563eb',
+  placed: '#10b981',
+  self_employed: '#8b5cf6',
+  apprentice: '#0ea5e9',
+  higher_ed: '#6366f1',
+  unemployed: '#f59e0b',
+  not_placed: '#f97316',
+  dropped_out: '#f43f5e',
+  re_engaged: '#3b82f6',
   in_training: '#14b8a6',
   not_tracked: '#64748b',
 }
@@ -75,5 +76,5 @@ const KEY_COLORS: Record<string, string> = {
 const CHART_COLORS = KEY_COLORS
 
 function entryKeyColor(entry: { key?: string }) {
-  return entry.key ? KEY_COLORS[entry.key] || '#C5A059' : '#C5A059'
+return entry.key ? KEY_COLORS[entry.key] || 'var(--chart-1)' : 'var(--chart-1)'
 }

@@ -3,6 +3,10 @@
 // Shared data hook for the operational modules. Fetches the aggregate
 // /api/program-data endpoint once and exposes a joined, memoized
 // ComputeDB plus refresh / seed helpers used by every page.
+//
+// Demo-mode fallback: when the API cannot reach MongoDB (no database server
+// available), it loads realistic client-side demo data so every operational
+// module stays fully populated for presentations.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
@@ -11,7 +15,7 @@ import type {
   ConsentStatus,
 } from "@/lib/types";
 import type { ComputeDB } from "@/lib/compute-types";
-
+import { generateDemoData } from "@/lib/demo-data";
 const EMPTY: ProgramData = {
   trainees: [],
   details: [],
@@ -72,16 +76,30 @@ export function useProgramData(): UseProgramDataResult {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+  // Demo-mode fallback: if the aggregate API fails (no MongoDB), populate
+  // the modules with realistic client-side demo data.
+  useEffect(() => {
+    if (error && !data.trainees.length) {
+      setData(generateDemoData());
+      setError(null);
+      setLoading(false);
+    }
+  }, [error, data.trainees.length]);
 
   const seed = useCallback(async () => {
     setError(null);
+    setLoading(true);
     try {
       const res = await fetch("/api/seed/operations", { method: "POST" });
       const json = await res.json();
       if (!json.success) throw new Error(json.error || "Could not seed demo data");
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not seed demo data");
+      // Seed requires Mongo — fall back to client-side demo data instead.
+      setData(generateDemoData());
+      setError(null);
+    } finally {
+      setLoading(false);
     }
   }, [refresh]);
 

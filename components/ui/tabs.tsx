@@ -21,7 +21,7 @@ export function Tabs({
 }) {
   return (
     <div
-      className={cn('flex flex-wrap items-center gap-1.5', className)}
+      className={cn('flex flex-wrap items-center gap-1 rounded-xl border border-border bg-muted/40 p-1', className)}
       role="tablist"
     >
       {tabs.map((t) => {
@@ -33,18 +33,18 @@ export function Tabs({
             aria-selected={isActive}
             onClick={() => onChange(t.id)}
             className={cn(
-              'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors duration-200 ease-in-out',
+              'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-300 ease-premium',
               isActive
-                ? 'border-primary/30 bg-primary/10 text-primary'
-                : 'border-border bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground',
+                ? 'bg-card text-foreground shadow-soft border border-border'
+                : 'border border-transparent bg-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground',
             )}
           >
             {t.label}
             {typeof t.count === 'number' && (
               <span
                 className={cn(
-                  'rounded px-1 py-0.5 text-[10px] font-semibold tabular-nums',
-                  isActive ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground',
+                  'rounded px-1 py-0.5 text-[10px] font-semibold tabular-nums transition-colors duration-200',
+                  isActive ? 'bg-primary/15 text-primary' : 'bg-muted text-muted-foreground',
                 )}
               >
                 {t.count}

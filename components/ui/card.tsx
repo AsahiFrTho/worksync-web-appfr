@@ -1,4 +1,4 @@
-﻿import type * as React from 'react'
+import type * as React from 'react'
 import { cn } from '@/lib/utils'
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
@@ -6,7 +6,7 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="card"
       className={cn(
-        'rounded-xl border border-border bg-card text-card-foreground transition-all duration-200 ease-in-out',
+        'rounded-xl border border-border bg-card text-card-foreground shadow-card transition-all duration-300 ease-premium hover:shadow-card-hover',
         className,
       )}
       {...props}
