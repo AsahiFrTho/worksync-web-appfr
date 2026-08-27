@@ -93,12 +93,12 @@ export function CareerIntelligenceCard({ traineeId }: CareerIntelligenceCardProp
   const isFallback = source === 'evidence-fallback'
 
   return (
-    <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+    <Card className="overflow-hidden border border-border bg-card">
       {/* Header Banner */}
-      <CardHeader className="border-b border-slate-200 bg-purple-50/80 px-5 py-4">
+      <CardHeader className="border-b border-border px-5 py-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <span className="flex size-7.5 items-center justify-center rounded-lg bg-purple-700 text-white shadow-xs">
+            <span className="flex size-7.5 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Sparkles className="size-4" aria-hidden="true" />
             </span>
             <div>

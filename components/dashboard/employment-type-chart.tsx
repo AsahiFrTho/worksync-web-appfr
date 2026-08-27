@@ -5,23 +5,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { employmentTypeSplit } from '@/lib/mock-data'
 
-const COLORS = ['#1e3a8a', '#0284c7', '#059669']
+const COLORS = ['#C5A059', '#8A7344', '#D4C4A0']
 
 export function EmploymentTypeChart() {
   const total = employmentTypeSplit.reduce((s, d) => s + d.value, 0)
   return (
-    <Card className="border border-slate-200/90 bg-white shadow-xs rounded-xl overflow-hidden">
-      <CardHeader className="border-b border-slate-100 bg-slate-50/70 pb-3.5">
+    <Card className="border border-border bg-card rounded-xl overflow-hidden">
+      <CardHeader className="border-b border-border pb-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base font-bold text-slate-950 font-sans">
-              Employment Modality
-            </CardTitle>
-            <CardDescription className="text-xs font-normal text-slate-500 mt-0.5">
+            <CardTitle>Employment Modality</CardTitle>
+            <CardDescription className="mt-0.5">
               Breakdown of verified placement types
             </CardDescription>
           </div>
-          <Badge variant="neutral" className="font-bold text-[10px] bg-slate-100 text-slate-800 border-slate-300">
+          <Badge variant="neutral" className="text-[10px]">
             33,020 Placed
           </Badge>
         </div>
@@ -39,7 +37,7 @@ export function EmploymentTypeChart() {
                   outerRadius={74}
                   paddingAngle={3}
                   strokeWidth={2}
-                  stroke="#ffffff"
+                  stroke="#121212"
                 >
                   {employmentTypeSplit.map((entry, i) => (
                     <Cell key={entry.type} fill={COLORS[i % COLORS.length]} />
@@ -48,11 +46,11 @@ export function EmploymentTypeChart() {
                 <Tooltip
                   contentStyle={{
                     borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    background: '#0f172a',
-                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: '#121212',
+                    color: '#F5F5F7',
                     fontSize: 12,
-                    fontWeight: 600,
+                    fontWeight: 500,
                     padding: '6px 10px',
                   }}
                   formatter={(v, n) => [typeof v === 'number' ? v.toLocaleString('en-IN') + ' trainees' : String(v ?? ''), n ?? '']}
@@ -64,8 +62,8 @@ export function EmploymentTypeChart() {
             {employmentTypeSplit.map((d, i) => {
               const pct = Math.round((d.value / total) * 100)
               return (
-                <li key={d.type} className="flex items-center justify-between gap-2 text-xs sm:text-sm border-b border-slate-100 pb-2 last:border-0 last:pb-0">
-                  <span className="flex items-center gap-2 font-medium text-slate-900">
+                <li key={d.type} className="flex items-center justify-between gap-2 text-xs sm:text-sm border-b border-border pb-2 last:border-0 last:pb-0">
+                  <span className="flex items-center gap-2 font-medium text-foreground">
                     <span
                       className="size-2 rounded-full shrink-0"
                       style={{ background: COLORS[i % COLORS.length] }}
@@ -74,10 +72,10 @@ export function EmploymentTypeChart() {
                     <span>{d.type}</span>
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-slate-500 hidden sm:inline tabular-nums">
+                    <span className="text-xs font-normal text-muted-foreground hidden sm:inline tabular-nums">
                       {d.value.toLocaleString('en-IN')}
                     </span>
-                    <span className="tabular-nums font-bold text-slate-950 text-xs sm:text-sm">
+                    <span className="tabular-nums font-medium text-foreground text-xs sm:text-sm">
                       {pct}%
                     </span>
                   </div>

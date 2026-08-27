@@ -4,28 +4,28 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-all outline-none select-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all duration-200 ease-in-out outline-none select-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          'bg-blue-700 text-white shadow-xs hover:bg-blue-800 focus-visible:ring-blue-600',
+          'bg-primary text-primary-foreground hover:opacity-90',
         outline:
-          'border-slate-300 bg-white text-slate-800 shadow-2xs hover:bg-slate-50 hover:text-slate-950 hover:border-slate-400',
+          'border-border bg-transparent text-foreground hover:bg-muted hover:border-white/20',
         secondary:
-          'bg-slate-100 text-slate-900 border border-slate-200/90 hover:bg-slate-200/80',
+          'bg-secondary text-secondary-foreground border border-border hover:bg-muted',
         ghost:
-          'hover:bg-slate-100 hover:text-slate-950 text-slate-700',
+          'hover:bg-muted text-muted-foreground hover:text-foreground',
         destructive:
-          'bg-rose-50 text-rose-950 border border-rose-200 hover:bg-rose-100 hover:border-rose-300 focus-visible:ring-rose-600',
-        link: 'text-blue-700 underline-offset-4 hover:underline hover:text-blue-900',
+          'bg-destructive/10 text-destructive border border-destructive/30 hover:bg-destructive/15',
+        link: 'text-primary underline-offset-4 hover:underline hover:opacity-90',
       },
       size: {
         default:
           'h-8.5 gap-1.5 px-3 py-1.5 text-xs sm:text-sm',
         xs: "h-6 gap-1 rounded-md px-2 text-xs [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7.5 gap-1.5 rounded-md px-2.5 text-xs font-semibold [&_svg:not([class*='size-'])]:size-3.5",
-        lg: 'h-10 gap-2 px-4 py-2 text-sm font-bold',
+        sm: "h-7.5 gap-1.5 rounded-md px-2.5 text-xs font-medium [&_svg:not([class*='size-'])]:size-3.5",
+        lg: 'h-10 gap-2 px-4 py-2 text-sm font-medium',
         icon: 'size-8.5',
         'icon-xs':
           "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",

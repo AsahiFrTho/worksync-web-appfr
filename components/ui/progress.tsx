@@ -20,13 +20,13 @@ function Progress({
       aria-valuemin={0}
       aria-valuemax={100}
       className={cn(
-        'relative h-2 w-full overflow-hidden rounded-full bg-slate-200/90',
+        'relative h-2 w-full overflow-hidden rounded-full bg-muted',
         className,
       )}
       {...props}
     >
       <div
-        className={cn('h-full rounded-full bg-blue-700 transition-all duration-300 ease-in-out', indicatorClassName)}
+        className={cn('h-full rounded-full bg-primary transition-all duration-200 ease-in-out', indicatorClassName)}
         style={{ width: `${clamped}%` }}
       />
     </div>

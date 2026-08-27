@@ -67,7 +67,7 @@ function FilterSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 min-w-44 rounded-lg border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-900 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-500/20"
+        className="h-9 min-w-44 rounded-lg border border-border bg-card px-3 text-xs font-medium text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary/25"
       >
         {options.map((o) => (
           <option key={o} value={o}>
@@ -151,7 +151,7 @@ export default function AnalyticsPage() {
         {/* ========================================================================= */}
         <section aria-label="Key Performance Indicators" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* Card 1: Trainees Enrolled (Blue / Government Navy) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-blue-200/90 border-l-[5px] border-l-blue-700 bg-blue-50/40 p-5 shadow-2xs transition-all duration-200 hover:bg-blue-50/70 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-primary bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase tracking-wider text-blue-950">
                 Trainees Enrolled
@@ -177,7 +177,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Card 2: Certification Rate (Purple / Assessment Yield) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-purple-200/90 border-l-[5px] border-l-purple-700 bg-purple-50/40 p-5 shadow-2xs transition-all duration-200 hover:bg-purple-50/70 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase tracking-wider text-purple-950">
                 Certification Rate
@@ -202,7 +202,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Card 3: Verified Placement (Emerald / Confirmed Outcomes) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-emerald-200/90 border-l-[5px] border-l-emerald-600 bg-emerald-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-emerald-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase tracking-wider text-emerald-950">
                 Verified Placement
@@ -228,7 +228,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Card 4: 6-Month Retention (Amber / Longitudinal Stability) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-amber-200/90 border-l-[5px] border-l-amber-600 bg-amber-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-amber-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase tracking-wider text-amber-950">
                 6-Month Retention

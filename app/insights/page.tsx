@@ -17,9 +17,9 @@ export default function InsightsPage() {
 
       <div className="mx-auto flex max-w-[1240px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         {/* Prototype Disclaimer Banner */}
-        <div className="rounded-xl border border-indigo-200 bg-indigo-50/70 p-4.5 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-4.5">
           <div className="flex items-start gap-3">
-            <Sparkles className="mt-0.5 size-5 shrink-0 text-indigo-700" aria-hidden="true" />
+            <Sparkles className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
             <div className="text-xs sm:text-sm leading-relaxed text-slate-800">
               <p className="font-bold text-slate-950">
                 AI Intelligence & Decision Support Layer (Evaluation Environment)
@@ -33,11 +33,11 @@ export default function InsightsPage() {
         </div>
 
         {/* 4-Step Analytical Process Strip */}
-        <div className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
+        <div className="rounded-xl border border-border bg-card p-5">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-100 text-indigo-800">
+                <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                   <Compass className="size-4" aria-hidden="true" />
                 </span>
                 <h2 className="text-sm font-bold text-slate-950 uppercase tracking-wide">
@@ -77,7 +77,7 @@ export default function InsightsPage() {
                   className="flex flex-col justify-between gap-1.5 rounded-lg border border-slate-200 bg-slate-50/70 p-3.5 shadow-2xs"
                 >
                   <div>
-                    <span className="text-xs font-black text-indigo-700 tracking-wider">
+                    <span className="text-xs font-medium text-primary tracking-wider">
                       STAGE {s.n}
                     </span>
                     <h3 className="text-xs sm:text-sm font-bold text-slate-950 mt-0.5">{s.t}</h3>

@@ -4,22 +4,14 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { nonPlacementReasons } from '@/lib/mock-data'
 
-const COLORS = [
-  '#e11d48',
-  '#d97706',
-  '#1d4ed8',
-  '#4338ca',
-  '#64748b',
-]
+const COLORS = ['#C5A059', '#8A7344', '#D4C4A0', '#6B6B70', '#3F3F46']
 
 export function NonPlacementChart() {
   return (
-    <Card className="border border-slate-200/90 bg-white shadow-xs rounded-xl overflow-hidden">
-      <CardHeader className="border-b border-slate-100 bg-slate-50/70 pb-3.5">
-        <CardTitle className="text-base font-bold text-slate-950 font-sans">
-          Root Causes for Non-Placement
-        </CardTitle>
-        <CardDescription className="text-xs font-normal text-slate-500 mt-0.5">
+    <Card className="border border-border bg-card rounded-xl overflow-hidden">
+      <CardHeader className="border-b border-border pb-3.5">
+        <CardTitle>Root Causes for Non-Placement</CardTitle>
+        <CardDescription className="mt-0.5">
           Share of certified-but-unplaced candidates across cohort
         </CardDescription>
       </CardHeader>
@@ -36,7 +28,7 @@ export function NonPlacementChart() {
                   outerRadius={84}
                   paddingAngle={3}
                   strokeWidth={2}
-                  stroke="#ffffff"
+                  stroke="#121212"
                 >
                   {nonPlacementReasons.map((entry, i) => (
                     <Cell key={entry.reason} fill={COLORS[i % COLORS.length]} />
@@ -45,11 +37,11 @@ export function NonPlacementChart() {
                 <Tooltip
                   contentStyle={{
                     borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    background: '#0f172a',
-                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: '#121212',
+                    color: '#F5F5F7',
                     fontSize: 12,
-                    fontWeight: 600,
+                    fontWeight: 500,
                     padding: '6px 10px',
                   }}
                   formatter={(v, n) => [typeof v === 'number' ? `${v}%` : String(v ?? ''), n ?? '']}
@@ -59,8 +51,8 @@ export function NonPlacementChart() {
           </div>
           <ul className="flex flex-1 flex-col gap-2.5 w-full">
             {nonPlacementReasons.map((r, i) => (
-              <li key={r.reason} className="flex items-center justify-between gap-2 text-xs sm:text-sm border-b border-slate-100 pb-2 last:border-0 last:pb-0">
-                <span className="flex items-center gap-2 font-medium text-slate-900">
+              <li key={r.reason} className="flex items-center justify-between gap-2 text-xs sm:text-sm border-b border-border pb-2 last:border-0 last:pb-0">
+                <span className="flex items-center gap-2 font-medium text-foreground">
                   <span
                     className="size-2 rounded-full shrink-0"
                     style={{ background: COLORS[i % COLORS.length] }}
@@ -68,7 +60,7 @@ export function NonPlacementChart() {
                   />
                   <span>{r.reason}</span>
                 </span>
-                <span className="tabular-nums font-bold text-slate-950 text-xs sm:text-sm">{r.value}%</span>
+                <span className="tabular-nums font-medium text-foreground text-xs sm:text-sm">{r.value}%</span>
               </li>
             ))}
           </ul>

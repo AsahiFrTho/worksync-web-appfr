@@ -204,13 +204,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 antialiased">
+    <div className="min-h-screen bg-background text-foreground antialiased">
       {/* 2-PANEL INSTITUTIONAL COMPOSITION */}
       <div className="grid min-h-screen lg:grid-cols-12">
         {/* ========================================================================= */}
         {/* LEFT / BRAND & INSTITUTIONAL PANEL (5 of 12 Columns on Large Screens)     */}
         {/* ========================================================================= */}
-        <div className="relative flex flex-col justify-between overflow-hidden bg-slate-950 p-6 text-white sm:p-8 lg:col-span-5 lg:p-12">
+        <div className="relative flex flex-col justify-between overflow-hidden bg-background p-6 text-foreground sm:p-8 lg:col-span-5 lg:p-12 border-r border-border">
           {/* Decorative Institutional Background Asset */}
           <div
             className="pointer-events-none absolute inset-0 z-0 bg-cover bg-no-repeat opacity-55 select-none"
@@ -227,7 +227,7 @@ export default function LoginPage() {
             className="pointer-events-none absolute inset-0 z-0 select-none opacity-35"
             style={{
               background:
-                'radial-gradient(circle at 60% 42%, rgba(37, 99, 235, 0.2) 0%, rgba(15, 23, 42, 0.08) 45%, transparent 70%)',
+                'radial-gradient(circle at 60% 42%, rgba(197, 160, 89, 0.12) 0%, rgba(10, 10, 10, 0.08) 45%, transparent 70%)',
             }}
             aria-hidden="true"
           />
@@ -373,7 +373,7 @@ export default function LoginPage() {
         {/* ========================================================================= */}
         {/* RIGHT / LOGIN & STAKEHOLDER PORTAL GATEWAY PANEL (7 of 12 Columns)         */}
         {/* ========================================================================= */}
-        <div className="flex flex-col justify-between bg-white p-6 sm:p-8 lg:col-span-7 lg:p-12">
+        <div className="flex flex-col justify-between bg-card p-6 sm:p-8 lg:col-span-7 lg:p-12">
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
             {/* Header & Security Badge Strip */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/70 pb-4">
@@ -411,16 +411,16 @@ export default function LoginPage() {
                       className={cn(
                         'flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer',
                         isSelected
-                          ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600/30 shadow-xs'
-                          : 'border-slate-200/90 bg-white hover:border-slate-300 hover:bg-slate-50/60'
+                          ? 'border-primary bg-primary/10 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:border-white/15 hover:bg-muted/40'
                       )}
                     >
                       <span
                         className={cn(
                           'flex size-9 shrink-0 items-center justify-center rounded-lg border text-xs font-bold transition-colors',
                           isSelected
-                            ? 'border-blue-200 bg-blue-600 text-white'
-                            : 'border-slate-200 bg-slate-100/80 text-slate-600'
+                            ? 'border-primary/30 bg-primary text-primary-foreground'
+                            : 'border-border bg-muted text-muted-foreground'
                         )}
                       >
                         <Icon className="size-4.5" />
@@ -432,7 +432,7 @@ export default function LoginPage() {
                             {role.title.split('/')[0].trim()}
                           </span>
                           {isSelected && (
-                            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white">
+                            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                               <Check className="size-2.5 stroke-[3]" />
                             </span>
                           )}
@@ -448,10 +448,10 @@ export default function LoginPage() {
             </div>
 
             {/* Selected Stakeholder Detail Dossier Card */}
-            <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+            <div className="rounded-2xl border border-border bg-card p-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-2xs shrink-0">
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shrink-0">
                     {selectedRole.icon && <selectedRole.icon className="size-5" />}
                   </span>
                   <div>
@@ -506,7 +506,7 @@ export default function LoginPage() {
                   size="lg"
                   onClick={() => handleQuickLaunch(selectedRole.targetHref)}
                   disabled={isLoading}
-                  className="w-full justify-between bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm h-12 rounded-xl shadow-xs transition-all cursor-pointer"
+                  className="w-full justify-between font-medium text-sm h-12 rounded-xl transition-all duration-200 ease-in-out cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     {isLoading ? (

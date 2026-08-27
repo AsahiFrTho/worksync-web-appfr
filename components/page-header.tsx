@@ -11,31 +11,31 @@ export function PageHeader({
   eyebrow?: string
 }) {
   return (
-    <div className="border-b border-slate-200/90 bg-white shadow-2xs">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 sm:px-6 lg:px-8">
+    <div className="border-b border-border bg-card">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:px-10">
         <div className="flex flex-wrap items-center justify-between gap-2.5">
           <div className="flex flex-wrap items-center gap-2">
             {eyebrow ? (
-              <Badge variant="default" className="border-blue-200/90 bg-blue-100 font-bold uppercase tracking-wider text-blue-950 text-[10px] px-2.5 py-0.5 shadow-2xs">
+              <Badge variant="default" className="uppercase tracking-wider text-[10px] px-2.5 py-0.5">
                 {eyebrow}
               </Badge>
             ) : null}
-            <Badge variant="warning" className="border-amber-200/90 bg-amber-50 font-bold text-amber-950 text-xs px-2.5 py-0.5 flex items-center gap-1.5 shadow-2xs">
-              <ShieldCheck className="size-3.5 text-amber-700" />
+            <Badge variant="outline" className="text-xs px-2.5 py-0.5 flex items-center gap-1.5 text-muted-foreground">
+              <ShieldCheck className="size-3.5 text-primary" />
               <span>Prototype — Demonstration Data</span>
             </Badge>
           </div>
           
-          <div className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-md shadow-2xs">
-            <Calendar className="size-3.5 text-blue-700" />
+          <div className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-muted-foreground border border-border px-3 py-1 rounded-md">
+            <Calendar className="size-3.5 text-primary" />
             <span>Reporting Period: FY 2024–25 (Longitudinal Audit)</span>
           </div>
         </div>
 
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-950 font-sans break-words">
+        <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-foreground break-words">
           {title}
         </h1>
-        <p className="max-w-4xl text-xs sm:text-sm leading-relaxed font-medium text-slate-700 text-pretty">
+        <p className="max-w-4xl text-xs sm:text-sm leading-relaxed font-normal text-muted-foreground text-pretty">
           {description}
         </p>
       </div>

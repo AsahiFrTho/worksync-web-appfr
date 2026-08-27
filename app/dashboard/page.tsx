@@ -53,12 +53,12 @@ export default function DashboardPage() {
         {/* ========================================================================= */}
         <section aria-label="Executive Key Performance Indicators" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* Card 1: Total Trainees (Blue / Government Navy) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-blue-200/90 border-l-[5px] border-l-blue-700 bg-blue-50/40 p-5 shadow-2xs transition-all duration-200 hover:bg-blue-50/70 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-primary bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-950">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Total Trainees Tracked
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-blue-100 text-blue-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                 <Users className="size-4.5" />
               </div>
             </div>
@@ -79,12 +79,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 2: Employment Rate (Emerald / Verified Placements) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-emerald-200/90 border-l-[5px] border-l-emerald-600 bg-emerald-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-emerald-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-emerald-950">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Verified Employment
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                 <Briefcase className="size-4.5" />
               </div>
             </div>
@@ -105,12 +105,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 3: Retention Rate (Purple / Longitudinal Stability) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-purple-200/90 border-l-[5px] border-l-purple-700 bg-purple-50/40 p-5 shadow-2xs transition-all duration-200 hover:bg-purple-50/70 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-purple-950">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 6-Month Retention
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-purple-100 text-purple-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                 <Repeat className="size-4.5" />
               </div>
             </div>
@@ -131,12 +131,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Card 4: Average Placed Wage (Amber / Economic Progression) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-amber-200/90 border-l-[5px] border-l-amber-600 bg-amber-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-amber-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-amber-950">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Median Placed Wage
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                 <IndianRupee className="size-4.5" />
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
         {/* ========================================================================= */}
         {/* 2. SIGNATURE LONGITUDINAL OUTCOME PIPELINE OVERVIEW RIBBON                */}
         {/* ========================================================================= */}
-        <section aria-label="Longitudinal Outcome Pipeline" className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
+        <section aria-label="Longitudinal Outcome Pipeline" className="rounded-xl border border-border bg-card p-5">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
             <div>
               <div className="flex items-center gap-2">
@@ -270,10 +270,10 @@ export default function DashboardPage() {
         {/* ========================================================================= */}
         {/* 7. ACTIONABLE POLICY SIGNALS & AI INTELLIGENCE ADVISORY STRIP             */}
         {/* ========================================================================= */}
-        <section aria-label="Actionable Policy Insights" className="rounded-xl border border-indigo-200/90 bg-indigo-50/40 p-5 shadow-xs">
+        <section aria-label="Actionable Policy Insights" className="rounded-xl border border-border bg-card p-5">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-indigo-100 pb-3.5">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-indigo-700 text-white shadow-2xs">
+              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Sparkles className="size-4" />
               </span>
               <div>
