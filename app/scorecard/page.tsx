@@ -109,7 +109,7 @@ export default function ScorecardPage() {
                         c.wageGrowth >= 0 ? 'text-success' : 'text-destructive'
                       )}
                     >
-                      +{c.wageGrowth}%
+                      {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
                     </span>
                     <span className="ml-6 text-[11px] text-muted-foreground">Skill gap score</span>
                     <span className="text-xs font-bold text-foreground">{c.gapScore}</span>
@@ -164,7 +164,9 @@ export default function ScorecardPage() {
                     <Td>{c.placementRate}%</Td>
                     <Td>{c.verifiedRate}%</Td>
                     <Td>{c.retentionRate}%</Td>
-                    <Td className="font-semibold text-success">+{c.wageGrowth}%</Td>
+                    <Td className={cn('font-semibold', c.wageGrowth >= 0 ? 'text-success' : 'text-destructive')}>
+  {c.wageGrowth >= 0 ? '+' : '−'}{Math.abs(c.wageGrowth)}%
+</Td>
                     <Td>{c.completeness}%</Td>
                     <Td>{c.followUpRate}%</Td>
                     <Td>{c.employerVerRate}%</Td>
