@@ -124,7 +124,7 @@ export default function SkillGapsPage() {
                     data={overall}
                     barKey="total"
                     name="Reports"
-                    color="#7c3aed"
+                    color="var(--chart-3)"
                     height={Math.max(180, overall.length * 34)}
                   />
                 ) : (
@@ -154,7 +154,7 @@ export default function SkillGapsPage() {
                       data={byEmployer}
                       barKey="total"
                       name="Reports"
-                      color="#24506e"
+                      color="var(--chart-1)"
                       height={Math.max(160, byEmployer.length * 30)}
                     />
                   ) : (
@@ -183,7 +183,7 @@ export default function SkillGapsPage() {
                       data={byLearner}
                       barKey="total"
                       name="Reports"
-                      color="#0d9488"
+                      color="var(--chart-2)"
                       height={Math.max(160, byLearner.length * 30)}
                     />
                   ) : (

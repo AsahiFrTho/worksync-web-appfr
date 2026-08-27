@@ -14,9 +14,9 @@ import { providerScorecards } from '@/lib/compute'
 import { cn } from '@/lib/utils'
 
 const BADGE_STYLES: Record<string, string> = {
-  Strong: 'bg-emerald-600 text-white',
-  Improving: 'bg-amber-500 text-white',
-  'Needs attention': 'bg-rose-600 text-white',
+  Strong: 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white',
+  Improving: 'bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500 text-white',
+  'Needs attention': 'bg-gradient-to-r from-rose-600 via-rose-600 to-red-800 text-white',
 }
 
 const BADGE_TONES: Record<string, 'success' | 'warning' | 'destructive'> = {

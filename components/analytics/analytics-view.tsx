@@ -66,7 +66,7 @@ function TrainingCoverageCard({ courseFilter }: { courseFilter: string }) {
                   {c.trainees.toLocaleString('en-IN')}
                 </span>
               </div>
-              <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-blue-600" />
+              <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-primary" />
             </div>
           )
         })}

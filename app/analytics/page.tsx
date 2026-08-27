@@ -122,7 +122,7 @@ function TrainingCoverageCard({ courseFilter }: { courseFilter: string }) {
                 <span className="text-xs font-normal text-slate-500">enrolled</span>
               </span>
             </div>
-            <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-blue-700" className="h-2" />
+            <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-primary" className="h-2" />
           </div>
         ))}
       </CardContent>
