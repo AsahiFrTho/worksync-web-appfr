@@ -4,11 +4,31 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { employmentTypeSplit } from '@/lib/mock-data'
+import { useMounted } from '@/lib/use-mounted'
 
 const COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-4)']
 
 export function EmploymentTypeChart() {
+  const mounted = useMounted()
   const total = employmentTypeSplit.reduce((s, d) => s + d.value, 0)
+  if (!mounted) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Employment Modality</CardTitle>
+              <CardDescription className="mt-0.5">Breakdown of verified placement types</CardDescription>
+            </div>
+            <Badge variant="neutral" className="text-[10px]">33,020 Placed</Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div style={{ height: 176 }} className="w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">
       <CardHeader className="border-b border-border pb-3.5">

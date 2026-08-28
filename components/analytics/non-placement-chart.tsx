@@ -3,10 +3,25 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { nonPlacementReasons } from '@/lib/mock-data'
+import { useMounted } from '@/lib/use-mounted'
 
 const COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)', 'var(--chart-5)']
 
 export function NonPlacementChart() {
+  const mounted = useMounted()
+  if (!mounted) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <CardTitle>Root Causes for Non-Placement</CardTitle>
+          <CardDescription className="mt-0.5">Share of certified-but-unplaced candidates across cohort</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div style={{ height: 192 }} className="w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">
       <CardHeader className="border-b border-border pb-3.5">

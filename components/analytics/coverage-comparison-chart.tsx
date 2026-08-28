@@ -12,13 +12,29 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { courseToSkillComparison } from '@/lib/mock-data'
+import { useMounted } from '@/lib/use-mounted'
 
 export function CoverageComparisonChart({ courseFilter }: { courseFilter?: string }) {
+  const mounted = useMounted()
   const data =
     courseFilter && courseFilter !== 'All Courses'
       ? courseToSkillComparison.filter((d) => courseFilter.startsWith(d.course))
       : courseToSkillComparison
   const view = data.length ? data : courseToSkillComparison
+
+  if (!mounted) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <CardTitle>Course-to-Skill Alignment</CardTitle>
+          <CardDescription className="mt-0.5">Comparative index: Institutional training volume vs. Industry job demand</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div style={{ height: 288 }} className="w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">

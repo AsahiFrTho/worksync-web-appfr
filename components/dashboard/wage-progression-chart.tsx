@@ -13,11 +13,38 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { wageProgression, inr } from '@/lib/mock-data'
 import { TrendingUp } from 'lucide-react'
+import { useMounted } from '@/lib/use-mounted'
 
 export function WageProgressionChart() {
+  const mounted = useMounted()
   const startWage = wageProgression[0]?.wage || 14000
   const endWage = wageProgression[wageProgression.length - 1]?.wage || 17200
   const growthPct = (((endWage - startWage) / startWage) * 100).toFixed(1)
+
+  if (!mounted) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="flex items-center gap-2">
+                <CardTitle>Post-Placement Wage Progression</CardTitle>
+                <Badge variant="default" className="text-[10px] px-2 py-0.2">12-Month Trajectory</Badge>
+              </div>
+              <CardDescription className="mt-0.5">Longitudinal median monthly wage trajectory across verified candidates</CardDescription>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-md border border-border bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+              <TrendingUp className="size-3.5" />
+              <span>+{growthPct}% 1-Year Growth</span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div style={{ height: 240 }} className="w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">

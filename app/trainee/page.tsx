@@ -14,9 +14,7 @@ import {
   XCircle,
   Briefcase,
   Layers,
-  Sparkles,
   FileCheck2,
-  ArrowRight,
   UserCheck,
   FileBadge,
 } from 'lucide-react'

@@ -123,6 +123,7 @@ CRITICAL GROUNDING RULES:
  * Validates and sanitizes raw parsed JSON into a strictly conforming IAICareerIntelligenceResult.
  */
 function sanitizeResult(
+  // raw is deliberately any: it comes from untrusted JSON parsing (Gemini output) and is validated inside.
   raw: any,
   fallbackTraineeId: string,
   source: "gemini" | "evidence-fallback" = "gemini"
@@ -187,7 +188,7 @@ function sanitizeResult(
 
   const evidenceUsed: string[] = Array.isArray(raw?.evidenceUsed)
     ? raw.evidenceUsed.filter(
-        (item: any) => typeof item === "string" && item.trim().length > 0
+        (item: unknown) => typeof item === "string" && item.trim().length > 0
       )
     : ["trainee.course", "employment.verificationStatus", "wageProgression"];
 

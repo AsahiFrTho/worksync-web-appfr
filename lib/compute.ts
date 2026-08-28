@@ -598,6 +598,21 @@ export function districtComparison(db: ComputeDB, filters: Partial<Filters> = {}
 }
 
 // ── Provider scorecards ──────────────────────────────────────────────────────
+export interface ProviderScorecard {
+  provider: { id: string | undefined; name: string | undefined; district: string; status: string };
+  learners: number;
+  placementRate: number;
+  verifiedRate: number;
+  retentionRate: number;
+  wageGrowth: number;
+  completeness: number;
+  followUpRate: number;
+  employerVerRate: number;
+  gapScore: number;
+  composite: number;
+  badge: string;
+}
+
 function avgWageGrowthFor(db: ComputeDB, ids: string[]) {
   const growths: number[] = [];
   ids.forEach((id) => {
@@ -615,7 +630,7 @@ function avgWageGrowthFor(db: ComputeDB, ids: string[]) {
     : 0;
 }
 
-export function providerScorecards(db: ComputeDB) {
+export function providerScorecards(db: ComputeDB): ProviderScorecard[] {
   return providersOf(db).map((p) => {
     const learners = db.learners.filter((l) => providerOf(db, l.traineeId)?.id === p.id);
     const ids = learners.map((l) => l.traineeId);
@@ -641,6 +656,8 @@ export function providerScorecards(db: ComputeDB) {
       followUpRate: pct(completedFu.length, fus.length),
       employerVerRate: pct(vers.filter((v) => v.verificationStatus === "verified").length, vers.length || 1),
       gapScore,
+      composite: 0,
+      badge: '',
     };
     const composite =
       m.placementRate * 0.25 +
@@ -789,7 +806,7 @@ export function learnerTimeline(db: ComputeDB, traineeId: string) {
       );
   });
   if (l) {
-    if (l.consentDate) add(l.consentDate, "consent", `Consent given (${l.consentMethod || "—"})`, l.consentPurpose?.join(", "));
+    if (l.consentDate) add(l.consentDate, "consent", `Consent given (${l.consentMethod || "—"})`, l.consentPurpose?.join(', ') ?? '');
     if (l.consentLastUpdated && l.consentLastUpdated !== l.consentDate) {
       const verb =
         l.consentStatus === "revoked"

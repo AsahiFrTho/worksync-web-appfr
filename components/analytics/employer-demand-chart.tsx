@@ -12,8 +12,23 @@ import {
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { employerDemandedSkills } from '@/lib/mock-data'
+import { useMounted } from '@/lib/use-mounted'
 
 export function EmployerDemandChart() {
+  const mounted = useMounted()
+  if (!mounted) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <CardTitle>Industry Verified Demand</CardTitle>
+          <CardDescription className="mt-0.5">Open verified positions reported across employer network</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div style={{ height: 288 }} className="w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">
       <CardHeader className="border-b border-border pb-3.5">

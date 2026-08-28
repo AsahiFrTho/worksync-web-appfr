@@ -1,7 +1,6 @@
-import { Info, Sparkles, Compass, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Sparkles, Compass } from 'lucide-react'
 import { AppShell } from '@/components/app-shell'
 import { PageHeader } from '@/components/page-header'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { InsightCard } from '@/components/insights/insight-card'
 import { aiInsights } from '@/lib/mock-data'

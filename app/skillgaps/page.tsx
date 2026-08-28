@@ -15,8 +15,6 @@ import { useProgramData } from '@/lib/use-program-data'
 import {
   topSkillGaps,
   courseOf,
-  providerOf,
-  fmtDate,
   DEFAULT_FILTERS,
   type Filters,
 } from '@/lib/compute'

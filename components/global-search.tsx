@@ -4,10 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Search, Lock } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
-import type { TraineeLite, ConsentRecord } from '@/lib/types'
+import { useProgramData } from '@/lib/use-program-data'
 
 interface SearchRow {
-  _id: string
   traineeId: string
   name: string
   district: string
@@ -19,37 +18,17 @@ interface SearchRow {
 export function GlobalSearch({ className }: { className?: string }) {
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(false)
-  const [rows, setRows] = useState<SearchRow[]>([])
   const boxRef = useRef<HTMLDivElement>(null)
+  const { db } = useProgramData()
 
-  useEffect(() => {
-    let cancelled = false
-    Promise.all([
-      fetch('/api/trainees', { cache: 'no-store' }).then((r) => r.json()),
-      fetch('/api/consent', { cache: 'no-store' }).then((r) => r.json()),
-    ])
-      .then(([tj, cj]) => {
-        if (cancelled) return
-        const trainees: TraineeLite[] = tj.trainees || []
-        const consents: ConsentRecord[] = cj.consents || []
-        const active = new Set(
-          consents.filter((c) => c.consentStatus === 'active').map((c) => c.traineeId)
-        )
-        setRows(
-          trainees.map((t) => ({
-            _id: t._id,
-            traineeId: t.traineeId,
-            name: t.name,
-            district: t.district,
-            consentActive: active.has(t.traineeId),
-          }))
-        )
-      })
-      .catch(() => {})
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const rows: SearchRow[] = useMemo(() => {
+    return db.learners.map((l) => ({
+      traineeId: l.traineeId,
+      name: l.name,
+      district: l.district,
+      consentActive: l.consentStatus === 'active',
+    }))
+  }, [db.learners])
 
   useEffect(() => {
     const h = (e: MouseEvent) => {
@@ -96,7 +75,7 @@ export function GlobalSearch({ className }: { className?: string }) {
           ) : (
             results.map((l) => (
               <Link
-                key={l._id}
+                key={l.traineeId}
                 href={`/learners/${l.traineeId}`}
                 onClick={() => {
                   setQ('')

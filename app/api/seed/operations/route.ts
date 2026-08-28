@@ -353,7 +353,7 @@ export async function POST() {
           .reduce((acc: number | undefined, o) => (o.selfEmploymentIncome != null ? Math.max(acc ?? 0, Number(o.selfEmploymentIncome)) : acc), undefined) ??
         0;
 
-      const trainee = await Trainee.findOneAndUpdate(
+      await Trainee.findOneAndUpdate(
         { traineeId },
         {
           name: spec.name,

@@ -1,6 +1,7 @@
 'use client'
 
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { useMounted } from '@/lib/use-mounted'
 
 export function DonutChart({
   data,
@@ -9,6 +10,10 @@ export function DonutChart({
   data: { name: string; value: number; key?: string }[]
   height?: number
 }) {
+  const mounted = useMounted()
+  if (!mounted) {
+    return <div style={{ height }} className="w-full" />
+  }
   const total = data.reduce((s, d) => s + d.value, 0)
   return (
     <div style={{ height }} className="relative w-full animate-fade-in">

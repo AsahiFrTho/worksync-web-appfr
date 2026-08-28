@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { useMounted } from '@/lib/use-mounted'
 
 export function BarHorizontal({
   data,
@@ -29,6 +30,10 @@ export function BarHorizontal({
   barSize?: number
   xFormatter?: (v: number) => string
 }) {
+  const mounted = useMounted()
+  if (!mounted) {
+    return <div style={{ height }} className="w-full" />
+  }
   return (
 <div style={{ height }} className="w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">

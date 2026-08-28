@@ -53,15 +53,6 @@ const CHANNEL_ICON: Record<string, typeof Phone> = {
   'Field visit': PhoneCall,
 }
 
-const CHANNEL_TONE: Record<string, string> = {
-  Call: 'sky',
-  SMS: 'violet',
-  WhatsApp: 'emerald',
-  IVR: 'amber',
-  Email: 'indigo',
-  'Field visit': 'teal',
-}
-
 function ContactModal({
   fu,
   db,

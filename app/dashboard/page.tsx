@@ -13,7 +13,6 @@ import {
 import { AppShell } from '@/components/app-shell'
 import { PageHeader } from '@/components/page-header'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { OutcomeFunnel } from '@/components/dashboard/outcome-funnel'
 import { WageProgressionChart } from '@/components/dashboard/wage-progression-chart'
 import { EmploymentTypeChart } from '@/components/dashboard/employment-type-chart'

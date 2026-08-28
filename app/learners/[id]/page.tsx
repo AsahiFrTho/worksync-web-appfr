@@ -25,7 +25,6 @@ import { Avatar } from '@/components/ui/avatar'
 import { Banner } from '@/components/ui/banner'
 import { KV } from '@/components/ui/kv'
 import { ToneBadge } from '@/components/ui/tone-badge'
-import { EmptyState } from '@/components/ui/empty-state'
 import { useToast } from '@/components/ui/toast'
 import { DataState } from '@/components/data-state'
 import { AddOutcomeModal } from '@/components/add-outcome-modal'
@@ -49,8 +48,6 @@ import {
   todayStr,
   daysBetween,
 } from '@/lib/compute'
-import type { ComputeDB } from '@/lib/compute-types'
-import type { MergedLearner } from '@/lib/types'
 
 interface NoteDraft {
   open: boolean

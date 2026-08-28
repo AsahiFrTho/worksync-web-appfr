@@ -3,31 +3,21 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import {
-  GraduationCap,
   Award,
   Briefcase,
   Repeat,
-  IndianRupee,
-  ShieldCheck,
   TrendingUp,
   Filter,
   ArrowRight,
   Sparkles,
-  AlertTriangle,
-  FileCheck,
   CheckCircle2,
   Users,
   Building2,
-  Clock,
-  ChevronRight,
   Compass,
-  AlertCircle,
-  HelpCircle,
 } from 'lucide-react'
 import { AppShell } from '@/components/app-shell'
 import { PageHeader } from '@/components/page-header'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { SkillGapMatrix } from '@/components/analytics/skill-gap-matrix'

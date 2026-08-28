@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { useMounted } from '@/lib/use-mounted'
 
 export function BarVertical({
   data,
@@ -21,7 +22,6 @@ export function BarVertical({
   yFormatter,
   angle = 0,
   barSize = 22,
-  valueColor = undefined,
 }: {
   data: { [key: string]: string | number }[]
   xKey: string
@@ -32,8 +32,11 @@ export function BarVertical({
   yFormatter?: (v: number) => string
   angle?: number
   barSize?: number
-  valueColor?: string
 }) {
+  const mounted = useMounted()
+  if (!mounted) {
+    return <div style={{ height }} className="w-full" />
+  }
   return (
     <div style={{ height }} className="w-full animate-fade-in">
       <ResponsiveContainer width="100%" height="100%">
@@ -70,7 +73,7 @@ tick={{ fontSize: 10.5, fill: 'var(--muted-foreground)', fontWeight: 500 }}
             }}
           />
           <Bar dataKey={barKey} name={name} fill={color} radius={[4, 4, 0, 0]} barSize={barSize}>
-            {data.map((entry, idx) => (
+            {data.map((_, idx) => (
               <Cell
                 key={idx}
                 fill={color}

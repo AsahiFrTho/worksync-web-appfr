@@ -16,8 +16,6 @@ import {
 import { AppShell } from '@/components/app-shell'
 import { PageHeader } from '@/components/page-header'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Table, Th, Td } from '@/components/ui/table'
 import { SearchInput, Select } from '@/components/ui/field'
 import { Avatar } from '@/components/ui/avatar'
@@ -38,7 +36,6 @@ import {
   followUpsFor,
   verificationsFor,
   fmtDate,
-  daysBetween,
   todayStr,
 } from '@/lib/compute'
 import type { ComputeDB } from '@/lib/compute-types'

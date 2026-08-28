@@ -1,10 +1,9 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useCallback } from 'react'
 import {
   Sparkles,
   Brain,
-  TrendingUp,
   AlertCircle,
   CheckCircle2,
   Lightbulb,
@@ -12,8 +11,6 @@ import {
   AlertTriangle,
   RefreshCw,
   Cpu,
-  Layers,
-  ShieldAlert,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
