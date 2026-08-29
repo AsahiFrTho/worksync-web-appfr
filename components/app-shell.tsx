@@ -1,17 +1,16 @@
 'use client'
 
 import type * as React from 'react'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   LineChart,
   Building2,
   UserCheck,
   Sparkles,
-  ArrowLeftRight,
   ShieldCheck,
   GraduationCap,
   Briefcase,
@@ -22,10 +21,13 @@ import {
   ClipboardCheck,
   Settings as SettingsIcon,
   RefreshCw,
+  LogOut,
+  Loader2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { GlobalSearch } from '@/components/global-search'
+import { ROLES, sectionsForRole, type Role } from '@/lib/auth/roles'
 
 const stakeholderPortals = [
   {
@@ -68,7 +70,6 @@ const intelligenceTools = [
   },
 ]
 
-// --- NEW CODE ADDED: Programme Operations modules (ported from Source) -----
 const operationsTools = [
   {
     label: 'Learners',
@@ -121,88 +122,51 @@ const operationsTools = [
   },
 ]
 
-interface DemoPersona {
-  roleTitle: string
-  name: string
-  organization: string
-  roleCategory: string
-  shortRole: string
-  icon: typeof ShieldCheck
+// Icons are a UI-only concern, so they're mapped here rather than inside
+// lib/auth/roles.ts -- that file is imported by proxy.ts (server) too, and
+// there's no reason for the server-side access-control logic to know or
+// care what icon a role displays.
+const ROLE_ICONS: Record<Role, typeof ShieldCheck> = {
+  admin: ShieldCheck,
+  provider: GraduationCap,
+  employer: Briefcase,
+  trainee: Users,
 }
 
-function getPersonaForPath(pathname: string): DemoPersona {
-  // --- NEW CODE ADDED: personas for the ported operational modules --------
-  if (
-    pathname.startsWith('/followups') ||
-    pathname.startsWith('/learners')
-  ) {
-    return {
-      roleTitle: 'Field Coordinator',
-      name: 'Sunita Wagh',
-      organization: 'Field Team — Nashik Division',
-      roleCategory: 'Field Operations',
-      shortRole: 'Coordinator',
-      icon: PhoneCall,
+interface SessionInfo {
+  email: string
+  role: Role
+  name: string
+}
+
+// Fetches the real, server-verified session once on mount. We intentionally
+// do NOT try to read any cookie directly here -- the session cookie is
+// httpOnly precisely so client-side code (including this component) cannot
+// read or forge it. This hook is the one sanctioned way the UI finds out
+// who's signed in.
+function useSession() {
+  const [session, setSession] = useState<SessionInfo | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/auth/session')
+      .then((res) => res.json())
+      .then((json) => {
+        if (!cancelled) setSession(json.session || null)
+      })
+      .catch(() => {
+        if (!cancelled) setSession(null)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
     }
-  }
-  if (pathname.startsWith('/verification')) {
-    return {
-      roleTitle: 'Employer Verifier',
-      name: 'Arjun Pawar',
-      organization: 'Employer Verification Cell',
-      roleCategory: 'Verification',
-      shortRole: 'Verifier',
-      icon: BadgeCheck,
-    }
-  }
-  if (pathname.startsWith('/analytics')) {
-    return {
-      roleTitle: 'Training Provider',
-      name: 'Sahyadri Vocational Institute',
-      organization: 'Pune Division Training Center',
-      roleCategory: 'Training Partner',
-      shortRole: 'Provider',
-      icon: GraduationCap,
-    }
-  }
-  if (pathname.startsWith('/employer')) {
-    return {
-      roleTitle: 'Employer Partner',
-      name: 'Deccan Electricals Pvt. Ltd.',
-      organization: 'Talegaon Industrial Area, Pune',
-      roleCategory: 'Industry Partner',
-      shortRole: 'Employer',
-      icon: Briefcase,
-    }
-  }
-  if (pathname.startsWith('/trainee')) {
-    return {
-      roleTitle: 'Trainee Candidate',
-      name: 'Rahul Pawar',
-      organization: 'ID: KP-0001 • Pune District',
-      roleCategory: 'Certified Candidate',
-      shortRole: 'Trainee',
-      icon: Users,
-    }
-  }
-  if (pathname.startsWith('/insights')) {
-    return {
-      roleTitle: 'Intelligence Engine',
-      name: 'Kaushal Policy AI Engine',
-      organization: 'Directorate Analytics Cell',
-      roleCategory: 'Policy AI',
-      shortRole: 'AI Signal',
-      icon: Sparkles,
-    }
-  }
-  return {
-    roleTitle: 'Government / Administrator',
-    name: 'Dr. Sanjay Patil',
-    organization: 'MSSDS Mantralaya, Mumbai',
-    roleCategory: 'State Directorate',
-    shortRole: 'Govt Admin',
-    icon: ShieldCheck,
-  }
+  }, [])
+
+  return { session, loading }
 }
 
 function Brand() {
@@ -232,7 +196,6 @@ function Brand() {
   )
 }
 
-// --- NEW CODE ADDED: reset-demo button for the sidebar footer --------------
 function ResetDataButton() {
   const [busy, setBusy] = useState(false)
   const reset = async () => {
@@ -260,10 +223,54 @@ function ResetDataButton() {
   )
 }
 
+// Signs the user out by asking the server to delete the session cookie
+// (see app/api/auth/logout/route.ts), then sends them to /login. We
+// deliberately do NOT just navigate to /login without calling the API --
+// that would leave the old session cookie valid, so typing the dashboard
+// URL back into the address bar would let them straight back in.
+function SignOutButton({ className, children }: { className?: string; children: React.ReactNode }) {
+  const router = useRouter()
+  const [busy, setBusy] = useState(false)
+
+  const signOut = useCallback(async () => {
+    setBusy(true)
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } finally {
+      router.push('/login')
+    }
+  }, [router])
+
+  return (
+    <button type="button" onClick={() => void signOut()} disabled={busy} className={className}>
+      {busy ? <Loader2 className="size-3.5 animate-spin text-primary" /> : <LogOut className="size-3.5 text-primary" />}
+      {children}
+    </button>
+  )
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const activePersona = getPersonaForPath(pathname)
-  const PersonaIcon = activePersona.icon
+  const { session, loading } = useSession()
+
+  // Fall back to the Admin identity while the session is still loading so
+  // the layout doesn't flash empty/broken on first paint. proxy.ts has
+  // already verified real access before this page was ever served, so by
+  // the time this component renders we're guaranteed a valid session is
+  // sitting in the cookie -- this is purely about avoiding a loading flicker,
+  // not a security boundary (that boundary is proxy.ts).
+  const role: Role = session?.role || 'admin'
+  const roleInfo = ROLES[role]
+  const RoleIcon = ROLE_ICONS[role]
+  const allowedSections = sectionsForRole(role)
+  const canSee = (href: string) => allowedSections.some((prefix) => href.startsWith(prefix))
+
+  const visiblePortals = stakeholderPortals.filter((item) => canSee(item.href))
+  const visibleIntelligence = intelligenceTools.filter((item) => canSee(item.href))
+  const visibleOperations = operationsTools.filter((item) => canSee(item.href))
+
+  const displayName = loading ? '…' : session?.name || roleInfo.label
+  const displayOrg = loading ? 'Verifying session…' : session?.email || roleInfo.organization
 
   return (
     <div className="flex min-h-screen w-full bg-background lg:h-screen lg:min-h-0 lg:overflow-hidden font-sans">
@@ -271,173 +278,179 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col gap-6 p-5">
           <Brand />
 
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between px-2.5">
-              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
-                Stakeholder Portals
-              </p>
-            </div>
-            <nav className="flex flex-col gap-0.5" aria-label="Stakeholder portals">
-              {stakeholderPortals.map((item) => {
-                const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
-                      active
-                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
-                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
-                    )}
-                  >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      {Icon && (
-                        <Icon
-                          className={cn(
-                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
-                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
-                          )}
-                          aria-hidden="true"
-                        />
-                      )}
-                      <span className="flex flex-col leading-tight truncate">
-                        <span className="text-xs tracking-tight">{item.label}</span>
-                        <span className="text-[10px] font-normal text-muted-foreground truncate">
-                          {item.hint}
-                        </span>
-                      </span>
-                    </div>
-                    <span
+          {visiblePortals.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between px-2.5">
+                <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
+                  Stakeholder Portals
+                </p>
+              </div>
+              <nav className="flex flex-col gap-0.5" aria-label="Stakeholder portals">
+                {visiblePortals.map((item) => {
+                  const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                  const Icon = item.icon
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                        'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
                         active
-                          ? 'border-primary/25 bg-primary/10 text-primary'
-                          : 'border-border bg-muted text-muted-foreground',
+                          ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
+                          : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
                       )}
                     >
-                      {item.roleBadge}
-                    </span>
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
-
-          <div className="h-px w-full bg-border" />
-
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between px-2.5">
-              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
-                Intelligence & Signals
-              </p>
-            </div>
-            <nav className="flex flex-col gap-0.5" aria-label="Intelligence tools">
-              {intelligenceTools.map((item) => {
-                const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
-                      active
-                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
-                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
-                    )}
-                  >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      {Icon && (
-                        <Icon
-                          className={cn(
-                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
-                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
-                          )}
-                          aria-hidden="true"
-                        />
-                      )}
-                      <span className="flex flex-col leading-tight truncate">
-                        <span className="text-xs tracking-tight">{item.label}</span>
-                        <span className="text-[10px] font-normal text-muted-foreground truncate">
-                          {item.hint}
+                      <div className="flex items-start gap-2.5 min-w-0">
+                        {Icon && (
+                          <Icon
+                            className={cn(
+                              'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                              active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                            )}
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span className="flex flex-col leading-tight truncate">
+                          <span className="text-xs tracking-tight">{item.label}</span>
+                          <span className="text-[10px] font-normal text-muted-foreground truncate">
+                            {item.hint}
+                          </span>
                         </span>
+                      </div>
+                      <span
+                        className={cn(
+                          'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                          active
+                            ? 'border-primary/25 bg-primary/10 text-primary'
+                            : 'border-border bg-muted text-muted-foreground',
+                        )}
+                      >
+                        {item.roleBadge}
                       </span>
-                    </div>
-                    <span
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>
+          )}
+
+          {visibleIntelligence.length > 0 && (
+            <>
+              <div className="h-px w-full bg-border" />
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between px-2.5">
+                  <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
+                    Intelligence & Signals
+                  </p>
+                </div>
+                <nav className="flex flex-col gap-0.5" aria-label="Intelligence tools">
+                  {visibleIntelligence.map((item) => {
+                    const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                    const Icon = item.icon
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        aria-current={active ? 'page' : undefined}
+                        className={cn(
+                          'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
+                          active
+                            ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
+                            : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
+                        )}
+                      >
+                        <div className="flex items-start gap-2.5 min-w-0">
+                          {Icon && (
+                            <Icon
+                              className={cn(
+                                'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                                active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                              )}
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="flex flex-col leading-tight truncate">
+                            <span className="text-xs tracking-tight">{item.label}</span>
+                            <span className="text-[10px] font-normal text-muted-foreground truncate">
+                              {item.hint}
+                            </span>
+                          </span>
+                        </div>
+                        <span
+                          className={cn(
+                            'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                            active
+                              ? 'border-primary/25 bg-primary/10 text-primary'
+                              : 'border-border bg-muted text-muted-foreground',
+                          )}
+                        >
+                          {item.roleBadge}
+                        </span>
+                      </Link>
+                    )
+                  })}
+                </nav>
+              </div>
+            </>
+          )}
+
+          {visibleOperations.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between px-2.5">
+                <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
+                  Programme Operations
+                </p>
+              </div>
+              <nav className="flex flex-col gap-0.5" aria-label="Programme operations">
+                {visibleOperations.map((item) => {
+                  const active = pathname === item.href || pathname.startsWith(item.href + '/')
+                  const Icon = item.icon
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.2 text-[9px] tracking-wide shrink-0 font-medium',
+                        'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
                         active
-                          ? 'border-primary/25 bg-primary/10 text-primary'
-                          : 'border-border bg-muted text-muted-foreground',
+                          ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
+                          : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
                       )}
                     >
-                      {item.roleBadge}
-                    </span>
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
-
-          {/* --- NEW CODE ADDED: Programme Operations section ------------ */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between px-2.5">
-              <p className="text-[10px] font-medium tracking-widest text-muted-foreground uppercase">
-                Programme Operations
-              </p>
-            </div>
-            <nav className="flex flex-col gap-0.5" aria-label="Programme operations">
-              {operationsTools.map((item) => {
-                const active = pathname === item.href || pathname.startsWith(item.href + '/')
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'group flex items-start justify-between rounded-lg px-3 py-2.5 text-xs transition-all duration-200 ease-in-out',
-                      active
-                        ? 'border-l-2 border-primary bg-primary/10 text-foreground font-medium'
-                        : 'border-l-2 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground font-normal',
-                    )}
-                  >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      {Icon && (
-                        <Icon
-                          className={cn(
-                            'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
-                            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
-                          )}
-                          aria-hidden="true"
-                        />
-                      )}
-                      <span className="flex flex-col leading-tight truncate">
-                        <span className="text-xs tracking-tight">{item.label}</span>
-                        <span className="text-[10px] font-normal text-muted-foreground truncate">
-                          {item.hint}
+                      <div className="flex items-start gap-2.5 min-w-0">
+                        {Icon && (
+                          <Icon
+                            className={cn(
+                              'mt-0.5 size-4 shrink-0 transition-colors duration-200 ease-in-out',
+                              active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                            )}
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span className="flex flex-col leading-tight truncate">
+                          <span className="text-xs tracking-tight">{item.label}</span>
+                          <span className="text-[10px] font-normal text-muted-foreground truncate">
+                            {item.hint}
+                          </span>
                         </span>
+                      </div>
+                      <span
+                        className={cn(
+                          'ml-1.5 mt-0.5 rounded border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
+                          active
+                            ? 'border-primary/25 bg-primary/10 text-primary'
+                            : 'border-border bg-muted text-muted-foreground',
+                        )}
+                      >
+                        {item.roleBadge}
                       </span>
-                    </div>
-                    <span
-                      className={cn(
-                        'ml-1.5 mt-0.5 rounded border px-1.5 py-0.5 text-[9px] tracking-wide shrink-0 font-medium',
-                        active
-                          ? 'border-primary/25 bg-primary/10 text-primary'
-                          : 'border-border bg-muted text-muted-foreground',
-                      )}
-                    >
-                      {item.roleBadge}
-                    </span>
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>
+          )}
         </div>
 
         <div className="border-t border-border p-4 space-y-2.5">
@@ -448,40 +461,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 Active Session
               </span>
               <span className="rounded px-1.5 py-0.2 text-[9px] font-medium border border-primary/25 bg-primary/10 text-primary">
-                {activePersona.shortRole}
+                {roleInfo.shortLabel}
               </span>
             </div>
 
             <div className="flex items-center gap-2.5">
               <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-muted text-primary">
-                {PersonaIcon && <PersonaIcon className="size-4" />}
+                <RoleIcon className="size-4" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-medium text-foreground">
-                  {activePersona.name}
-                </p>
-                <p className="truncate text-[10px] font-normal text-muted-foreground">
-                  {activePersona.organization}
-                </p>
+                <p className="truncate text-xs font-medium text-foreground">{displayName}</p>
+                <p className="truncate text-[10px] font-normal text-muted-foreground">{displayOrg}</p>
               </div>
             </div>
           </div>
 
-          <Link
-            href="/login"
-            className="flex items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-foreground transition-colors duration-200 ease-in-out hover:bg-muted"
-          >
+          <SignOutButton className="flex w-full items-center justify-between rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-foreground transition-colors duration-200 ease-in-out hover:bg-muted">
             <span className="flex items-center gap-1.5">
-              <ArrowLeftRight className="size-3.5 text-primary" />
-              <span>Switch Demo Role</span>
+              <span>Sign Out</span>
             </span>
             <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] font-medium text-primary">
-              Select
+              End Session
             </span>
-          </Link>
+          </SignOutButton>
 
-          {/* --- NEW CODE ADDED: Reset demo data button --- */}
-          <ResetDataButton />
+          {/* Only the Government/Admin role can wipe and reseed the shared
+              demo dataset -- everyone else's portal reads the same MongoDB
+              collections, so this is treated as a destructive, coordinator-
+              level action rather than something every role can trigger. */}
+          {role === 'admin' && <ResetDataButton />}
 
           <p className="px-1 text-[10px] leading-tight text-muted-foreground font-normal">
             Evaluation Platform • MSSDS Skilling Intelligence
@@ -495,25 +503,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Brand />
             <div className="flex items-center gap-1.5">
               <ThemeToggle />
-              <Link
-                href="/login"
-                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-border bg-muted/40 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors duration-200 ease-in-out"
-              >
-                <ArrowLeftRight className="size-3 text-primary" />
-                <span>Switch Role</span>
-              </Link>
+              <SignOutButton className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-border bg-muted/40 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors duration-200 ease-in-out">
+                <span>Sign Out</span>
+              </SignOutButton>
             </div>
           </div>
 
           <div className="flex items-center justify-between border-t border-border bg-muted/30 px-4 py-2 text-xs">
             <div className="flex items-center gap-1.5 min-w-0">
-              {PersonaIcon && <PersonaIcon className="size-3.5 text-primary shrink-0" />}
+              <RoleIcon className="size-3.5 text-primary shrink-0" />
               <span className="truncate text-muted-foreground font-normal">
-                Persona: <strong className="text-foreground font-medium">{activePersona.name}</strong>
+                Signed in as: <strong className="text-foreground font-medium">{displayName}</strong>
               </span>
             </div>
             <span className="ml-2 rounded px-1.5 py-0.2 text-[9px] font-medium border border-primary/25 bg-primary/10 text-primary shrink-0">
-              {activePersona.shortRole}
+              {roleInfo.shortLabel}
             </span>
           </div>
 
@@ -521,7 +525,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className="flex gap-1.5 overflow-x-auto border-t border-border px-3 py-2 bg-card"
             aria-label="Primary mobile"
           >
-            {[...stakeholderPortals, ...intelligenceTools, ...operationsTools].map((item) => {
+            {[...visiblePortals, ...visibleIntelligence, ...visibleOperations].map((item) => {
               const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
               const Icon = item.icon
               return (
@@ -549,29 +553,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <ShieldCheck className="size-3.5" />
               </span>
               <span>
-                Active Stakeholder: <strong className="text-foreground font-medium">{activePersona.roleTitle}</strong>
+                Active Stakeholder: <strong className="text-foreground font-medium">{roleInfo.label}</strong>
               </span>
             </div>
             <span className="text-border">|</span>
             <span className="truncate text-muted-foreground font-normal">
-              {activePersona.name} <span className="text-muted-foreground/80">({activePersona.organization})</span>
+              {displayName} <span className="text-muted-foreground/80">({displayOrg})</span>
             </span>
-            {/* --- NEW CODE ADDED: global search in top bar --- */}
             <GlobalSearch className="ml-auto w-full max-w-xs mr-4" />
           </div>
 
           <div className="flex shrink-0 items-center gap-2.5">
             <span className="rounded px-2 py-0.5 text-[10px] font-medium border border-border text-muted-foreground">
-              {activePersona.roleCategory}
+              {roleInfo.label}
             </span>
             <ThemeToggle />
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-1.5 font-medium text-primary hover:opacity-90 border border-border px-2.5 py-1 rounded-md text-xs transition-colors duration-200 ease-in-out hover:bg-muted"
-            >
-              <ArrowLeftRight className="size-3" />
-              <span>Switch Role</span>
-            </Link>
+            <SignOutButton className="inline-flex items-center gap-1.5 font-medium text-primary hover:opacity-90 border border-border px-2.5 py-1 rounded-md text-xs transition-colors duration-200 ease-in-out hover:bg-muted">
+              <span>Sign Out</span>
+            </SignOutButton>
           </div>
         </div>
 
