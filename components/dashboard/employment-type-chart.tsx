@@ -3,12 +3,37 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { employmentTypeSplit } from '@/lib/mock-data'
 
-const COLORS = ['#C5A059', '#8A7344', '#D4C4A0']
+const COLORS = ['#C5A059', '#8A7344', '#D4C4A0', '#6B6B70']
 
-export function EmploymentTypeChart() {
-  const total = employmentTypeSplit.reduce((s, d) => s + d.value, 0)
+interface EmploymentTypeDatum {
+  type: string
+  value: number
+}
+
+// Required prop: this component is only ever rendered from the Government
+// Dashboard, so there's no legacy caller to stay backward-compatible with.
+// Data comes from lib/compute.ts's employmentTypeSplit(), which tallies the
+// real `employmentType` field already recorded on every OutcomeEvent.
+export function EmploymentTypeChart({ data }: { data: EmploymentTypeDatum[] }) {
+  const total = data.reduce((s, d) => s + d.value, 0)
+
+  if (!total) {
+    return (
+      <Card className="border border-border bg-card rounded-xl overflow-hidden">
+        <CardHeader className="border-b border-border pb-3.5">
+          <CardTitle>Employment Modality</CardTitle>
+          <CardDescription className="mt-0.5">Breakdown of verified placement types</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <p className="text-sm text-muted-foreground">
+            No wage-employment outcomes recorded yet for this cohort.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">
       <CardHeader className="border-b border-border pb-3.5">
@@ -20,7 +45,7 @@ export function EmploymentTypeChart() {
             </CardDescription>
           </div>
           <Badge variant="neutral" className="text-[10px]">
-            33,020 Placed
+            {total.toLocaleString('en-IN')} Placed
           </Badge>
         </div>
       </CardHeader>
@@ -30,7 +55,7 @@ export function EmploymentTypeChart() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={employmentTypeSplit}
+                  data={data}
                   dataKey="value"
                   nameKey="type"
                   innerRadius={46}
@@ -39,7 +64,7 @@ export function EmploymentTypeChart() {
                   strokeWidth={2}
                   stroke="#121212"
                 >
-                  {employmentTypeSplit.map((entry, i) => (
+                  {data.map((entry, i) => (
                     <Cell key={entry.type} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Pie>
@@ -59,7 +84,7 @@ export function EmploymentTypeChart() {
             </ResponsiveContainer>
           </div>
           <ul className="flex flex-1 flex-col gap-2.5 w-full">
-            {employmentTypeSplit.map((d, i) => {
+            {data.map((d, i) => {
               const pct = Math.round((d.value / total) * 100)
               return (
                 <li key={d.type} className="flex items-center justify-between gap-2 text-xs sm:text-sm border-b border-border pb-2 last:border-0 last:pb-0">

@@ -39,7 +39,7 @@ const programSettingsSchema = new Schema<IProgramSettings>(
     },
     programName: {
       type: String,
-      default: 'KaushalPulse — Skill Development Mission',
+      default: 'WorkSync — Skill Development Mission',
       trim: true,
     },
     districts: { type: [String], default: [] },

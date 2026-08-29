@@ -2,14 +2,25 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { outcomeFunnel, compact } from '@/lib/mock-data'
+import { outcomeFunnel as mockOutcomeFunnel } from '@/lib/mock-data'
+import { compact } from '@/lib/compute'
 import { TrendingUp } from 'lucide-react'
 
 const barOpacities = ['bg-primary/90', 'bg-primary/75', 'bg-primary/60', 'bg-primary/45', 'bg-primary/30']
 
-export function OutcomeFunnel() {
-  const max = outcomeFunnel[0].value
-  const netYield = Math.round((outcomeFunnel[outcomeFunnel.length - 1].value / max) * 100)
+interface FunnelStage {
+  stage: string
+  value: number
+}
+
+// `stages` is optional so this component keeps working, unchanged, on the
+// Training Provider Analytics page (which hasn't migrated to live data in
+// this phase). The Government Dashboard always passes real computed stages
+// from lib/compute.ts's outcomeFunnel(); if a caller omits the prop, we fall
+// back to the illustrative demo array instead of crashing.
+export function OutcomeFunnel({ stages = mockOutcomeFunnel }: { stages?: FunnelStage[] }) {
+  const max = stages[0]?.value || 1
+  const netYield = Math.round(((stages[stages.length - 1]?.value || 0) / max) * 100)
 
   return (
     <Card className="border border-border bg-card rounded-xl overflow-hidden">
@@ -35,11 +46,11 @@ export function OutcomeFunnel() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-3 pt-4">
-        {outcomeFunnel.map((stage, i) => {
+        {stages.map((stage, i) => {
           const pct = Math.round((stage.value / max) * 100)
           const conversion =
-            i === 0 ? 100 : Math.round((stage.value / outcomeFunnel[i - 1].value) * 100)
-          const dropOff = i === 0 ? 0 : outcomeFunnel[i - 1].value - stage.value
+            i === 0 ? 100 : Math.round((stage.value / (stages[i - 1].value || 1)) * 100)
+          const dropOff = i === 0 ? 0 : stages[i - 1].value - stage.value
 
           return (
             <div key={stage.stage} className="flex flex-col gap-1">

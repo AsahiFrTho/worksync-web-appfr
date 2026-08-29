@@ -20,10 +20,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'KaushalPulse — Skilling Outcomes & Impact, Maharashtra',
+  title: 'WorkSync — Skilling Outcomes & Impact, Maharashtra',
   description:
     'Longitudinal skilling-outcomes and impact-measurement platform for Maharashtra: training, certification, placement, wage progression, and retention.',
-  generator: 'v0.app',
   icons: {
     icon: [
       { url: '/favicon1.png', sizes: 'any' },

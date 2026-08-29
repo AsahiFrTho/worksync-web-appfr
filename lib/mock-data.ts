@@ -1,6 +1,9 @@
-// KaushalPulse — demonstration/mock data only.
+// WorkSync — demonstration/mock data only.
 // Realistic Maharashtra-focused figures for prototype presentation.
-// No backend is connected; these values are illustrative.
+// No backend is connected; these values are illustrative. Kept in use by
+// pages that haven't yet migrated to the live MongoDB compute engine
+// (see lib/compute.ts) — the Government Executive Dashboard now reads
+// real data instead of this file.
 
 export const summary = {
   totalTrainees: 48250,

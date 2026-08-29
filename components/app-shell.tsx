@@ -211,7 +211,7 @@ function Brand() {
       <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-card border border-border transition-opacity duration-200 ease-in-out group-hover:opacity-90">
         <Image
           src="/favicon1.png"
-          alt="KaushalPulse"
+          alt="WorkSync"
           width={38}
           height={38}
           className="size-full object-contain p-0.5"
@@ -221,7 +221,7 @@ function Brand() {
       <div className="flex flex-col leading-tight min-w-0">
         <div className="flex items-center gap-1.5">
           <span className="font-heading text-base font-semibold tracking-tight text-foreground">
-            KAUSHAL<span className="text-primary">PULSE</span>
+            WORK<span className="text-primary">SYNC</span>
           </span>
         </div>
         <span className="text-[10px] font-normal text-muted-foreground truncate">
