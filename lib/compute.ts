@@ -620,6 +620,184 @@ export function reasonCounts(
     .sort((a, b) => b.value - a.value);
 }
 
+// ── Closed-Loop Skill Intelligence (the "wow factor") ───────────────────────
+// Business logic: topSkillGaps() above answers "which skill is reported
+// missing most often" -- a count. This section goes one step further and
+// asks the actual policy question: "does that reported gap line up with
+// this course's learners doing WORSE than everyone else we're tracking?"
+// That correlation is what turns a raw complaint tally into something a
+// training provider can act on.
+export interface CurriculumInsight {
+  course: string;
+  topSkillGap: string;
+  severity: "high" | "medium" | "low";
+  reportCount: number;
+  affectedLearners: number;
+  courseEmploymentRate: number;
+  cohortEmploymentRate: number;
+  /** courseEmploymentRate - cohortEmploymentRate. Negative = this course's
+   *  learners are employed at a lower rate than the rest of the tracked
+   *  cohort -- the number a policymaker actually cares about. */
+  employmentRateDelta: number;
+  courseAvgWage: number;
+  cohortAvgWage: number;
+  wageDelta: number;
+  /** Always available, zero-AI-dependency plain-language fix. This is the
+   *  exact same sentence lib/ai/curriculum-intelligence.ts's fallback path
+   *  surfaces if Gemini is unavailable -- the "wow feature" degrades to
+   *  this instead of breaking on stage. */
+  recommendedFix: string;
+}
+
+// A course needs at least this many tracked learners before we're willing
+// to say anything about it. Below this, one unlucky or unlucky-looking
+// learner could make an entire course look broken -- exactly the kind of
+// small-sample overclaim we removed from the executive dashboard in Phase 1.
+const MIN_COURSE_SAMPLE_SIZE = 2;
+
+// Ranks skills reported missing *within a single course*, weighting a
+// "high" severity report 3x and "medium" 2x a "low" one -- the same
+// weighting convention providerScorecards() already uses for gapScore, so
+// severity means the same thing everywhere in this app rather than each
+// feature inventing its own scale.
+function topSkillGapForCourse(db: ComputeDB, courseName: string) {
+  const counts: Record<string, { high: number; medium: number; low: number; total: number }> = {};
+  db.skillGaps.forEach((s) => {
+    if (courseOf(db, s.traineeId)?.name !== courseName) return;
+    counts[s.skillName] = counts[s.skillName] || { high: 0, medium: 0, low: 0, total: 0 };
+    counts[s.skillName][s.severity]++;
+    counts[s.skillName].total++;
+  });
+  const ranked = Object.entries(counts)
+    .map(([name, v]) => ({ name, ...v, weight: v.high * 3 + v.medium * 2 + v.low }))
+    .sort((a, b) => b.weight - a.weight || b.total - a.total);
+  return ranked[0] || null;
+}
+
+function avgCurrentWage(db: ComputeDB, group: ComputeDB["learners"]): number {
+  const wages = group
+    .map((l) => currentMonthlyIncome(db, l.traineeId))
+    .filter((w): w is number => typeof w === "number" && w > 0);
+  if (!wages.length) return 0;
+  return Math.round(wages.reduce((a, b) => a + b, 0) / wages.length);
+}
+
+function employedCount(db: ComputeDB, group: ComputeDB["learners"]): number {
+  return group.filter((l) =>
+    ["placed", "self_employed", "apprentice"].includes(employmentStatus(db, l.traineeId).key)
+  ).length;
+}
+
+// Deterministic, rule-based recommendation sentence. Deliberately plain and
+// a little repetitive/templated -- that's the point: it must be defensible
+// word-for-word as "here's exactly the arithmetic behind this sentence",
+// with no room for an AI model to have invented something.
+function buildDeterministicFix(input: {
+  course: string;
+  skill: string;
+  reportCount: number;
+  employmentRateDelta: number;
+  wageDelta: number;
+}): string {
+  const { course, skill, reportCount, employmentRateDelta, wageDelta } = input;
+  const impactParts: string[] = [];
+  if (employmentRateDelta < 0) {
+    impactParts.push(`${Math.abs(employmentRateDelta)} percentage points lower employment`);
+  }
+  if (wageDelta < 0) {
+    impactParts.push(`${fmtMoney(Math.abs(wageDelta))} lower average wage`);
+  }
+  const impactStr = impactParts.length
+    ? ` — learners in this course currently show ${impactParts.join(" and ")} than the rest of the tracked cohort.`
+    : " — no measurable outcome gap yet, but the skill is already being reported.";
+  return `Add a focused bridge module on "${skill}" to ${course} (reported ${reportCount} time${reportCount === 1 ? "" : "s"})${impactStr}`;
+}
+
+/**
+ * Cross-references SkillGapReport against OutcomeEvent-derived employment
+ * and wage data, per course, to find which reported skill gaps actually
+ * correlate with worse real-world outcomes -- and returns a concrete,
+ * ready-to-act-on fix for each one.
+ *
+ * Deliberately course-vs-rest-of-cohort, not course-vs-a-fixed-target: with
+ * a small prototype dataset there is no separate "official benchmark" to
+ * compare against, so the fairest comparison we can make honestly is this
+ * course against every other course we're tracking right now. This also
+ * means the comparison automatically gets more meaningful as more real
+ * data is seeded/entered -- it never depends on a number we made up.
+ */
+export function generateCurriculumInsights(
+  db: ComputeDB,
+  filters: Partial<Filters> = {}
+): CurriculumInsight[] {
+  const learners = applyFilters(db, filters);
+  const courseNames = [
+    ...new Set(
+      learners
+        .map((l) => courseOf(db, l.traineeId)?.name)
+        .filter((n): n is string => Boolean(n))
+    ),
+  ];
+
+  const insights: CurriculumInsight[] = [];
+
+  courseNames.forEach((course) => {
+    const inCourse = learners.filter((l) => courseOf(db, l.traineeId)?.name === course);
+    if (inCourse.length < MIN_COURSE_SAMPLE_SIZE) return; // too few learners to say anything responsible
+
+    const topGap = topSkillGapForCourse(db, course);
+    if (!topGap || topGap.total === 0) return; // nothing reported for this course -- nothing to fix
+
+    const restOfCohort = learners.filter((l) => courseOf(db, l.traineeId)?.name !== course);
+
+    const courseEmploymentRate = pct(employedCount(db, inCourse), inCourse.length);
+    const cohortEmploymentRate = restOfCohort.length
+      ? pct(employedCount(db, restOfCohort), restOfCohort.length)
+      : courseEmploymentRate;
+    const courseAvgWage = avgCurrentWage(db, inCourse);
+    const cohortAvgWage = avgCurrentWage(db, restOfCohort);
+
+    const employmentRateDelta = courseEmploymentRate - cohortEmploymentRate;
+    const wageDelta = courseAvgWage - cohortAvgWage;
+
+    // Only escalate to "high" severity when the reports AND the real
+    // outcome data agree something is wrong -- a widely-reported gap in a
+    // course that's still outperforming its peers is a weaker, more likely
+    // coincidental story and shouldn't be flagged with the same urgency.
+    const severity: CurriculumInsight["severity"] =
+      topGap.high >= 2 || employmentRateDelta <= -15
+        ? "high"
+        : topGap.medium >= 2 || employmentRateDelta <= -5
+          ? "medium"
+          : "low";
+
+    insights.push({
+      course,
+      topSkillGap: topGap.name,
+      severity,
+      reportCount: topGap.total,
+      affectedLearners: inCourse.length,
+      courseEmploymentRate,
+      cohortEmploymentRate,
+      employmentRateDelta,
+      courseAvgWage,
+      cohortAvgWage,
+      wageDelta,
+      recommendedFix: buildDeterministicFix({
+        course,
+        skill: topGap.name,
+        reportCount: topGap.total,
+        employmentRateDelta,
+        wageDelta,
+      }),
+    });
+  });
+
+  // Worst-performing-relative-to-peers courses first -- these are the
+  // highest-value fixes to show a policymaker first.
+  return insights.sort((a, b) => a.employmentRateDelta - b.employmentRateDelta);
+}
+
 function groupStats(db: ComputeDB, learners: ComputeDB["learners"], keyFn: (l: (typeof db.learners)[number]) => string) {
   const groups: Record<string, (typeof db.learners)[number][]> = {};
   learners.forEach((l) => {

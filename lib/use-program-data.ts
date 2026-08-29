@@ -5,12 +5,9 @@
 // ComputeDB plus refresh / seed helpers used by every page.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type {
-  ProgramData,
-  MergedLearner,
-  ConsentStatus,
-} from "@/lib/types";
+import type { ProgramData } from "@/lib/types";
 import type { ComputeDB } from "@/lib/compute-types";
+import { buildComputeDb } from "@/lib/build-compute-db";
 
 const EMPTY: ProgramData = {
   trainees: [],
@@ -22,13 +19,6 @@ const EMPTY: ProgramData = {
   skillGaps: [],
   settings: null,
 };
-
-function toIso(v: unknown): string | undefined {
-  if (!v) return undefined;
-  if (typeof v === "string") return v.slice(0, 10);
-  if (v instanceof Date) return v.toISOString().slice(0, 10);
-  return String(v).slice(0, 10);
-}
 
 export interface UseProgramDataResult {
   data: ProgramData;
@@ -85,52 +75,7 @@ export function useProgramData(): UseProgramDataResult {
     }
   }, [refresh]);
 
-  const db = useMemo<ComputeDB>(() => {
-    const detailByTrainee = new Map(
-      data.details.map((d) => [d.traineeId, d])
-    );
-    const consentByTrainee = new Map(
-      data.consents.map((c) => [c.traineeId, c])
-    );
-
-    const learners: MergedLearner[] = data.trainees.map((t) => {
-      const detail = detailByTrainee.get(t.traineeId);
-      const consent = consentByTrainee.get(t.traineeId);
-      return {
-        ...t,
-        detail,
-        consent,
-        gender: detail?.gender,
-        category: detail?.category,
-        block: detail?.block,
-        phone: detail?.phone,
-        alternatePhone: detail?.alternatePhone,
-        email: detail?.email,
-        phoneNote: detail?.phoneNote,
-        locationChanged: detail?.locationChanged,
-        notes: detail?.notes,
-        batchName: detail?.batchName,
-        batchLabel: detail?.batchLabel,
-        uniqueLearnerId: detail?.uniqueLearnerId || t.traineeId,
-        consentStatus: (consent?.consentStatus || "missing") as ConsentStatus,
-        consentDate: consent?.consentDate,
-        consentMethod: consent?.consentMethod,
-        consentPurpose: consent?.consentPurpose,
-        consentLastUpdated: consent?.consentLastUpdated,
-        trainingPeriodStart: toIso(t.trainingPeriod?.startDate),
-        trainingPeriodEnd: toIso(t.trainingPeriod?.endDate),
-      };
-    });
-
-    return {
-      learners,
-      outcomes: data.outcomes,
-      followUps: data.followUps,
-      verifications: data.verifications,
-      skillGaps: data.skillGaps,
-      settings: data.settings,
-    };
-  }, [data]);
+  const db = useMemo<ComputeDB>(() => buildComputeDb(data), [data]);
 
   const seeded = data.trainees.length > 0;
 
