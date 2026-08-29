@@ -75,6 +75,28 @@ export interface INormalizedTraineeEvidence {
 }
 
 /**
+ * AI Curriculum Intelligence Result Schema
+ *
+ * This is the AI-written counterpart to lib/compute.ts's CurriculumInsight:
+ * that interface holds the numbers (employment/wage deltas, report counts),
+ * this one holds the plain-English policy narrative Gemini (or the
+ * deterministic fallback) writes ABOUT those numbers. The AI is never given
+ * a chance to invent the numbers themselves -- see buildPrompt() in
+ * lib/ai/curriculum-intelligence.ts.
+ */
+export interface ICurriculumPolicyMemo {
+  course: string;
+  generatedAt: string;
+  headline: string; // one-line summary for a policymaker scanning many of these
+  diagnosis: string; // why this course was flagged, grounded in the exact numbers provided
+  recommendedAction: string; // concrete, specific curriculum fix
+  predictedImpact: string; // plain-language framing of the employment/wage delta as an opportunity
+  confidence: "High" | "Medium" | "Low"; // driven by sample size, not vibes
+  evidenceUsed: string[];
+  source?: "gemini" | "evidence-fallback";
+}
+
+/**
  * AI Career Intelligence Result Schema
  */
 export interface IAICareerIntelligenceResult {

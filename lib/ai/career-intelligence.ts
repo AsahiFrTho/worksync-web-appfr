@@ -104,7 +104,7 @@ const VALID_ALIGNMENTS = [
 const VALID_RISK_LEVELS = ["Low", "Medium", "High", "Critical"] as const;
 
 function buildPrompt(evidence: INormalizedTraineeEvidence): string {
-  return `You are the KaushalPulse AI Career Intelligence Engine for vocational skilling in Maharashtra.
+  return `You are the WorkSync AI Career Intelligence Engine for vocational skilling in Maharashtra.
 Analyze the following verified vocational training, employment, wage progression, and milestone retention evidence:
 
 ${JSON.stringify(evidence, null, 2)}

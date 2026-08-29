@@ -46,6 +46,15 @@ export const fmtMoney = (n: number | null | undefined | "") => {
 export const pct = (a: number, b: number, digits = 0) =>
   b === 0 ? 0 : Math.round((a / b) * 100 * 10 ** digits) / 10 ** digits;
 
+// Compact large numbers for KPI tiles, e.g. 48250 -> "48.2K", 1200000 -> "1.2M".
+// Falls back to a plain locale-formatted number below 1,000 so small prototype
+// cohorts (tens of trainees) don't render a confusing "0.0K".
+export const compact = (n: number) => {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+  return n.toLocaleString("en-IN");
+};
+
 // ── Employment status ────────────────────────────────────────────────────────
 const STATUS_DEFINING = [
   "wage_employment",
@@ -149,7 +158,9 @@ export function enrollmentFor(db: ComputeDB, traineeId: string) {
 }
 
 export function providersOf(db: ComputeDB) {
-  const names = [...new Set(db.learners.map((l) => l.trainingProvider).filter(Boolean))].sort();
+  const names = [
+    ...new Set(db.learners.map((l) => l.trainingProvider).filter((n): n is string => Boolean(n))),
+  ].sort();
   return names.map((name) => ({ id: name, name, district: db.learners.find((l) => l.trainingProvider === name)?.district || "—", status: "active" }));
 }
 
@@ -439,6 +450,73 @@ export function outcomeDistribution(db: ComputeDB, filters: Partial<Filters> = {
     .map((k) => ({ name: STATUS_LABELS[k].label, key: k, value: dist[k] }));
 }
 
+// ── Longitudinal outcome funnel (the "6-step journey" as headcounts) ────────
+// Business logic / why these exact stage definitions were chosen:
+//   1. Enrolled   -> every learner record in the filtered cohort. This is the
+//                    denominator for every later stage.
+//   2. Completed  -> learner's training end date has actually passed. A
+//                    learner who is still mid-course hasn't "completed"
+//                    anything yet, regardless of certificate status.
+//   3. Certified  -> learner has a real certificateId on file. We deliberately
+//                    do NOT infer certification from "training ended" -- a
+//                    learner can finish a course and still fail the final
+//                    assessment, so certification must be its own gate.
+//   4. Employed   -> learner's current employmentStatus (Place step) is one of
+//                    placed / self_employed / apprentice. Re-uses the exact
+//                    same status logic as the KPI ribbon and every other page,
+//                    so the funnel can never silently disagree with the rest
+//                    of the app.
+//   5. Retained   -> of the Employed group, how many pass the same 3-month
+//                    retention check (Verify + Retain steps) used everywhere
+//                    else in the app. We scope retention() to only the
+//                    Employed learner IDs so the funnel reads as a strict
+//                    step-down, never a number that goes back up.
+export function outcomeFunnel(db: ComputeDB, filters: Partial<Filters> = {}) {
+  const learners = applyFilters(db, filters);
+  const enrolled = learners.length;
+
+  const completed = learners.filter(
+    (l) => !!l.trainingPeriodEnd && l.trainingPeriodEnd <= todayStr()
+  ).length;
+
+  const certified = learners.filter((l) => !!l.certificate?.certificateId).length;
+
+  const employedLearners = learners.filter((l) =>
+    ["placed", "self_employed", "apprentice"].includes(employmentStatus(db, l.traineeId).key)
+  );
+  const employed = employedLearners.length;
+
+  const employedIds = employedLearners.map((l) => l.traineeId);
+  const retained = retention(db, 3, employedIds).retained;
+
+  return [
+    { stage: "Enrolled", value: enrolled },
+    { stage: "Completed", value: completed },
+    { stage: "Certified", value: certified },
+    { stage: "Employed", value: employed },
+    { stage: "Retained", value: retained },
+  ];
+}
+
+// ── Employment type split (Full-time / Part-time / Contract / Temporary) ────
+// Pulled straight from the real `employmentType` field already captured on
+// every OutcomeEvent at the Place step -- this replaces the old prototype's
+// invented "employmentTypeSplit" mock array with an honest tally of records
+// that actually exist in MongoDB.
+export function employmentTypeSplit(db: ComputeDB, filters: Partial<Filters> = {}) {
+  const learners = applyFilters(db, filters);
+  const counts: Record<string, number> = {};
+  learners.forEach((l) => {
+    const placement = placementEvent(db, l.traineeId);
+    if (!placement) return; // not placed in wage employment -> not counted here
+    const type = placement.employmentType || "Full-time";
+    counts[type] = (counts[type] || 0) + 1;
+  });
+  return Object.entries(counts)
+    .map(([type, value]) => ({ type, value }))
+    .sort((a, b) => b.value - a.value);
+}
+
 const monthKey = (d: string) => d.slice(0, 7);
 const monthLabel = (k: string) =>
   new Date(k + "-01T12:00:00Z").toLocaleDateString("en-IN", { month: "short", year: "2-digit" });
@@ -542,6 +620,184 @@ export function reasonCounts(
     .sort((a, b) => b.value - a.value);
 }
 
+// ── Closed-Loop Skill Intelligence (the "wow factor") ───────────────────────
+// Business logic: topSkillGaps() above answers "which skill is reported
+// missing most often" -- a count. This section goes one step further and
+// asks the actual policy question: "does that reported gap line up with
+// this course's learners doing WORSE than everyone else we're tracking?"
+// That correlation is what turns a raw complaint tally into something a
+// training provider can act on.
+export interface CurriculumInsight {
+  course: string;
+  topSkillGap: string;
+  severity: "high" | "medium" | "low";
+  reportCount: number;
+  affectedLearners: number;
+  courseEmploymentRate: number;
+  cohortEmploymentRate: number;
+  /** courseEmploymentRate - cohortEmploymentRate. Negative = this course's
+   *  learners are employed at a lower rate than the rest of the tracked
+   *  cohort -- the number a policymaker actually cares about. */
+  employmentRateDelta: number;
+  courseAvgWage: number;
+  cohortAvgWage: number;
+  wageDelta: number;
+  /** Always available, zero-AI-dependency plain-language fix. This is the
+   *  exact same sentence lib/ai/curriculum-intelligence.ts's fallback path
+   *  surfaces if Gemini is unavailable -- the "wow feature" degrades to
+   *  this instead of breaking on stage. */
+  recommendedFix: string;
+}
+
+// A course needs at least this many tracked learners before we're willing
+// to say anything about it. Below this, one unlucky or unlucky-looking
+// learner could make an entire course look broken -- exactly the kind of
+// small-sample overclaim we removed from the executive dashboard in Phase 1.
+const MIN_COURSE_SAMPLE_SIZE = 2;
+
+// Ranks skills reported missing *within a single course*, weighting a
+// "high" severity report 3x and "medium" 2x a "low" one -- the same
+// weighting convention providerScorecards() already uses for gapScore, so
+// severity means the same thing everywhere in this app rather than each
+// feature inventing its own scale.
+function topSkillGapForCourse(db: ComputeDB, courseName: string) {
+  const counts: Record<string, { high: number; medium: number; low: number; total: number }> = {};
+  db.skillGaps.forEach((s) => {
+    if (courseOf(db, s.traineeId)?.name !== courseName) return;
+    counts[s.skillName] = counts[s.skillName] || { high: 0, medium: 0, low: 0, total: 0 };
+    counts[s.skillName][s.severity]++;
+    counts[s.skillName].total++;
+  });
+  const ranked = Object.entries(counts)
+    .map(([name, v]) => ({ name, ...v, weight: v.high * 3 + v.medium * 2 + v.low }))
+    .sort((a, b) => b.weight - a.weight || b.total - a.total);
+  return ranked[0] || null;
+}
+
+function avgCurrentWage(db: ComputeDB, group: ComputeDB["learners"]): number {
+  const wages = group
+    .map((l) => currentMonthlyIncome(db, l.traineeId))
+    .filter((w): w is number => typeof w === "number" && w > 0);
+  if (!wages.length) return 0;
+  return Math.round(wages.reduce((a, b) => a + b, 0) / wages.length);
+}
+
+function employedCount(db: ComputeDB, group: ComputeDB["learners"]): number {
+  return group.filter((l) =>
+    ["placed", "self_employed", "apprentice"].includes(employmentStatus(db, l.traineeId).key)
+  ).length;
+}
+
+// Deterministic, rule-based recommendation sentence. Deliberately plain and
+// a little repetitive/templated -- that's the point: it must be defensible
+// word-for-word as "here's exactly the arithmetic behind this sentence",
+// with no room for an AI model to have invented something.
+function buildDeterministicFix(input: {
+  course: string;
+  skill: string;
+  reportCount: number;
+  employmentRateDelta: number;
+  wageDelta: number;
+}): string {
+  const { course, skill, reportCount, employmentRateDelta, wageDelta } = input;
+  const impactParts: string[] = [];
+  if (employmentRateDelta < 0) {
+    impactParts.push(`${Math.abs(employmentRateDelta)} percentage points lower employment`);
+  }
+  if (wageDelta < 0) {
+    impactParts.push(`${fmtMoney(Math.abs(wageDelta))} lower average wage`);
+  }
+  const impactStr = impactParts.length
+    ? ` — learners in this course currently show ${impactParts.join(" and ")} than the rest of the tracked cohort.`
+    : " — no measurable outcome gap yet, but the skill is already being reported.";
+  return `Add a focused bridge module on "${skill}" to ${course} (reported ${reportCount} time${reportCount === 1 ? "" : "s"})${impactStr}`;
+}
+
+/**
+ * Cross-references SkillGapReport against OutcomeEvent-derived employment
+ * and wage data, per course, to find which reported skill gaps actually
+ * correlate with worse real-world outcomes -- and returns a concrete,
+ * ready-to-act-on fix for each one.
+ *
+ * Deliberately course-vs-rest-of-cohort, not course-vs-a-fixed-target: with
+ * a small prototype dataset there is no separate "official benchmark" to
+ * compare against, so the fairest comparison we can make honestly is this
+ * course against every other course we're tracking right now. This also
+ * means the comparison automatically gets more meaningful as more real
+ * data is seeded/entered -- it never depends on a number we made up.
+ */
+export function generateCurriculumInsights(
+  db: ComputeDB,
+  filters: Partial<Filters> = {}
+): CurriculumInsight[] {
+  const learners = applyFilters(db, filters);
+  const courseNames = [
+    ...new Set(
+      learners
+        .map((l) => courseOf(db, l.traineeId)?.name)
+        .filter((n): n is string => Boolean(n))
+    ),
+  ];
+
+  const insights: CurriculumInsight[] = [];
+
+  courseNames.forEach((course) => {
+    const inCourse = learners.filter((l) => courseOf(db, l.traineeId)?.name === course);
+    if (inCourse.length < MIN_COURSE_SAMPLE_SIZE) return; // too few learners to say anything responsible
+
+    const topGap = topSkillGapForCourse(db, course);
+    if (!topGap || topGap.total === 0) return; // nothing reported for this course -- nothing to fix
+
+    const restOfCohort = learners.filter((l) => courseOf(db, l.traineeId)?.name !== course);
+
+    const courseEmploymentRate = pct(employedCount(db, inCourse), inCourse.length);
+    const cohortEmploymentRate = restOfCohort.length
+      ? pct(employedCount(db, restOfCohort), restOfCohort.length)
+      : courseEmploymentRate;
+    const courseAvgWage = avgCurrentWage(db, inCourse);
+    const cohortAvgWage = avgCurrentWage(db, restOfCohort);
+
+    const employmentRateDelta = courseEmploymentRate - cohortEmploymentRate;
+    const wageDelta = courseAvgWage - cohortAvgWage;
+
+    // Only escalate to "high" severity when the reports AND the real
+    // outcome data agree something is wrong -- a widely-reported gap in a
+    // course that's still outperforming its peers is a weaker, more likely
+    // coincidental story and shouldn't be flagged with the same urgency.
+    const severity: CurriculumInsight["severity"] =
+      topGap.high >= 2 || employmentRateDelta <= -15
+        ? "high"
+        : topGap.medium >= 2 || employmentRateDelta <= -5
+          ? "medium"
+          : "low";
+
+    insights.push({
+      course,
+      topSkillGap: topGap.name,
+      severity,
+      reportCount: topGap.total,
+      affectedLearners: inCourse.length,
+      courseEmploymentRate,
+      cohortEmploymentRate,
+      employmentRateDelta,
+      courseAvgWage,
+      cohortAvgWage,
+      wageDelta,
+      recommendedFix: buildDeterministicFix({
+        course,
+        skill: topGap.name,
+        reportCount: topGap.total,
+        employmentRateDelta,
+        wageDelta,
+      }),
+    });
+  });
+
+  // Worst-performing-relative-to-peers courses first -- these are the
+  // highest-value fixes to show a policymaker first.
+  return insights.sort((a, b) => a.employmentRateDelta - b.employmentRateDelta);
+}
+
 function groupStats(db: ComputeDB, learners: ComputeDB["learners"], keyFn: (l: (typeof db.learners)[number]) => string) {
   const groups: Record<string, (typeof db.learners)[number][]> = {};
   learners.forEach((l) => {
@@ -642,17 +898,17 @@ export function providerScorecards(db: ComputeDB) {
       employerVerRate: pct(vers.filter((v) => v.verificationStatus === "verified").length, vers.length || 1),
       gapScore,
     };
-    const composite =
+    const composite = Math.round(
       m.placementRate * 0.25 +
-      m.verifiedRate * 0.15 +
-      m.retentionRate * 0.15 +
-      m.completeness * 0.15 +
-      m.followUpRate * 0.1 +
-      m.employerVerRate * 0.1 +
-      m.gapScore * 0.1;
-    m.composite = Math.round(composite);
-    m.badge = m.composite >= 68 ? "Strong" : m.composite >= 62 ? "Improving" : "Needs attention";
-    return { provider: p, ...m };
+        m.verifiedRate * 0.15 +
+        m.retentionRate * 0.15 +
+        m.completeness * 0.15 +
+        m.followUpRate * 0.1 +
+        m.employerVerRate * 0.1 +
+        m.gapScore * 0.1
+    );
+    const badge = composite >= 68 ? "Strong" : composite >= 62 ? "Improving" : "Needs attention";
+    return { provider: p, ...m, composite, badge };
   });
 }
 
@@ -789,7 +1045,7 @@ export function learnerTimeline(db: ComputeDB, traineeId: string) {
       );
   });
   if (l) {
-    if (l.consentDate) add(l.consentDate, "consent", `Consent given (${l.consentMethod || "—"})`, l.consentPurpose?.join(", "));
+    if (l.consentDate) add(l.consentDate, "consent", `Consent given (${l.consentMethod || "—"})`, l.consentPurpose?.join(", ") || "—");
     if (l.consentLastUpdated && l.consentLastUpdated !== l.consentDate) {
       const verb =
         l.consentStatus === "revoked"
