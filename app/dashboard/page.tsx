@@ -15,6 +15,7 @@ import {
 import { AppShell } from '@/components/app-shell'
 import { PageHeader } from '@/components/page-header'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 import { DataState } from '@/components/data-state'
 import { OutcomeFunnel } from '@/components/dashboard/outcome-funnel'
 import { WageProgressionChart } from '@/components/dashboard/wage-progression-chart'
@@ -131,7 +132,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {compact(summary.total)}
                 </span>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -150,7 +151,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {employmentRate}%
                 </span>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -169,7 +170,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {summary.retention3}%
                 </span>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -188,7 +189,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div>
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {fmtMoney(avgWage)}
                 </span>
                 <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -203,7 +204,7 @@ export default function DashboardPage() {
           {/* ========================================================================= */}
           <section aria-label="Longitudinal Outcome Pipeline" className="rounded-xl border border-border bg-card p-5">
             <div className="border-b border-border pb-3.5">
-              <span className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+              <span className="text-sm font-bold text-foreground uppercase tracking-wide">
                 Statewide Longitudinal Outcome Pipeline
               </span>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -217,22 +218,32 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={stage.stage}
-                    className={`relative flex flex-col justify-between rounded-lg border p-3.5 transition-all ${
-                      isLast ? 'border-emerald-300 bg-emerald-50/50' : idx >= 3 ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200 bg-slate-50/60'
-                    }`}
+                    className={cn(
+                      'relative flex flex-col justify-between rounded-lg border p-3.5 transition-all',
+                      isLast
+                        ? 'border-success/30 bg-success/10 shadow-2xs'
+                        : idx >= 3
+                        ? 'border-primary/30 bg-primary/10'
+                        : 'border-border bg-muted/20'
+                    )}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
                         Stage 0{idx + 1}
                       </span>
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${isLast ? 'bg-emerald-200 text-emerald-950' : 'bg-slate-200/80 text-slate-700'}`}>
+                      <span
+                        className={cn(
+                          'rounded px-1.5 py-0.5 text-[10px] font-bold',
+                          isLast ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
+                        )}
+                      >
                         {stagePct}%
                       </span>
                     </div>
                     <div className="mt-2">
-                      <p className="text-xs font-bold text-slate-900 truncate">{stage.stage}</p>
-                      <p className="text-lg font-black text-slate-950 tabular-nums mt-0.5">{compact(stage.value)}</p>
-                      <p className="text-[11px] font-medium text-slate-500">{stage.value.toLocaleString('en-IN')} candidates</p>
+                      <p className="text-xs font-bold text-foreground truncate">{stage.stage}</p>
+                      <p className="text-lg font-black text-foreground tabular-nums mt-0.5">{compact(stage.value)}</p>
+                      <p className="text-[11px] font-medium text-muted-foreground">{stage.value.toLocaleString('en-IN')} candidates</p>
                     </div>
                   </div>
                 )
@@ -285,7 +296,7 @@ export default function DashboardPage() {
           <section aria-label="Programme Signals" className="rounded-xl border border-border bg-card p-5">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3.5">
               <div>
-                <h3 className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wide">
                   Programme Signals — Rule-Based Diagnostics
                 </h3>
                 <p className="text-xs text-muted-foreground">

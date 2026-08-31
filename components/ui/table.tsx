@@ -7,7 +7,7 @@ export function Table({
   className,
   minWidthClass = 'min-w-[760px]',
   ...props
-}: React.ComponentProps<'div'> & { minWidthClass?: string }) {
+}: React.ComponentProps<'table'> & { minWidthClass?: string }) {
   return (
     <div className={cn('overflow-x-auto scroll-thin', className)}>
       <table className={cn('w-full border-collapse text-left', minWidthClass)} {...props} />

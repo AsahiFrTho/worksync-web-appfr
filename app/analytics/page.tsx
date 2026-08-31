@@ -88,27 +88,27 @@ function TrainingCoverageCard({ courseFilter }: { courseFilter: string }) {
   const max = Math.max(...coursePerformance.map((x) => x.trainees))
 
   return (
-    <Card className="border border-slate-200/90 bg-white shadow-xs rounded-xl overflow-hidden">
-      <CardHeader className="border-b border-slate-100 bg-slate-50/70 pb-3.5">
+    <Card className="border border-border bg-card shadow-xs rounded-xl overflow-hidden">
+      <CardHeader className="border-b border-border bg-muted/20 pb-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base font-bold text-slate-950 font-sans">
+            <CardTitle className="text-base font-bold text-foreground font-sans">
               Batch Training Volume & Demand
             </CardTitle>
-            <CardDescription className="text-xs font-normal text-slate-500 mt-0.5">
+            <CardDescription className="text-xs font-normal text-muted-foreground mt-0.5">
               Active vocational candidate capacity mapped to trade demand
             </CardDescription>
           </div>
-          <Badge variant="default" className="bg-blue-100 text-blue-950 border-blue-200 font-bold text-[10px]">
+          <Badge variant="default" className="font-bold text-[10px]">
             {view.length} Active Tracks
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-3.5 pt-4">
         {view.map((c) => (
-          <div key={c.course} className="flex flex-col gap-1.5 rounded-lg border border-slate-100 bg-slate-50/50 p-2.5">
+          <div key={c.course} className="flex flex-col gap-1.5 rounded-lg border border-border bg-muted/20 p-2.5">
             <div className="flex items-center justify-between text-xs sm:text-sm">
-              <span className="flex items-center gap-2 font-bold text-slate-950">
+              <span className="flex items-center gap-2 font-bold text-foreground">
                 {c.course}
                 <Badge
                   variant={c.demand === 'High' ? 'destructive' : c.demand === 'Medium' ? 'warning' : 'neutral'}
@@ -117,12 +117,12 @@ function TrainingCoverageCard({ courseFilter }: { courseFilter: string }) {
                   {c.demand} Demand
                 </Badge>
               </span>
-              <span className="tabular-nums font-bold text-slate-900">
+              <span className="tabular-nums font-bold text-foreground">
                 {c.trainees.toLocaleString('en-IN')}{' '}
-                <span className="text-xs font-normal text-slate-500">enrolled</span>
+                <span className="text-xs font-normal text-muted-foreground">enrolled</span>
               </span>
             </div>
-            <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-blue-700" className="h-2" />
+            <Progress value={(c.trainees / max) * 100} indicatorClassName="bg-primary" className="h-2" />
           </div>
         ))}
       </CardContent>
@@ -153,100 +153,100 @@ export default function AnalyticsPage() {
           {/* Card 1: Trainees Enrolled (Blue / Government Navy) */}
           <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-primary bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-950">
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                 Trainees Enrolled
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-blue-100 text-blue-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary shadow-2xs">
                 <Users className="size-4.5" />
               </div>
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {compact(summary.totalTrainees)}
                 </span>
-                <span className="inline-flex items-center gap-0.5 rounded-md bg-blue-100 px-1.5 py-0.5 text-[11px] font-bold text-blue-900">
-                  <TrendingUp className="size-3 text-blue-700 stroke-[2.5]" />
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-primary/20 bg-primary/10 px-1.5 py-0.5 text-[11px] font-bold text-primary">
+                  <TrendingUp className="size-3 text-primary stroke-[2.5]" />
                   Active Cohort
                 </span>
               </div>
-              <p className="mt-1 text-xs font-medium text-blue-900/80">
+              <p className="mt-1 text-xs font-medium text-muted-foreground">
                 {summary.totalTrainees.toLocaleString('en-IN')} across 96 affiliated centres
               </p>
             </div>
           </div>
 
           {/* Card 2: Certification Rate (Purple / Assessment Yield) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-purple-500 bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-purple-950">
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                 Certification Rate
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-purple-100 text-purple-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-purple-500/20 bg-purple-500/10 text-purple-400 shadow-2xs">
                 <Award className="size-4.5" />
               </div>
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {summary.certificationRate}%
                 </span>
-                <span className="inline-flex items-center gap-0.5 rounded-md bg-purple-100 px-1.5 py-0.5 text-[11px] font-bold text-purple-900">
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-purple-500/20 bg-purple-500/10 px-1.5 py-0.5 text-[11px] font-bold text-purple-400">
                   NSQF L4
                 </span>
               </div>
-              <p className="mt-1 text-xs font-medium text-purple-900/80">
+              <p className="mt-1 text-xs font-medium text-muted-foreground">
                 44,600 candidates certified via SSC assessment
               </p>
             </div>
           </div>
 
           {/* Card 3: Verified Placement (Emerald / Confirmed Outcomes) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-success bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-emerald-950">
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                 Verified Placement
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-success/20 bg-success/10 text-success shadow-2xs">
                 <Briefcase className="size-4.5" />
               </div>
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {summary.employmentRate}%
                 </span>
-                <span className="inline-flex items-center gap-0.5 rounded-md bg-emerald-100 px-1.5 py-0.5 text-[11px] font-bold text-emerald-900">
-                  <TrendingUp className="size-3 text-emerald-700 stroke-[2.5]" />
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-success/20 bg-success/10 px-1.5 py-0.5 text-[11px] font-bold text-success">
+                  <TrendingUp className="size-3 text-success stroke-[2.5]" />
                   +3.1 pts
                 </span>
               </div>
-              <p className="mt-1 text-xs font-medium text-emerald-900/80">
+              <p className="mt-1 text-xs font-medium text-muted-foreground">
                 Employer-verified wage & job placement
               </p>
             </div>
           </div>
 
           {/* Card 4: 6-Month Retention (Amber / Longitudinal Stability) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-2 border-l-warning bg-card p-5 transition-all duration-200 ease-in-out hover:bg-muted/40">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-amber-950">
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                 6-Month Retention
               </span>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700 shadow-2xs">
+              <div className="flex size-9 items-center justify-center rounded-lg border border-warning/20 bg-warning/10 text-warning shadow-2xs">
                 <Repeat className="size-4.5" />
               </div>
             </div>
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 tabular-nums">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-foreground tabular-nums">
                   {summary.retentionRate}%
                 </span>
-                <span className="inline-flex items-center gap-0.5 rounded-md bg-amber-100 px-1.5 py-0.5 text-[11px] font-bold text-amber-900">
+                <span className="inline-flex items-center gap-0.5 rounded-md border border-warning/20 bg-warning/10 px-1.5 py-0.5 text-[11px] font-bold text-warning">
                   +1.4 pts
                 </span>
               </div>
-              <p className="mt-1 text-xs font-medium text-amber-900/80">
+              <p className="mt-1 text-xs font-medium text-muted-foreground">
                 Verified sustained on-job stability
               </p>
             </div>
@@ -256,24 +256,24 @@ export default function AnalyticsPage() {
         {/* ========================================================================= */}
         {/* 2. SIGNATURE LONGITUDINAL OUTCOME PIPELINE OVERVIEW RIBBON                */}
         {/* ========================================================================= */}
-        <section aria-label="Longitudinal Outcome Pipeline" className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
+        <section aria-label="Longitudinal Outcome Pipeline" className="rounded-xl border border-border bg-card p-5 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+                <span className="text-sm font-bold text-foreground uppercase tracking-wide">
                   Provider Trainee Progression Pipeline
                 </span>
-                <Badge variant="default" className="text-[10px] font-bold bg-blue-100 text-blue-950 border-blue-200">
+                <Badge variant="default" className="text-[10px] font-bold">
                   MSSDS Verified
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Conversion and drop-off audits from batch enrolment through 6-month on-job retention
               </p>
             </div>
 
-            <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-950">
-              <TrendingUp className="size-4 text-emerald-700" />
+            <div className="flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-3 py-1 text-xs font-bold text-success">
+              <TrendingUp className="size-4 text-success" />
               <span>Net Pipeline Yield: {netYield}%</span>
             </div>
           </div>
@@ -289,22 +289,22 @@ export default function AnalyticsPage() {
                   className={cn(
                     'relative flex flex-col justify-between rounded-lg border p-3.5 transition-all',
                     isLast
-                      ? 'border-emerald-300 bg-emerald-50/50 shadow-2xs'
+                      ? 'border-success/30 bg-success/10 shadow-2xs'
                       : idx >= 3
-                      ? 'border-blue-200 bg-blue-50/30'
-                      : 'border-slate-200 bg-slate-50/60'
+                      ? 'border-primary/30 bg-primary/10'
+                      : 'border-border bg-muted/20'
                   )}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
                       Stage 0{idx + 1}
                     </span>
                     <span
                       className={cn(
                         'rounded px-1.5 py-0.5 text-[10px] font-bold',
                         isLast
-                          ? 'bg-emerald-200 text-emerald-950'
-                          : 'bg-slate-200/80 text-slate-700'
+                          ? 'bg-success text-success-foreground'
+                          : 'bg-muted text-muted-foreground'
                       )}
                     >
                       {pct}%
@@ -312,13 +312,13 @@ export default function AnalyticsPage() {
                   </div>
 
                   <div className="mt-2">
-                    <p className="text-xs font-bold text-slate-900 truncate">
+                    <p className="text-xs font-bold text-foreground truncate">
                       {stage.stage}
                     </p>
-                    <p className="text-lg font-black text-slate-950 tabular-nums mt-0.5">
+                    <p className="text-lg font-black text-foreground tabular-nums mt-0.5">
                       {compact(stage.value)}
                     </p>
-                    <p className="text-[11px] font-medium text-slate-500">
+                    <p className="text-[11px] font-medium text-muted-foreground">
                       {stage.value.toLocaleString('en-IN')} candidates
                     </p>
                   </div>
@@ -331,10 +331,10 @@ export default function AnalyticsPage() {
         {/* ========================================================================= */}
         {/* 3. DIAGNOSTIC FILTERS BAR                                                 */}
         {/* ========================================================================= */}
-        <Card className="border border-slate-200/90 bg-white shadow-xs rounded-xl">
+        <Card className="border border-border bg-card shadow-xs rounded-xl">
           <CardContent className="flex flex-wrap items-end gap-4 p-4">
-            <div className="flex items-center gap-2 text-sm font-bold text-slate-950">
-              <Filter className="size-4 text-blue-700" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+              <Filter className="size-4 text-primary" aria-hidden="true" />
               <span>Diagnostic Filters</span>
             </div>
             <FilterSelect
@@ -349,10 +349,10 @@ export default function AnalyticsPage() {
               options={courses}
               onChange={setCourse}
             />
-            <div className="ml-auto flex items-center gap-2 text-xs font-semibold text-slate-600">
+            <div className="ml-auto flex items-center gap-2 text-xs font-semibold text-muted-foreground">
               <span>Active Scope:</span>
-              <Badge variant="default" className="bg-blue-100 text-blue-900 border-blue-200">{district}</Badge>
-              <Badge variant="default" className="bg-indigo-100 text-indigo-900 border-indigo-200">{course}</Badge>
+              <Badge variant="default">{district}</Badge>
+              <Badge variant="default">{course}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -387,26 +387,26 @@ export default function AnalyticsPage() {
         {/* ========================================================================= */}
         {/* 7. EMPLOYER OUTCOME & VERIFICATION STATUS QUEUE                           */}
         {/* ========================================================================= */}
-        <section aria-label="Employer Verification Audit Queue" className="rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
+        <section aria-label="Employer Verification Audit Queue" className="rounded-xl border border-border bg-card p-5 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <Building2 className="size-4.5 text-blue-700" />
-                <span className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+                <Building2 className="size-4.5 text-primary" />
+                <span className="text-sm font-bold text-foreground uppercase tracking-wide">
                   Employer Placement & Verification Roster
                 </span>
-                <Badge variant="default" className="bg-emerald-100 text-emerald-950 border-emerald-200 text-[10px] font-bold">
+                <Badge variant="success" className="text-[10px] font-bold">
                   Live Audit Feed
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Outcome claims submitted to hiring partners for wage and employment authentication
               </p>
             </div>
 
             <Link
               href="/employer"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-900 shadow-2xs hover:bg-blue-100 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted/40 px-3 py-1.5 text-xs font-bold text-foreground shadow-2xs hover:bg-muted transition-colors"
             >
               <span>View Employer Command Center</span>
               <ArrowRight className="size-3.5" />
@@ -423,15 +423,15 @@ export default function AnalyticsPage() {
                 <div
                   key={item.id}
                   className={cn(
-                    'flex flex-col justify-between rounded-xl border p-4 shadow-2xs transition-all',
-                    isVerified && 'border-emerald-200 bg-emerald-50/30 border-l-[4px] border-l-emerald-600',
-                    isPending && 'border-amber-200 bg-amber-50/30 border-l-[4px] border-l-amber-600',
-                    isFlagged && 'border-rose-200 bg-rose-50/30 border-l-[4px] border-l-rose-600'
+                    'flex flex-col justify-between rounded-xl border p-4 shadow-2xs transition-all bg-card',
+                    isVerified && 'border-border border-l-[4px] border-l-success',
+                    isPending && 'border-border border-l-[4px] border-l-warning',
+                    isFlagged && 'border-border border-l-[4px] border-l-destructive'
                   )}
                 >
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] font-bold text-slate-500">
+                      <span className="font-mono text-[10px] font-bold text-muted-foreground">
                         {item.id}
                       </span>
                       <Badge
@@ -442,18 +442,18 @@ export default function AnalyticsPage() {
                       </Badge>
                     </div>
 
-                    <h4 className="mt-2 text-sm font-bold text-slate-950">
+                    <h4 className="mt-2 text-sm font-bold text-foreground">
                       {item.trainee}
                     </h4>
-                    <p className="text-xs font-medium text-slate-600">{item.course}</p>
-                    <p className="text-[11px] font-semibold text-slate-500 mt-0.5">{item.provider}</p>
+                    <p className="text-xs font-medium text-muted-foreground">{item.course}</p>
+                    <p className="text-[11px] font-semibold text-muted-foreground/80 mt-0.5">{item.provider}</p>
                   </div>
 
-                  <div className="mt-3.5 flex items-center justify-between border-t border-slate-200/60 pt-2 text-xs">
-                    <span className="font-bold text-slate-950 tabular-nums">
+                  <div className="mt-3.5 flex items-center justify-between border-t border-border/60 pt-2 text-xs">
+                    <span className="font-bold text-foreground tabular-nums">
                       {inr(item.wage)}/mo
                     </span>
-                    <span className="text-[11px] font-medium text-slate-500">
+                    <span className="text-[11px] font-medium text-muted-foreground">
                       Joined {item.joinDate}
                     </span>
                   </div>
@@ -474,17 +474,17 @@ export default function AnalyticsPage() {
         {/* ========================================================================= */}
         {/* 9. PROVIDER INTELLIGENCE & ACTIONABLE POLICY SIGNALS                      */}
         {/* ========================================================================= */}
-        <section aria-label="Provider Intelligence Advisory" className="rounded-xl border border-indigo-200/90 bg-indigo-50/40 p-5 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-indigo-100 pb-3.5">
+        <section aria-label="Provider Intelligence Advisory" className="rounded-xl border border-primary/30 bg-primary/10 p-5 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-primary/20 pb-3.5">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-indigo-700 text-white shadow-2xs">
+              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-2xs">
                 <Sparkles className="size-4" />
               </span>
               <div>
-                <h3 className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wide">
                   Provider Curriculum & Placement Intelligence
                 </h3>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-muted-foreground">
                   AI-assisted actionable insights identifying skill demand surges and placement optimization recommendations
                 </p>
               </div>
@@ -492,7 +492,7 @@ export default function AnalyticsPage() {
 
             <Link
               href="/insights"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-300 bg-white px-3 py-1.5 text-xs font-bold text-indigo-900 shadow-2xs hover:bg-indigo-50 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-bold text-foreground shadow-2xs hover:bg-muted transition-colors"
             >
               <span>Explore All Insights</span>
               <ArrowRight className="size-3.5" />
@@ -503,12 +503,12 @@ export default function AnalyticsPage() {
             {aiInsights.map((insight) => (
               <div
                 key={insight.id}
-                className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-2xs hover:border-indigo-300 hover:shadow-xs transition-all"
+                className="flex flex-col justify-between rounded-xl border border-border bg-card p-4 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-900 uppercase">
-                      <Compass className="size-3 text-indigo-700" />
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary uppercase">
+                      <Compass className="size-3 text-primary" />
                       {insight.district}
                     </span>
                     <Badge
@@ -519,23 +519,23 @@ export default function AnalyticsPage() {
                     </Badge>
                   </div>
 
-                  <h4 className="mt-2 text-xs font-bold text-slate-950 leading-snug">
+                  <h4 className="mt-2 text-xs font-bold text-foreground leading-snug">
                     {insight.title}
                   </h4>
 
-                  <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
+                  <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
                     {insight.narrative}
                   </p>
                 </div>
 
-                <div className="mt-3.5 border-t border-slate-100 pt-3">
-                  <div className="flex items-start gap-1.5 text-[11px] font-semibold text-slate-800">
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-700" />
-                    <span><strong className="text-slate-950">Action:</strong> {insight.action}</span>
+                <div className="mt-3.5 border-t border-border pt-3">
+                  <div className="flex items-start gap-1.5 text-[11px] font-semibold text-foreground">
+                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-success" />
+                    <span><strong className="text-foreground">Action:</strong> {insight.action}</span>
                   </div>
-                  <div className="mt-2 flex items-center justify-between text-[10px] font-bold text-slate-500">
+                  <div className="mt-2 flex items-center justify-between text-[10px] font-bold text-muted-foreground">
                     <span>Confidence Score</span>
-                    <span className="text-indigo-900 font-extrabold">{insight.confidence}% Grounded</span>
+                    <span className="text-primary font-extrabold">{insight.confidence}% Grounded</span>
                   </div>
                 </div>
               </div>

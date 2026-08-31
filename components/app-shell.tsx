@@ -174,11 +174,11 @@ function Brand() {
     <Link href="/dashboard" className="flex items-center gap-3 px-1 py-1 text-foreground group min-w-0">
       <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-card border border-border transition-opacity duration-200 ease-in-out group-hover:opacity-90">
         <Image
-          src="/favicon1.png"
+          src="/favicon.png"
           alt="WorkSync"
           width={38}
           height={38}
-          className="size-full object-contain p-0.5"
+          className="size-full object-cover"
           priority
         />
       </div>
