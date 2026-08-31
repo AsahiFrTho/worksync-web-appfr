@@ -83,13 +83,13 @@ const roles: RoleOption[] = [
     badgeText: 'Executive Oversight',
     demoEmail: 'admin@worksync.gov',
     accentColor: {
-      bg: 'bg-blue-100',
-      border: 'border-blue-300',
-      text: 'text-blue-800',
-      badgeBg: 'bg-blue-100 border-blue-200',
-      badgeText: 'text-blue-900',
-      activeBorder: 'border-blue-600',
-      activeRing: 'ring-2 ring-blue-500/30',
+      bg: 'bg-primary/10',
+      border: 'border-primary/30',
+      text: 'text-primary',
+      badgeBg: 'bg-primary/10 border-primary/20',
+      badgeText: 'text-primary',
+      activeBorder: 'border-primary',
+      activeRing: 'ring-2 ring-primary/30',
     },
   },
   {
@@ -114,13 +114,13 @@ const roles: RoleOption[] = [
     badgeText: 'Curriculum & Gaps',
     demoEmail: 'provider@worksync.gov',
     accentColor: {
-      bg: 'bg-indigo-100',
-      border: 'border-indigo-300',
-      text: 'text-indigo-800',
-      badgeBg: 'bg-indigo-100 border-indigo-200',
-      badgeText: 'text-indigo-900',
-      activeBorder: 'border-indigo-600',
-      activeRing: 'ring-2 ring-indigo-500/30',
+      bg: 'bg-primary/10',
+      border: 'border-primary/30',
+      text: 'text-primary',
+      badgeBg: 'bg-primary/10 border-primary/20',
+      badgeText: 'text-primary',
+      activeBorder: 'border-primary',
+      activeRing: 'ring-2 ring-primary/30',
     },
   },
   {
@@ -145,13 +145,13 @@ const roles: RoleOption[] = [
     badgeText: 'Verification & Retention',
     demoEmail: 'employer@worksync.gov',
     accentColor: {
-      bg: 'bg-emerald-100',
-      border: 'border-emerald-300',
-      text: 'text-emerald-800',
-      badgeBg: 'bg-emerald-100 border-emerald-200',
-      badgeText: 'text-emerald-900',
-      activeBorder: 'border-emerald-600',
-      activeRing: 'ring-2 ring-emerald-500/30',
+      bg: 'bg-success/10',
+      border: 'border-success/30',
+      text: 'text-success',
+      badgeBg: 'bg-success/10 border-success/20',
+      badgeText: 'text-success',
+      activeBorder: 'border-success',
+      activeRing: 'ring-2 ring-success/30',
     },
   },
   {
@@ -176,13 +176,13 @@ const roles: RoleOption[] = [
     badgeText: 'Outcome Passport',
     demoEmail: 'trainee@worksync.gov',
     accentColor: {
-      bg: 'bg-amber-100',
-      border: 'border-amber-300',
-      text: 'text-amber-800',
-      badgeBg: 'bg-amber-100 border-amber-200',
-      badgeText: 'text-amber-900',
-      activeBorder: 'border-amber-600',
-      activeRing: 'ring-2 ring-amber-500/30',
+      bg: 'bg-warning/10',
+      border: 'border-warning/30',
+      text: 'text-warning',
+      badgeBg: 'bg-warning/10 border-warning/20',
+      badgeText: 'text-warning',
+      activeBorder: 'border-warning',
+      activeRing: 'ring-2 ring-warning/30',
     },
   },
 ]
@@ -300,13 +300,13 @@ export default function LoginPage() {
 
           <div className="relative z-10">
             <div className="flex items-center gap-3.5">
-              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 shadow-md ring-2 ring-white/20">
+              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-black border border-white/15 shadow-md ring-2 ring-white/10">
                 <Image
-                  src="/favicon1.png"
+                  src="/favicon.png"
                   alt="WorkSync Emblem"
                   width={48}
                   height={48}
-                  className="size-full object-contain"
+                  className="size-full object-cover"
                   priority
                 />
               </div>
@@ -441,26 +441,26 @@ export default function LoginPage() {
         <div className="flex flex-col justify-between bg-card p-6 sm:p-8 lg:col-span-7 lg:p-12">
           <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
             {/* Header & Security Badge Strip */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/70 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
               <div>
-                <h2 className="text-2xl sm:text-[26px] font-black tracking-tight text-slate-950">
+                <h2 className="text-2xl sm:text-[26px] font-black tracking-tight text-foreground">
                   Sign in to WorkSync
                 </h2>
-                <p className="mt-0.5 text-xs sm:text-sm font-medium text-slate-500">
+                <p className="mt-0.5 text-xs sm:text-sm font-medium text-muted-foreground">
                   Access your skilling outcome intelligence workspace.
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-1.5">
-                <div className="flex items-center gap-1.5 rounded-full border border-blue-200/80 bg-blue-50/80 px-3 py-1 text-xs font-bold text-blue-900 shadow-2xs">
-                  <ShieldCheck className="size-3.5 text-blue-600" />
+                <div className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold text-primary shadow-2xs">
+                  <ShieldCheck className="size-3.5 text-primary" />
                   <span>Authorized Gateway</span>
                 </div>
                 {/* Step 4 requirement: an honest, visible "not built yet"
                     badge so this is never something judges have to catch us
                     overclaiming in Q&A -- it's disclosed up front instead. */}
-                <div className="flex items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/80 px-3 py-1 text-xs font-bold text-amber-900 shadow-2xs">
-                  <Clock className="size-3.5 text-amber-600" />
+                <div className="flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-bold text-warning shadow-2xs">
+                  <Clock className="size-3.5 text-warning" />
                   <span>Coming Soon: State SSO / Aadhaar e-KYC</span>
                 </div>
               </div>
@@ -468,7 +468,7 @@ export default function LoginPage() {
 
             {/* Persona Switcher — now only pre-fills the demo email, does NOT log you in */}
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                 Select Stakeholder Persona:
               </span>
 
@@ -502,7 +502,7 @@ export default function LoginPage() {
 
                       <div className="flex flex-1 flex-col min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-bold text-xs sm:text-sm text-slate-950 truncate">
+                          <span className="font-bold text-xs sm:text-sm text-foreground truncate">
                             {role.title.split('/')[0].trim()}
                           </span>
                           {isSelected && (
@@ -511,7 +511,7 @@ export default function LoginPage() {
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] font-medium text-slate-500 truncate mt-0.5">
+                        <span className="text-[11px] font-medium text-muted-foreground truncate mt-0.5">
                           {role.marathiTitle}
                         </span>
                       </div>
@@ -523,48 +523,48 @@ export default function LoginPage() {
 
             {/* Selected Stakeholder Detail Dossier Card + real credential form */}
             <div className="rounded-2xl border border-border bg-card p-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                 <div className="flex items-center gap-3">
                   <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shrink-0">
                     {selectedRole.icon && <selectedRole.icon className="size-5" />}
                   </span>
                   <div>
-                    <h3 className="text-base font-black text-slate-950 leading-tight">
+                    <h3 className="text-base font-black text-foreground leading-tight">
                       {selectedRole.persona.name}
                     </h3>
-                    <p className="text-xs font-semibold text-slate-600 mt-0.5">
+                    <p className="text-xs font-semibold text-muted-foreground mt-0.5">
                       {selectedRole.persona.designation}
                     </p>
                   </div>
                 </div>
 
-                <Badge variant="default" className="text-xs font-bold self-start sm:self-auto py-0.5 px-2.5 bg-blue-50 text-blue-900 border-blue-200/80">
+                <Badge variant="default" className="text-xs font-bold self-start sm:self-auto py-0.5 px-2.5">
                   {selectedRole.badgeText}
                 </Badge>
               </div>
 
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-500">
-                <span className="flex items-center gap-1.5 text-slate-700 font-semibold">
-                  <Building2 className="size-3.5 text-blue-600 shrink-0" />
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-muted-foreground">
+                <span className="flex items-center gap-1.5 text-foreground font-semibold">
+                  <Building2 className="size-3.5 text-primary shrink-0" />
                   <span>{selectedRole.persona.organization}</span>
                 </span>
-                <span className="flex items-center gap-1.5 text-slate-500">
-                  <MapPin className="size-3.5 text-slate-400 shrink-0" />
+                <span className="flex items-center gap-1.5 text-muted-foreground">
+                  <MapPin className="size-3.5 text-muted-foreground/70 shrink-0" />
                   <span>{selectedRole.persona.location}</span>
                 </span>
               </div>
 
-              <p className="mt-2.5 text-xs leading-relaxed font-normal text-slate-600">
+              <p className="mt-2.5 text-xs leading-relaxed font-normal text-muted-foreground">
                 {selectedRole.description}
               </p>
 
-              <div className="mt-3.5 space-y-1.5 border-t border-slate-100 pt-3">
-                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">
+              <div className="mt-3.5 space-y-1.5 border-t border-border pt-3">
+                <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground block mb-1">
                   Operational Capabilities:
                 </span>
                 {selectedRole.highlights.map((h, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-xs font-medium text-slate-800">
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-600" />
+                  <div key={idx} className="flex items-start gap-2 text-xs font-medium text-foreground">
+                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-success" />
                     <span>{h}</span>
                   </div>
                 ))}
@@ -575,20 +575,20 @@ export default function LoginPage() {
                   checks the password server-side and only then sets a
                   signed session cookie (see lib/auth/session.ts). Clicking
                   a persona card above no longer grants access by itself. */}
-              <form onSubmit={handleLogin} className="mt-5 pt-3.5 border-t border-slate-100 space-y-3">
+              <form onSubmit={handleLogin} className="mt-5 pt-3.5 border-t border-border space-y-3">
                 <div>
-                  <label htmlFor="login-email" className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">
+                  <label htmlFor="login-email" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground block mb-1">
                     Email
                   </label>
                   <div className="relative">
-                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                     <input
                       id="login-email"
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-xl border border-border bg-background py-2.5 pl-9 pr-3 text-sm text-slate-950 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      className="w-full rounded-xl border border-border bg-background py-2.5 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                       placeholder="you@worksync.gov"
                     />
                   </div>
@@ -596,7 +596,7 @@ export default function LoginPage() {
 
                 <div>
                   <div className="flex items-center justify-between">
-                    <label htmlFor="login-password" className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1">
+                    <label htmlFor="login-password" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground block mb-1">
                       Password
                     </label>
                     <button
@@ -608,14 +608,14 @@ export default function LoginPage() {
                     </button>
                   </div>
                   <div className="relative">
-                    <KeyRound className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                    <KeyRound className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                     <input
                       id="login-password"
                       type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full rounded-xl border border-border bg-background py-2.5 pl-9 pr-3 text-sm text-slate-950 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      className="w-full rounded-xl border border-border bg-background py-2.5 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                       placeholder="Demo password"
                     />
                   </div>
@@ -641,7 +641,7 @@ export default function LoginPage() {
                   <ArrowRight className="size-4" />
                 </Button>
 
-                <p className="text-center text-[10px] font-medium text-slate-400">
+                <p className="text-center text-[10px] font-medium text-muted-foreground">
                   Demo credentials for evaluators: <code className="rounded bg-muted px-1 py-0.5 font-mono">{selectedRole.demoEmail}</code> ·{' '}
                   password <code className="rounded bg-muted px-1 py-0.5 font-mono">sih2024</code>
                 </p>
@@ -649,11 +649,11 @@ export default function LoginPage() {
             </div>
 
             {/* Prototype & Governance Notice */}
-            <div className="rounded-xl border border-slate-200/70 bg-slate-50/70 p-3.5 text-xs">
+            <div className="rounded-xl border border-border bg-muted/20 p-3.5 text-xs">
               <div className="flex items-start gap-2.5">
-                <Info className="size-4 text-blue-600 shrink-0 mt-0.5" />
-                <div className="text-slate-500 font-normal leading-relaxed text-[11px] sm:text-xs">
-                  <strong className="font-semibold text-slate-800">Prototype Access Architecture: </strong>
+                <Info className="size-4 text-primary shrink-0 mt-0.5" />
+                <div className="text-muted-foreground font-normal leading-relaxed text-[11px] sm:text-xs">
+                  <strong className="font-semibold text-foreground">Prototype Access Architecture: </strong>
                   This evaluation portal uses a real password-checked, signed-cookie session (see the Sign In form above) —
                   it is not a one-click role switcher. In production, this same login step would be replaced by
                   State Single Sign-On (SSO) and Aadhaar e-KYC verified candidate registries, which are not yet integrated.
@@ -662,7 +662,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <footer className="mx-auto mt-6 w-full max-w-2xl border-t border-slate-200/80 pt-4 text-center text-xs text-slate-400 font-medium">
+          <footer className="mx-auto mt-6 w-full max-w-2xl border-t border-border pt-4 text-center text-xs text-muted-foreground font-medium">
             <p>
               Department of Skills, Employment, Entrepreneurship & Innovation • Government of Maharashtra
             </p>

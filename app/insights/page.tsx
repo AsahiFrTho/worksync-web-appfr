@@ -20,11 +20,11 @@ export default function InsightsPage() {
         <div className="rounded-xl border border-border bg-card p-4.5">
           <div className="flex items-start gap-3">
             <Sparkles className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-            <div className="text-xs sm:text-sm leading-relaxed text-slate-800">
-              <p className="font-bold text-slate-950">
+            <div className="text-xs sm:text-sm leading-relaxed text-foreground">
+              <p className="font-bold text-foreground">
                 AI Intelligence & Decision Support Layer (Evaluation Environment)
               </p>
-              <p className="mt-1 font-medium text-slate-700">
+              <p className="mt-1 font-medium text-muted-foreground">
                 These insight signals are grounded in simulated cross-district outcome metrics and employer vacancy signals.
                 AI recommendations serve as decision-support alerts for state directors and VTP curriculum planners, completely decoupled from verified registry evidence.
               </p>
@@ -35,16 +35,16 @@ export default function InsightsPage() {
         {/* 4-Step Analytical Process Strip */}
         <div className="rounded-xl border border-border bg-card p-5">
           <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
                 <span className="flex size-7 items-center justify-center rounded-lg border border-border bg-muted text-primary">
                   <Compass className="size-4" aria-hidden="true" />
                 </span>
-                <h2 className="text-sm font-bold text-slate-950 uppercase tracking-wide">
+                <h2 className="text-sm font-bold text-foreground uppercase tracking-wide">
                   Autonomous Signal Detection Lifecycle
                 </h2>
               </div>
-              <Badge variant="default" className="bg-indigo-100 text-indigo-900 border-indigo-200 text-[10px] font-bold">
+              <Badge variant="default" className="text-[10px] font-bold">
                 Pattern Recognition
               </Badge>
             </div>
@@ -74,14 +74,14 @@ export default function InsightsPage() {
               ].map((s) => (
                 <li
                   key={s.n}
-                  className="flex flex-col justify-between gap-1.5 rounded-lg border border-slate-200 bg-slate-50/70 p-3.5 shadow-2xs"
+                  className="flex flex-col justify-between gap-1.5 rounded-lg border border-border bg-muted/20 p-3.5 shadow-2xs"
                 >
                   <div>
                     <span className="text-xs font-medium text-primary tracking-wider">
                       STAGE {s.n}
                     </span>
-                    <h3 className="text-xs sm:text-sm font-bold text-slate-950 mt-0.5">{s.t}</h3>
-                    <p className="text-xs font-medium text-slate-600 mt-1 leading-relaxed">{s.d}</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-foreground mt-0.5">{s.t}</h3>
+                    <p className="text-xs font-medium text-muted-foreground mt-1 leading-relaxed">{s.d}</p>
                   </div>
                 </li>
               ))}

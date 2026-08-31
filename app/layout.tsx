@@ -24,13 +24,8 @@ export const metadata: Metadata = {
   description:
     'Longitudinal skilling-outcomes and impact-measurement platform for Maharashtra: training, certification, placement, wage progression, and retention.',
   icons: {
-    icon: [
-      { url: '/favicon1.png', sizes: 'any' },
-    ],
-    apple: [
-      { url: '/favicon1.png' },
-    ],
-    shortcut: ['/favicon1.png'],
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: [{ url: "/favicon.png", sizes: "180x180" }],
   },
 }
 

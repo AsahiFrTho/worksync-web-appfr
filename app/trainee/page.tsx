@@ -308,12 +308,12 @@ export default async function TraineePage({
       <div className="mx-auto flex max-w-[1240px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         {/* Candidate Switcher (Demo Sandboxing) */}
         {allTrainees.length > 1 && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border bg-card p-3.5 shadow-xs">
             <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-blue-100 text-blue-800">
+              <span className="flex size-7 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
                 <UserCheck className="size-4" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Demonstration Passport Selector:
               </span>
             </div>
@@ -327,12 +327,12 @@ export default async function TraineePage({
                     className={cn(
                       'rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all shadow-2xs',
                       active
-                        ? 'bg-blue-700 text-white shadow-xs'
-                        : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-950',
+                        ? 'bg-primary text-primary-foreground shadow-xs'
+                        : 'border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground',
                     )}
                   >
                     <span>{tr.name}</span>
-                    <span className={cn('ml-1.5 font-mono text-[11px]', active ? 'text-blue-100' : 'text-slate-500')}>
+                    <span className={cn('ml-1.5 font-mono text-[11px]', active ? 'text-primary-foreground/80' : 'text-muted-foreground')}>
                       ({tr.traineeId})
                     </span>
                   </Link>
@@ -343,17 +343,17 @@ export default async function TraineePage({
         )}
 
         {/* 1. WHO IS THIS PERSON? — Official Digital Passport Identity Card */}
-        <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+        <Card className="overflow-hidden border border-border bg-card shadow-xs">
           {/* Official Header Ribbon */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 bg-slate-50/90 px-5 py-2.5 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/30 px-5 py-2.5 text-xs">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-blue-700" />
-              <span className="font-bold tracking-wider text-slate-800 uppercase text-[10px] sm:text-xs">
+              <ShieldCheck className="size-4 text-primary" />
+              <span className="font-bold tracking-wider text-foreground uppercase text-[10px] sm:text-xs">
                 Government of Maharashtra • Department of Skills, Employment & Innovation
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] font-bold text-slate-700 bg-slate-200/90 px-2.5 py-0.5 rounded border border-slate-300">
+              <span className="font-mono text-[10px] font-bold text-muted-foreground bg-muted px-2.5 py-0.5 rounded border border-border">
                 OFFICIAL RECORD REF: MSSDS/KP/{t.id}
               </span>
             </div>
@@ -362,10 +362,10 @@ export default async function TraineePage({
           <CardContent className="flex flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
             {/* Identity Profile Group */}
             <div className="flex items-start sm:items-center gap-4.5 min-w-0 flex-1">
-              <div className="relative flex size-18 sm:size-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-2xl font-black text-white shadow-sm border-2 border-white ring-2 ring-blue-600/20">
+              <div className="relative flex size-18 sm:size-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 to-primary text-2xl font-black text-primary-foreground shadow-sm border-2 border-border ring-2 ring-primary/20">
                 <span>{t.photoInitials}</span>
                 <span
-                  className="absolute -bottom-1.5 -right-1.5 flex size-6.5 items-center justify-center rounded-full bg-emerald-600 text-white ring-2 ring-white shadow-2xs"
+                  className="absolute -bottom-1.5 -right-1.5 flex size-6.5 items-center justify-center rounded-full bg-success text-success-foreground ring-2 ring-card shadow-2xs"
                   title="NSQF Level 4 Certified"
                 >
                   <Check className="size-4 stroke-[3]" />
@@ -374,10 +374,10 @@ export default async function TraineePage({
 
               <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
                     {t.name}
                   </h2>
-                  <span className="font-mono text-xs font-bold text-blue-950 bg-blue-100 px-2.5 py-0.5 rounded-md border border-blue-200">
+                  <span className="font-mono text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/25">
                     {t.id}
                   </span>
                 </div>
@@ -386,17 +386,17 @@ export default async function TraineePage({
                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
                   {isVerified ? (
                     <Badge variant="success" className="text-xs px-2.5 py-1 font-bold shadow-2xs">
-                      <BadgeCheck className="size-3.5 text-emerald-700" aria-hidden="true" />
+                      <BadgeCheck className="size-3.5 mr-1 text-success" aria-hidden="true" />
                       <span>Verified Employment Outcome</span>
                     </Badge>
                   ) : isPendingVerification ? (
                     <Badge variant="warning" className="text-xs px-2.5 py-1 font-bold shadow-2xs">
-                      <Clock className="size-3.5 text-amber-700" aria-hidden="true" />
+                      <Clock className="size-3.5 mr-1 text-warning" aria-hidden="true" />
                       <span>Employment Verification Pending</span>
                     </Badge>
                   ) : isDisputed ? (
                     <Badge variant="destructive" className="text-xs px-2.5 py-1 font-bold shadow-2xs">
-                      <AlertTriangle className="size-3.5 text-rose-700" aria-hidden="true" />
+                      <AlertTriangle className="size-3.5 mr-1 text-destructive" aria-hidden="true" />
                       <span>Verification Flagged / Disputed</span>
                     </Badge>
                   ) : (
@@ -413,21 +413,21 @@ export default async function TraineePage({
                 </div>
 
                 {/* Metadata Strip */}
-                <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-slate-700">
+                <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs font-medium text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <MapPin className="size-3.5 text-blue-700 shrink-0" aria-hidden="true" />
-                    <span>{t.district} District</span>
+                    <MapPin className="size-3.5 text-primary shrink-0" aria-hidden="true" />
+                    <span className="text-foreground font-semibold">{t.district} District</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <GraduationCap className="size-3.5 text-blue-700 shrink-0" aria-hidden="true" />
-                    <span>{t.course}</span>
+                    <GraduationCap className="size-3.5 text-primary shrink-0" aria-hidden="true" />
+                    <span className="text-foreground font-semibold">{t.course}</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Building2 className="size-3.5 text-blue-700 shrink-0" aria-hidden="true" />
+                    <Building2 className="size-3.5 text-primary shrink-0" aria-hidden="true" />
                     <span className="truncate">{t.provider}</span>
                   </span>
-                  <span className="flex items-center gap-1.5 text-slate-600 font-medium">
-                    <Calendar className="size-3.5 text-slate-500 shrink-0" aria-hidden="true" />
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
+                    <Calendar className="size-3.5 text-muted-foreground/70 shrink-0" aria-hidden="true" />
                     <span>{t.trainingPeriodStr}</span>
                   </span>
                 </div>
@@ -436,14 +436,14 @@ export default async function TraineePage({
 
             {/* Quick Outcome Status Badge Box */}
             {employmentRecord && (
-              <div className="flex shrink-0 flex-col justify-center rounded-xl border border-slate-200 bg-slate-50/90 p-4 text-left lg:text-right lg:min-w-[220px] shadow-2xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="flex shrink-0 flex-col justify-center rounded-xl border border-border bg-muted/30 p-4 text-left lg:text-right lg:min-w-[220px] shadow-2xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                   Current Verified Wage
                 </span>
-                <span className="mt-0.5 text-2xl sm:text-3xl font-black tracking-tight text-slate-950 tabular-nums">
-                  {inr(latestWage)}<span className="text-xs font-semibold text-slate-600">/mo</span>
+                <span className="mt-0.5 text-2xl sm:text-3xl font-black tracking-tight text-foreground tabular-nums">
+                  {inr(latestWage)}<span className="text-xs font-semibold text-muted-foreground">/mo</span>
                 </span>
-                <span className="mt-0.5 text-xs font-semibold text-slate-700 truncate">
+                <span className="mt-0.5 text-xs font-semibold text-muted-foreground truncate">
                   {employmentRecord.employerName}
                 </span>
               </div>
@@ -456,18 +456,18 @@ export default async function TraineePage({
           {/* LEFT COLUMN: PRIMARY LONGITUDINAL TRAJECTORY (7 of 12 Columns) */}
           <div className="flex flex-col gap-6 lg:col-span-7">
             {/* 2. SIGNATURE LONGITUDINAL OUTCOME JOURNEY */}
-            <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
-              <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-5 py-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-xs">
+              <CardHeader className="border-b border-border bg-muted/20 px-5 py-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-700 text-white shadow-xs">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/20 text-primary shadow-xs">
                       <Layers className="size-4.5" />
                     </span>
                     <div>
-                      <CardTitle className="text-base font-bold text-slate-950 sm:text-lg">
+                      <CardTitle className="text-base font-bold text-foreground sm:text-lg">
                         Longitudinal Outcome Journey
                       </CardTitle>
-                      <CardDescription className="text-xs font-medium text-slate-600">
+                      <CardDescription className="text-xs font-medium text-muted-foreground">
                         Training → Certification → Placement → Verification → Retention & Wage Growth
                       </CardDescription>
                     </div>
@@ -490,7 +490,7 @@ export default async function TraineePage({
                           <span
                             className={cn(
                               'absolute left-[16px] top-9 h-[calc(100%+6px)] w-0.5 rounded-full transition-colors',
-                              done ? 'bg-emerald-500' : 'bg-slate-300',
+                              done ? 'bg-success' : 'bg-muted',
                             )}
                             aria-hidden="true"
                           />
@@ -501,8 +501,8 @@ export default async function TraineePage({
                           className={cn(
                             'z-10 flex size-8.5 shrink-0 items-center justify-center rounded-full border shadow-2xs font-bold text-xs transition-transform duration-200',
                             done
-                              ? 'border-emerald-600 bg-emerald-600 text-white ring-4 ring-emerald-100'
-                              : 'border-amber-500 bg-amber-500 text-white ring-4 ring-amber-100',
+                              ? 'border-success bg-success text-success-foreground ring-4 ring-success/20'
+                              : 'border-warning bg-warning text-warning-foreground ring-4 ring-warning/20',
                           )}
                         >
                           {done ? (
@@ -513,27 +513,27 @@ export default async function TraineePage({
                         </div>
 
                         {/* Milestone Detailed Box */}
-                        <div className="flex flex-1 flex-col gap-1 rounded-xl border border-slate-200/90 bg-slate-50/70 p-4 text-xs shadow-2xs transition-colors hover:border-slate-300">
+                        <div className="flex flex-1 flex-col gap-1 rounded-xl border border-border bg-muted/20 p-4 text-xs shadow-2xs transition-colors hover:border-border/80">
                           <div className="flex flex-wrap items-center justify-between gap-1.5">
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-sm text-slate-950">
+                              <span className="font-bold text-sm text-foreground">
                                 {j.step}
                               </span>
-                              <span className="rounded bg-slate-200/90 px-1.5 py-0.2 font-mono text-[10px] font-bold text-slate-700">
+                              <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] font-bold text-muted-foreground">
                                 STAGE {j.stageNumber}
                               </span>
                             </div>
-                            <span className="font-bold text-xs text-blue-900 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 shadow-2xs">
+                            <span className="font-bold text-xs text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20 shadow-2xs">
                               {j.date}
                             </span>
                           </div>
 
-                          <p className="font-bold text-slate-800 text-xs sm:text-[13px] leading-normal pt-0.5">
+                          <p className="font-semibold text-foreground text-xs sm:text-[13px] leading-normal pt-0.5">
                             {j.detail}
                           </p>
 
                           {j.subDetail && (
-                            <p className="text-xs font-medium text-slate-600 leading-normal">
+                            <p className="text-xs font-medium text-muted-foreground leading-normal">
                               {j.subDetail}
                             </p>
                           )}
@@ -546,18 +546,18 @@ export default async function TraineePage({
             </Card>
 
             {/* 3. POST-PLACEMENT RETENTION & WAGE PROGRESSION */}
-            <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
-              <CardHeader className="border-b border-slate-100 bg-slate-50/80 px-5 py-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-xs">
+              <CardHeader className="border-b border-border bg-muted/20 px-5 py-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-700 text-white shadow-xs">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-success/30 bg-success/20 text-success shadow-xs">
                       <TrendingUp className="size-4.5" />
                     </span>
                     <div>
-                      <CardTitle className="text-base font-bold text-slate-950 sm:text-lg">
+                      <CardTitle className="text-base font-bold text-foreground sm:text-lg">
                         Post-Placement Retention & Wage Progression
                       </CardTitle>
-                      <CardDescription className="text-xs font-medium text-slate-600">
+                      <CardDescription className="text-xs font-medium text-muted-foreground">
                         Longitudinal on-job retention audits at 30, 90, 180, and 365 days
                       </CardDescription>
                     </div>
@@ -565,10 +565,10 @@ export default async function TraineePage({
 
                   {/* Wage Progression Indicator */}
                   {startingWage > 0 && (
-                    <div className="flex items-center gap-2 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs shadow-2xs">
-                      <span className="font-bold text-slate-700">Wage Delta:</span>
+                    <div className="flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs shadow-2xs">
+                      <span className="font-bold text-muted-foreground">Wage Delta:</span>
                       {wageDiff > 0 ? (
-                        <div className="flex items-center gap-1.5 font-bold text-emerald-950">
+                        <div className="flex items-center gap-1.5 font-bold text-success">
                           <span>{inr(startingWage)}</span>
                           <span>→</span>
                           <span>{inr(latestWage)}</span>
@@ -577,7 +577,7 @@ export default async function TraineePage({
                           </Badge>
                         </div>
                       ) : (
-                        <span className="font-bold text-slate-950">{inr(startingWage)}/mo</span>
+                        <span className="font-bold text-foreground">{inr(startingWage)}/mo</span>
                       )}
                     </div>
                   )}
@@ -600,48 +600,48 @@ export default async function TraineePage({
                           className={cn(
                             'flex flex-col justify-between rounded-xl border p-4 text-xs transition-all shadow-2xs',
                             isRetained
-                              ? 'border-emerald-300 bg-emerald-50/70 hover:border-emerald-400 hover:shadow-xs'
+                              ? 'border-success/30 bg-success/10 text-foreground hover:border-success/40 hover:shadow-xs'
                               : isLeft
-                              ? 'border-rose-300 bg-rose-50/70 hover:border-rose-400 hover:shadow-xs'
-                              : 'border-slate-200 bg-slate-50/80 hover:border-slate-300',
+                              ? 'border-destructive/30 bg-destructive/10 text-foreground hover:border-destructive/40 hover:shadow-xs'
+                              : 'border-border bg-muted/20 text-foreground hover:border-border/80',
                           )}
                         >
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="font-bold text-slate-950 text-xs sm:text-sm">
+                            <span className="font-bold text-foreground text-xs sm:text-sm">
                               {milestoneLabels[f.milestone] || f.milestone.replace(/_/g, ' ')}
                             </span>
                             {isRetained ? (
                               <Badge variant="success" className="text-[10px] py-0.5 font-bold">
-                                <CheckCircle2 className="size-3 mr-1 text-emerald-700" /> Retained
+                                <CheckCircle2 className="size-3 mr-1 text-success" /> Retained
                               </Badge>
                             ) : isLeft ? (
                               <Badge variant="destructive" className="text-[10px] py-0.5 font-bold">
-                                <XCircle className="size-3 mr-1 text-rose-700" /> Discontinued
+                                <XCircle className="size-3 mr-1 text-destructive" /> Discontinued
                               </Badge>
                             ) : (
                               <Badge variant="neutral" className="text-[10px] py-0.5 font-bold">
-                                <Clock className="size-3 mr-1 text-slate-500" /> Scheduled
+                                <Clock className="size-3 mr-1 text-muted-foreground" /> Scheduled
                               </Badge>
                             )}
                           </div>
 
-                          <div className="flex flex-col gap-1.5 text-slate-700 font-medium mt-1 border-t border-slate-200/60 pt-2.5">
+                          <div className="flex flex-col gap-1.5 text-muted-foreground font-medium mt-1 border-t border-border/80 pt-2.5">
                             {isRetained && (
                               <>
                                 <div className="flex items-center justify-between">
-                                  <span className="text-slate-600 font-semibold">Verified Wage:</span>
-                                  <span className="font-bold text-slate-950 tabular-nums">
+                                  <span className="text-muted-foreground font-semibold">Verified Wage:</span>
+                                  <span className="font-bold text-foreground tabular-nums">
                                     {f.currentWage ? `${inr(f.currentWage)}/mo` : `${inr(startingWage)}/mo`}
                                   </span>
                                 </div>
                                 {completedDateStr && (
                                   <div className="flex items-center justify-between text-[11px]">
-                                    <span className="text-slate-500">Audit Date:</span>
-                                    <span className="font-semibold text-slate-800">{completedDateStr}</span>
+                                    <span className="text-muted-foreground">Audit Date:</span>
+                                    <span className="font-semibold text-foreground">{completedDateStr}</span>
                                   </div>
                                 )}
                                 {f.notes && (
-                                  <p className="mt-1 text-[11px] text-slate-700 italic bg-white/80 p-2 rounded border border-emerald-200">
+                                  <p className="mt-1 text-[11px] text-foreground italic bg-background/60 p-2 rounded border border-success/25">
                                     &ldquo;{f.notes}&rdquo;
                                   </p>
                                 )}
@@ -650,11 +650,11 @@ export default async function TraineePage({
 
                             {isLeft && (
                               <>
-                                <p className="text-rose-900 text-[11px] font-bold">
+                                <p className="text-destructive text-[11px] font-bold">
                                   {f.notes || 'Candidate did not join or left role'}
                                 </p>
                                 {dueDateStr && (
-                                  <span className="text-[11px] text-slate-600">Milestone audit: {dueDateStr}</span>
+                                  <span className="text-[11px] text-muted-foreground">Milestone audit: {dueDateStr}</span>
                                 )}
                               </>
                             )}
@@ -662,13 +662,13 @@ export default async function TraineePage({
                             {isPending && (
                               <>
                                 <div className="flex items-center justify-between">
-                                  <span className="text-slate-600">Audit Status:</span>
-                                  <span className="text-slate-800 font-bold">Scheduled Follow-up</span>
+                                  <span className="text-muted-foreground">Audit Status:</span>
+                                  <span className="text-foreground font-bold">Scheduled Follow-up</span>
                                 </div>
                                 {dueDateStr && (
                                   <div className="flex items-center justify-between text-[11px]">
-                                    <span className="text-slate-500">Target Due Date:</span>
-                                    <span className="font-semibold text-slate-800">{dueDateStr}</span>
+                                    <span className="text-muted-foreground">Target Due Date:</span>
+                                    <span className="font-semibold text-foreground">{dueDateStr}</span>
                                   </div>
                                 )}
                               </>
@@ -679,7 +679,7 @@ export default async function TraineePage({
                     })}
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center p-6 text-center text-xs font-semibold text-slate-600">
+                  <div className="flex items-center justify-center p-6 text-center text-xs font-semibold text-muted-foreground">
                     <p>Post-placement retention tracking activates upon employer verification.</p>
                   </div>
                 )}
@@ -693,19 +693,19 @@ export default async function TraineePage({
           {/* RIGHT COLUMN: COHESIVE EVIDENCE & CREDENTIALS DOSSIER (5 of 12 Columns) */}
           <div className="flex flex-col gap-6 lg:col-span-5">
             {/* Unified Government Verified Evidence Dossier Card (Reduces "card wall" effect) */}
-            <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+            <Card className="overflow-hidden border border-border bg-card shadow-xs">
               {/* Dossier Header */}
-              <CardHeader className="border-b border-slate-200 bg-slate-50/90 px-5 py-4">
+              <CardHeader className="border-b border-border bg-muted/20 px-5 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-700 text-white shadow-xs">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/20 text-primary shadow-xs">
                       <FileBadge className="size-4.5" />
                     </span>
                     <div>
-                      <CardTitle className="text-base font-bold text-slate-950">
+                      <CardTitle className="text-base font-bold text-foreground">
                         Verified Evidence Dossier
                       </CardTitle>
-                      <CardDescription className="text-xs font-medium text-slate-600">
+                      <CardDescription className="text-xs font-medium text-muted-foreground">
                         Official credentials, skill assessments & employer records
                       </CardDescription>
                     </div>
@@ -716,12 +716,12 @@ export default async function TraineePage({
                 </div>
               </CardHeader>
 
-              <CardContent className="divide-y divide-slate-200/80 p-0">
+              <CardContent className="divide-y divide-border p-0">
                 {/* Dossier Section 1: Qualification Certificate */}
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
-                      <FileCheck2 className="size-4 text-emerald-700" />
+                    <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      <FileCheck2 className="size-4 text-success" />
                       <span>NSQF Qualification Certificate</span>
                     </span>
                     {t.certificate?.grade && (
@@ -732,37 +732,37 @@ export default async function TraineePage({
                   </div>
 
                   {t.certificate?.certificateId ? (
-                    <div className="flex flex-col gap-2 rounded-lg bg-slate-50 p-3 text-xs border border-slate-200/80">
+                    <div className="flex flex-col gap-2 rounded-lg bg-muted/30 p-3 text-xs border border-border">
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-600 font-semibold">Certificate ID:</span>
-                        <span className="font-mono font-bold text-blue-950">{t.certificate.certificateId}</span>
+                        <span className="text-muted-foreground font-semibold">Certificate ID:</span>
+                        <span className="font-mono font-bold text-primary">{t.certificate.certificateId}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-600 font-semibold">Framework Level:</span>
-                        <span className="font-bold text-slate-950">NSQF Level {t.certificate.nsqfLevel || 4}</span>
+                        <span className="text-muted-foreground font-semibold">Framework Level:</span>
+                        <span className="font-bold text-foreground">NSQF Level {t.certificate.nsqfLevel || 4}</span>
                       </div>
                       {t.certificate.issuer && (
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600 font-semibold">Awarding Body:</span>
-                          <span className="font-bold text-slate-950">{t.certificate.issuer}</span>
+                          <span className="text-muted-foreground font-semibold">Awarding Body:</span>
+                          <span className="font-bold text-foreground">{t.certificate.issuer}</span>
                         </div>
                       )}
                       {formattedCertDate && (
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600 font-semibold">Issue Date:</span>
-                          <span className="font-semibold text-slate-800">{formattedCertDate}</span>
+                          <span className="text-muted-foreground font-semibold">Issue Date:</span>
+                          <span className="font-semibold text-foreground">{formattedCertDate}</span>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <p className="text-xs font-medium text-slate-600">Certificate information pending issuance.</p>
+                    <p className="text-xs font-medium text-muted-foreground">Certificate information pending issuance.</p>
                   )}
                 </div>
 
                 {/* Dossier Section 2: Certified Competencies */}
                 <div className="p-5">
-                  <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 mb-2.5">
-                    <Award className="size-4 text-blue-700" />
+                  <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
+                    <Award className="size-4 text-primary" />
                     <span>Certified Competencies</span>
                   </span>
                   {t.skills.length > 0 ? (
@@ -774,15 +774,15 @@ export default async function TraineePage({
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs font-medium text-slate-600">No certified skills listed.</p>
+                    <p className="text-xs font-medium text-muted-foreground">No certified skills listed.</p>
                   )}
                 </div>
 
                 {/* Dossier Section 3: Employer Placement & Trade Alignment */}
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
-                      <Briefcase className="size-4 text-blue-700" />
+                    <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      <Briefcase className="size-4 text-primary" />
                       <span>Current Employer Placement</span>
                     </span>
                     {isVerified && (
@@ -792,14 +792,14 @@ export default async function TraineePage({
                     )}
                   </div>
 
-                  <div className="flex items-start gap-3 rounded-lg bg-slate-50 p-3 border border-slate-200/80">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
+                  <div className="flex items-start gap-3 rounded-lg bg-muted/30 p-3 border border-border">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
                       <Building2 className="size-5" aria-hidden="true" />
                     </span>
                     <div className="flex min-w-0 flex-1 flex-col">
-                      <p className="text-sm font-bold text-slate-950">{t.employer}</p>
+                      <p className="text-sm font-bold text-foreground">{t.employer}</p>
                       {t.jobRole && (
-                        <p className="text-xs font-semibold text-slate-700">{t.jobRole}</p>
+                        <p className="text-xs font-semibold text-muted-foreground">{t.jobRole}</p>
                       )}
                       {relevanceInfo && (
                         <div className="mt-1.5 flex items-center gap-1.5">
@@ -819,27 +819,27 @@ export default async function TraineePage({
                       className={cn(
                         'flex flex-col gap-2.5 rounded-xl border p-4 text-xs shadow-2xs',
                         isVerified
-                          ? 'border-emerald-300 bg-emerald-50/80'
+                          ? 'border-success/30 bg-success/10 text-foreground'
                           : isDisputed
-                          ? 'border-rose-300 bg-rose-50/80'
-                          : 'border-amber-300 bg-amber-50/80',
+                          ? 'border-destructive/30 bg-destructive/10 text-foreground'
+                          : 'border-warning/30 bg-warning/10 text-foreground',
                       )}
                     >
-                      <div className="flex items-center justify-between border-b border-slate-200/70 pb-2">
-                        <span className="font-bold text-slate-950 flex items-center gap-1.5">
+                      <div className="flex items-center justify-between border-b border-border/80 pb-2">
+                        <span className="font-bold text-foreground flex items-center gap-1.5">
                           {isVerified ? (
                             <>
-                              <BadgeCheck className="size-4 text-emerald-700" />
+                              <BadgeCheck className="size-4 text-success" />
                               <span>Employer Verification Evidence</span>
                             </>
                           ) : isDisputed ? (
                             <>
-                              <AlertTriangle className="size-4 text-rose-700" />
+                              <AlertTriangle className="size-4 text-destructive" />
                               <span>Verification Disputed</span>
                             </>
                           ) : (
                             <>
-                              <Clock className="size-4 text-amber-700" />
+                              <Clock className="size-4 text-warning" />
                               <span>Verification In Progress</span>
                             </>
                           )}
@@ -860,23 +860,23 @@ export default async function TraineePage({
                       </div>
 
                       {isVerified && (
-                        <div className="flex flex-col gap-1.5 text-slate-700 font-medium">
+                        <div className="flex flex-col gap-1.5 text-muted-foreground font-medium">
                           <div className="flex items-center justify-between">
-                            <span className="text-slate-600">Verified By:</span>
-                            <span className="font-bold text-slate-950">{verifiedByStr || 'Employer HR'}</span>
+                            <span className="text-muted-foreground">Verified By:</span>
+                            <span className="font-bold text-foreground">{verifiedByStr || 'Employer HR'}</span>
                           </div>
                           {verifiedAtStr && (
                             <div className="flex items-center justify-between text-[11px]">
-                              <span className="text-slate-600">Verified On:</span>
-                              <span className="font-bold text-slate-950">{verifiedAtStr}</span>
+                              <span className="text-muted-foreground">Verified On:</span>
+                              <span className="font-bold text-foreground">{verifiedAtStr}</span>
                             </div>
                           )}
                           <div className="flex items-center justify-between text-[11px]">
-                            <span className="text-slate-600">Audit Channel:</span>
-                            <span className="font-bold text-slate-950">{methodLabel}</span>
+                            <span className="text-muted-foreground">Audit Channel:</span>
+                            <span className="font-bold text-foreground">{methodLabel}</span>
                           </div>
                           {employerRemarks && (
-                            <div className="mt-1.5 rounded-lg bg-white p-2.5 text-[11px] font-medium text-slate-900 italic border border-emerald-200">
+                            <div className="mt-1.5 rounded-lg bg-background/60 p-2.5 text-[11px] font-medium text-foreground italic border border-success/20">
                               &ldquo;{employerRemarks}&rdquo;
                             </div>
                           )}
@@ -884,33 +884,33 @@ export default async function TraineePage({
                       )}
 
                       {isDisputed && (
-                        <div className="flex flex-col gap-1.5 text-slate-700 font-medium">
+                        <div className="flex flex-col gap-1.5 text-muted-foreground font-medium">
                           <div className="flex flex-col gap-0.5">
-                            <span className="font-bold text-rose-950">Dispute Reason:</span>
-                            <span className="font-semibold text-slate-900">
+                            <span className="font-bold text-destructive">Dispute Reason:</span>
+                            <span className="font-semibold text-foreground">
                               {disputeReasonStr || 'Trainee did not join on scheduled date'}
                             </span>
                           </div>
                           {employerRemarks && (
-                            <div className="mt-1.5 rounded-lg bg-white p-2.5 text-[11px] font-medium text-slate-900 italic border border-rose-200">
+                            <div className="mt-1.5 rounded-lg bg-background/60 p-2.5 text-[11px] font-medium text-foreground italic border border-destructive/20">
                               &ldquo;{employerRemarks}&rdquo;
                             </div>
                           )}
                           <div className="flex items-center justify-between text-[11px] pt-1">
-                            <span className="text-slate-600">Channel:</span>
-                            <span className="font-bold text-slate-950">{methodLabel}</span>
+                            <span className="text-muted-foreground">Channel:</span>
+                            <span className="font-bold text-foreground">{methodLabel}</span>
                           </div>
                         </div>
                       )}
 
                       {isPendingVerification && (
-                        <div className="flex flex-col gap-1.5 text-slate-700 font-medium">
-                          <p className="text-[11px] text-slate-700 leading-normal">
+                        <div className="flex flex-col gap-1.5 text-muted-foreground font-medium">
+                          <p className="text-[11px] text-muted-foreground leading-normal">
                             Awaiting confirmation on the employer verification queue.
                           </p>
                           <div className="flex items-center justify-between text-[11px] pt-1">
-                            <span className="text-slate-600">Channel:</span>
-                            <span className="font-bold text-slate-950">{methodLabel}</span>
+                            <span className="text-muted-foreground">Channel:</span>
+                            <span className="font-bold text-foreground">{methodLabel}</span>
                           </div>
                         </div>
                       )}

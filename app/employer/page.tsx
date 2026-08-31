@@ -78,9 +78,9 @@ const statusMeta = {
     badgeClasses: 'bg-success/15 text-success border-success/30 font-medium',
     badgeTextClass: 'text-success',
     iconColor: 'text-success',
-    evidenceBoxClasses: 'border-success/25 bg-success/10 text-success',
+    evidenceBoxClasses: 'border-success/30 bg-success/10 text-foreground',
     evidenceBorderClass: 'border-border',
-    tagClass: 'bg-success/10 text-success border-success/25',
+    tagClass: 'bg-success/10 text-success border-success/30',
   },
   pending: {
     label: 'Pending Verification',
@@ -91,9 +91,9 @@ const statusMeta = {
     badgeClasses: 'bg-warning/15 text-warning border-warning/30 font-medium',
     badgeTextClass: 'text-warning',
     iconColor: 'text-warning',
-    evidenceBoxClasses: 'border-warning/25 bg-warning/10 text-warning',
+    evidenceBoxClasses: 'border-warning/30 bg-warning/10 text-foreground',
     evidenceBorderClass: 'border-border',
-    tagClass: 'bg-warning/10 text-warning border-warning/25',
+    tagClass: 'bg-warning/10 text-warning border-warning/30',
   },
   disputed: {
     label: 'Disputed Claim',
@@ -104,9 +104,9 @@ const statusMeta = {
     badgeClasses: 'bg-destructive/15 text-destructive border-destructive/30 font-medium',
     badgeTextClass: 'text-destructive',
     iconColor: 'text-destructive',
-    evidenceBoxClasses: 'border-destructive/25 bg-destructive/10 text-destructive',
+    evidenceBoxClasses: 'border-destructive/30 bg-destructive/10 text-foreground',
     evidenceBorderClass: 'border-border',
-    tagClass: 'bg-destructive/10 text-destructive border-destructive/25',
+    tagClass: 'bg-destructive/10 text-destructive border-destructive/30',
   },
   flagged: {
     label: 'Needs Review',
@@ -117,9 +117,9 @@ const statusMeta = {
     badgeClasses: 'bg-destructive/15 text-destructive border-destructive/30 font-medium',
     badgeTextClass: 'text-destructive',
     iconColor: 'text-destructive',
-    evidenceBoxClasses: 'border-destructive/25 bg-destructive/10 text-destructive',
+    evidenceBoxClasses: 'border-destructive/30 bg-destructive/10 text-foreground',
     evidenceBorderClass: 'border-border',
-    tagClass: 'bg-destructive/10 text-destructive border-destructive/25',
+    tagClass: 'bg-destructive/10 text-destructive border-destructive/30',
   },
 }
 
@@ -127,12 +127,12 @@ const relevanceMeta = {
   directly_related: {
     label: 'Direct Trade Alignment',
     variant: 'success' as const,
-    badgeClasses: 'bg-success/10 text-success border-success/25 font-medium',
+    badgeClasses: 'bg-success/10 text-success border-success/30 font-medium',
   },
   partially_related: {
     label: 'Partially Related',
     variant: 'warning' as const,
-    badgeClasses: 'bg-warning/10 text-warning border-warning/25 font-medium',
+    badgeClasses: 'bg-warning/10 text-warning border-warning/30 font-medium',
   },
   unrelated: {
     label: 'Unrelated Sector',
@@ -329,97 +329,97 @@ export default function EmployerPage() {
       <div className="mx-auto flex max-w-[1240px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         {/* 1. TOP VERIFICATION KPI STRIP (4-Metric Operational Health with Semantic Visual Identity) */}
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Card 1: TOTAL CLAIMS (Blue / Government Navy) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-blue-200/90 border-l-[5px] border-l-blue-700 bg-blue-50/40 p-5 shadow-2xs transition-all duration-200 hover:bg-blue-50/70 hover:shadow-md">
+          {/* Card 1: TOTAL CLAIMS (Primary / Government Navy) */}
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-[4px] border-l-primary bg-card p-5 shadow-2xs transition-all duration-200 hover:bg-muted/30 hover:shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-950">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Total Claims
               </span>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700 shadow-2xs">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary shadow-2xs">
                 <Users className="size-4.5" aria-hidden="true" />
               </span>
             </div>
             <div className="mt-1">
-              <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 tabular-nums">
+              <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground tabular-nums">
                 {totalCount}
               </span>
             </div>
-            <div className="border-t border-blue-200/80 pt-2.5 text-xs font-semibold text-blue-900/80">
+            <div className="border-t border-border pt-2.5 text-xs font-medium text-muted-foreground">
               Submitted placement records
             </div>
           </div>
 
           {/* Card 2: PENDING ACTION (Amber / Warning) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-amber-200/90 border-l-[5px] border-l-amber-600 bg-amber-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-amber-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-[4px] border-l-warning bg-card p-5 shadow-2xs transition-all duration-200 hover:bg-muted/30 hover:shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-amber-950">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Pending Action
               </span>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700 shadow-2xs">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-warning/30 bg-warning/10 text-warning shadow-2xs">
                 <TimerReset className="size-4.5" aria-hidden="true" />
               </span>
             </div>
             <div className="mt-1">
-              <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 tabular-nums">
+              <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground tabular-nums">
                 {pendingCount}
               </span>
             </div>
-            <div className="border-t border-amber-200/80 pt-2.5 text-xs font-semibold text-amber-900/80">
+            <div className="border-t border-border pt-2.5 text-xs font-medium text-muted-foreground">
               Awaiting employer audit
             </div>
           </div>
 
           {/* Card 3: VERIFIED OUTCOMES (Emerald / Verified Evidence) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-emerald-200/90 border-l-[5px] border-l-emerald-600 bg-emerald-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-emerald-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-[4px] border-l-success bg-card p-5 shadow-2xs transition-all duration-200 hover:bg-muted/30 hover:shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-emerald-950">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Verified Outcomes
               </span>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 shadow-2xs">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-success/30 bg-success/10 text-success shadow-2xs">
                 <ShieldCheck className="size-4.5" aria-hidden="true" />
               </span>
             </div>
             <div className="mt-1">
-              <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 tabular-nums">
+              <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground tabular-nums">
                 {verifiedCount}
               </span>
             </div>
-            <div className="border-t border-emerald-200/80 pt-2.5 text-xs font-semibold text-emerald-900/80">
+            <div className="border-t border-border pt-2.5 text-xs font-medium text-muted-foreground">
               Employment confirmed in DB
             </div>
           </div>
 
           {/* Card 4: DISPUTED / FLAGGED (Rose / Dispute) */}
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-rose-200/90 border-l-[5px] border-l-rose-600 bg-rose-50/50 p-5 shadow-2xs transition-all duration-200 hover:bg-rose-50/80 hover:shadow-md">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border border-l-[4px] border-l-destructive bg-card p-5 shadow-2xs transition-all duration-200 hover:bg-muted/30 hover:shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-rose-950">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Disputed / Flagged
               </span>
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-rose-100 text-rose-700 shadow-2xs">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-destructive/30 bg-destructive/10 text-destructive shadow-2xs">
                 <AlertTriangle className="size-4.5" aria-hidden="true" />
               </span>
             </div>
             <div className="mt-1">
-              <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 tabular-nums">
+              <span className="text-4xl sm:text-5xl font-black tracking-tight text-foreground tabular-nums">
                 {disputedCount}
               </span>
             </div>
-            <div className="border-t border-rose-200/80 pt-2.5 text-xs font-semibold text-rose-900/80">
+            <div className="border-t border-border pt-2.5 text-xs font-medium text-muted-foreground">
               Outcome disputes recorded
             </div>
           </div>
         </section>
 
         {/* 2. VERIFICATION PIPELINE VISUAL RIBBON */}
-        <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 bg-slate-50/90 px-5 py-2.5 text-xs">
+        <Card className="overflow-hidden border border-border bg-card shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/30 px-5 py-2.5 text-xs">
             <div className="flex items-center gap-2">
-              <Layers className="size-4 text-blue-700" />
-              <span className="font-bold uppercase tracking-wider text-slate-800 text-[10px] sm:text-xs">
+              <Layers className="size-4 text-primary" />
+              <span className="font-bold uppercase tracking-wider text-foreground text-[10px] sm:text-xs">
                 Longitudinal Verification Pipeline Overview
               </span>
             </div>
-            <span className="font-mono text-[10px] font-bold text-slate-700 bg-slate-200/90 px-2 py-0.5 rounded border border-slate-300">
+            <span className="font-mono text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border">
               OPERATIONAL AUDIT TRAIL
             </span>
           </div>
@@ -427,48 +427,48 @@ export default function EmployerPage() {
           <CardContent className="p-4 sm:p-5">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
               {/* Stage 1: Placement Claim */}
-              <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3 text-xs shadow-2xs">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-700 text-white font-black text-xs shadow-xs">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-3 text-xs shadow-2xs">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/20 text-primary font-black text-xs shadow-xs">
                   01
                 </span>
                 <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-slate-950">Placement Reported</span>
-                  <span className="text-slate-600 font-medium text-[11px]">
+                  <span className="font-bold text-foreground">Placement Reported</span>
+                  <span className="text-muted-foreground font-medium text-[11px]">
                     Candidate & institution report job offer
                   </span>
-                  <span className="mt-1 font-mono text-[11px] font-bold text-blue-950">
+                  <span className="mt-1 font-mono text-[11px] font-bold text-primary">
                     {totalCount} claims in registry
                   </span>
                 </div>
               </div>
 
               {/* Stage 2: Employer Review */}
-              <div className="flex items-center gap-3 rounded-xl border border-amber-300 bg-amber-50/80 p-3 text-xs shadow-2xs">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white font-black text-xs shadow-xs">
+              <div className="flex items-center gap-3 rounded-xl border border-warning/30 bg-warning/10 p-3 text-xs shadow-2xs">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-warning text-warning-foreground font-black text-xs shadow-xs">
                   02
                 </span>
                 <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-amber-950">Employer Verification Review</span>
-                  <span className="text-amber-900/80 font-medium text-[11px]">
+                  <span className="font-bold text-warning">Employer Verification Review</span>
+                  <span className="text-muted-foreground font-medium text-[11px]">
                     Employer confirms joining, role & wage
                   </span>
-                  <span className="mt-1 font-mono text-[11px] font-bold text-amber-950">
+                  <span className="mt-1 font-mono text-[11px] font-bold text-warning">
                     {pendingCount} awaiting confirmation
                   </span>
                 </div>
               </div>
 
               {/* Stage 3: Longitudinal Outcome */}
-              <div className="flex items-center gap-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-xs shadow-2xs">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white font-black text-xs shadow-xs">
+              <div className="flex items-center gap-3 rounded-xl border border-success/30 bg-success/10 p-3 text-xs shadow-2xs">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success text-success-foreground font-black text-xs shadow-xs">
                   03
                 </span>
                 <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-emerald-950">Verified Outcome / Audit</span>
-                  <span className="text-emerald-900/80 font-medium text-[11px]">
+                  <span className="font-bold text-success">Verified Outcome / Audit</span>
+                  <span className="text-muted-foreground font-medium text-[11px]">
                     30 / 90 / 180 / 365-day retention tracked
                   </span>
-                  <span className="mt-1 font-mono text-[11px] font-bold text-emerald-950">
+                  <span className="mt-1 font-mono text-[11px] font-bold text-success">
                     {verifiedCount} verified · {disputedCount} disputed
                   </span>
                 </div>
@@ -478,20 +478,20 @@ export default function EmployerPage() {
         </Card>
 
         {/* 3. OPERATIONAL VERIFICATION QUEUE & FILTERS */}
-        <Card className="overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+        <Card className="overflow-hidden border border-border bg-card shadow-xs">
           {/* Queue Header with Controls */}
-          <CardHeader className="border-b border-slate-200 bg-slate-50/80 px-5 py-4">
+          <CardHeader className="border-b border-border bg-muted/20 px-5 py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2.5">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-700 text-white shadow-xs">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/20 text-primary shadow-xs">
                     <ShieldCheck className="size-4.5" />
                   </span>
                   <div>
-                    <CardTitle className="text-base font-bold text-slate-950 sm:text-lg">
+                    <CardTitle className="text-base font-bold text-foreground sm:text-lg">
                       Verification Queue
                     </CardTitle>
-                    <CardDescription className="text-xs font-medium text-slate-600">
+                    <CardDescription className="text-xs font-medium text-muted-foreground">
                       Audit and validate employment claims against live database records
                     </CardDescription>
                   </div>
@@ -504,12 +504,12 @@ export default function EmployerPage() {
                   size="sm"
                   onClick={fetchRecords}
                   disabled={loading}
-                  className="h-8.5 text-xs font-bold border-slate-300 bg-white hover:bg-slate-100 shadow-2xs"
+                  className="h-8.5 text-xs font-bold border-border bg-card hover:bg-muted text-foreground shadow-2xs"
                 >
                   {loading ? (
                     <Loader2 className="mr-1.5 size-3.5 animate-spin" />
                   ) : (
-                    <RefreshCw className="mr-1.5 size-3.5 text-blue-700" />
+                    <RefreshCw className="mr-1.5 size-3.5 text-primary" />
                   )}
                   Refresh Queue
                 </Button>
@@ -517,7 +517,7 @@ export default function EmployerPage() {
             </div>
 
             {/* Filter & Search Bar */}
-            <div className="mt-4 flex flex-col gap-3 pt-3 border-t border-slate-200/80 md:flex-row md:items-center md:justify-between">
+            <div className="mt-4 flex flex-col gap-3 pt-3 border-t border-border md:flex-row md:items-center md:justify-between">
               {/* Status Segmented Tabs */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <button
@@ -526,8 +526,8 @@ export default function EmployerPage() {
                   className={cn(
                     'rounded-lg px-3 py-1.5 text-xs font-bold transition-all shadow-2xs',
                     statusFilter === 'all'
-                      ? 'bg-blue-700 text-white shadow-xs ring-1 ring-blue-800'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                      ? 'bg-primary text-primary-foreground shadow-xs'
+                      : 'border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
                   All Claims ({totalCount})
@@ -539,8 +539,8 @@ export default function EmployerPage() {
                   className={cn(
                     'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shadow-2xs',
                     statusFilter === 'pending'
-                      ? 'bg-amber-600 text-white shadow-xs ring-1 ring-amber-700'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:bg-amber-50 hover:text-amber-950 hover:border-amber-300'
+                      ? 'bg-warning text-warning-foreground shadow-xs'
+                      : 'border border-border bg-card text-muted-foreground hover:bg-warning/10 hover:text-warning hover:border-warning/30'
                   )}
                 >
                   <Clock className="size-3" />
@@ -553,8 +553,8 @@ export default function EmployerPage() {
                   className={cn(
                     'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shadow-2xs',
                     statusFilter === 'verified'
-                      ? 'bg-emerald-700 text-white shadow-xs ring-1 ring-emerald-800'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-950 hover:border-emerald-300'
+                      ? 'bg-success text-success-foreground shadow-xs'
+                      : 'border border-border bg-card text-muted-foreground hover:bg-success/10 hover:text-success hover:border-success/30'
                   )}
                 >
                   <BadgeCheck className="size-3" />
@@ -567,8 +567,8 @@ export default function EmployerPage() {
                   className={cn(
                     'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shadow-2xs',
                     statusFilter === 'disputed'
-                      ? 'bg-rose-700 text-white shadow-xs ring-1 ring-rose-800'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:bg-rose-50 hover:text-rose-950 hover:border-rose-300'
+                      ? 'bg-destructive text-destructive-foreground shadow-xs'
+                      : 'border border-border bg-card text-muted-foreground hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30'
                   )}
                 >
                   <AlertTriangle className="size-3" />
@@ -578,19 +578,19 @@ export default function EmployerPage() {
 
               {/* Search Box */}
               <div className="relative min-w-[240px] flex-1 max-w-sm">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search candidate, ID, employer, role..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white py-1.5 pl-9 pr-3 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 shadow-2xs"
+                  className="w-full rounded-lg border border-border bg-card py-1.5 pl-9 pr-3 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-2xs"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground hover:text-foreground"
                   >
                     Clear
                   </button>
@@ -606,35 +606,35 @@ export default function EmployerPage() {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="rounded-xl border border-slate-200 bg-slate-50/60 p-5 flex flex-col gap-3"
+                    className="rounded-xl border border-border bg-card p-5 flex flex-col gap-3"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="h-5 w-48 rounded bg-slate-200" />
-                      <div className="h-5 w-24 rounded bg-slate-200" />
+                      <div className="h-5 w-48 rounded bg-muted" />
+                      <div className="h-5 w-24 rounded bg-muted" />
                     </div>
-                    <div className="h-4 w-72 rounded bg-slate-100" />
-                    <div className="h-14 rounded-lg bg-slate-100" />
+                    <div className="h-4 w-72 rounded bg-muted" />
+                    <div className="h-14 rounded-lg bg-muted/60" />
                   </div>
                 ))}
               </div>
             ) : error && records.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-rose-200 bg-rose-50/80 p-8 text-center">
-                <AlertTriangle className="size-8 text-rose-700" />
-                <p className="text-sm font-bold text-rose-950">Database Connection Error</p>
-                <p className="max-w-md text-xs font-medium text-rose-800">{error}</p>
+              <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-8 text-center">
+                <AlertTriangle className="size-8 text-destructive" />
+                <p className="text-sm font-bold text-destructive">Database Connection Error</p>
+                <p className="max-w-md text-xs font-medium text-muted-foreground">{error}</p>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={fetchRecords}
-                  className="mt-2 text-xs font-bold border-rose-300 bg-white hover:bg-rose-50"
+                  className="mt-2 text-xs font-bold border-destructive/30 bg-card text-foreground hover:bg-destructive/10"
                 >
                   <RefreshCw className="mr-1.5 size-3.5" /> Retry Connection
                 </Button>
               </div>
             ) : filteredRecords.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 p-12 text-center">
-                <ShieldCheck className="size-8 text-slate-400" />
-                <p className="text-sm font-bold text-slate-950">
+              <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-muted/20 p-12 text-center">
+                <ShieldCheck className="size-8 text-muted-foreground" />
+                <p className="text-sm font-bold text-foreground">
                   {statusFilter === 'pending'
                     ? 'No Pending Employment Records'
                     : statusFilter === 'verified'
@@ -643,7 +643,7 @@ export default function EmployerPage() {
                     ? 'No Disputed Records in Registry'
                     : 'No Matching Employment Claims Found'}
                 </p>
-                <p className="max-w-md text-xs font-medium text-slate-600">
+                <p className="max-w-md text-xs font-medium text-muted-foreground">
                   {searchQuery
                     ? `No records matched your search query "${searchQuery}". Try clearing filters.`
                     : statusFilter === 'pending'
@@ -658,7 +658,7 @@ export default function EmployerPage() {
                       setStatusFilter('all')
                       setSearchQuery('')
                     }}
-                    className="mt-2 text-xs font-bold border-slate-300 bg-white hover:bg-slate-100"
+                    className="mt-2 text-xs font-bold border-border bg-card hover:bg-muted text-foreground"
                   >
                     Reset Filters
                   </Button>
@@ -710,17 +710,17 @@ export default function EmployerPage() {
                       )}
                     >
                       {/* 1. TOP HEADER: STATUS -> CANDIDATE -> WAGE (Immediate Scannability) */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-3.5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
                         {/* Candidate Identity Profile */}
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-700 to-indigo-950 font-black text-white text-xs shadow-xs border border-white/50">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 to-primary font-black text-primary-foreground text-xs shadow-xs border border-border">
                             {traineeInitials}
                           </div>
                           <div className="flex flex-wrap items-center gap-2 min-w-0">
-                            <span className="text-base font-black tracking-tight text-slate-950 sm:text-lg truncate">
+                            <span className="text-base font-black tracking-tight text-foreground sm:text-lg truncate">
                               {traineeName}
                             </span>
-                            <span className="font-mono text-xs font-bold text-blue-950 bg-blue-100 px-2.5 py-0.5 rounded-md border border-blue-200 shadow-2xs shrink-0">
+                            <span className="font-mono text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/25 shadow-2xs shrink-0">
                               {e.traineeId}
                             </span>
                           </div>
@@ -737,68 +737,68 @@ export default function EmployerPage() {
                             {relevance.label}
                           </Badge>
 
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-white px-3 py-1 rounded-md border border-slate-200 shadow-2xs">
-                            <span className="text-slate-500 font-semibold">Reported:</span>
-                            <span className="text-slate-950 font-extrabold tabular-nums">{inr(e.monthlyWage)}/mo</span>
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-foreground bg-muted/40 px-3 py-1 rounded-md border border-border shadow-2xs">
+                            <span className="text-muted-foreground font-semibold">Reported:</span>
+                            <span className="text-foreground font-extrabold tabular-nums">{inr(e.monthlyWage)}/mo</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* 2. INNER INFORMATION PANELS: EMPLOYER, ROLE, TRADE & CONTEXT (Clean White Surfaces) */}
+                      {/* 2. INNER INFORMATION PANELS: EMPLOYER, ROLE, TRADE & CONTEXT */}
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
                         {/* Panel 1: Employer & Role */}
-                        <div className="flex items-start gap-3 rounded-lg bg-white p-3.5 border border-slate-200/90 shadow-2xs">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-800">
+                        <div className="flex items-start gap-3 rounded-lg bg-muted/30 p-3.5 border border-border shadow-2xs">
+                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
                             <Building2 className="size-4.5" />
                           </span>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                            <span className="text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
                               Employer & Job Role
                             </span>
-                            <span className="font-bold text-slate-950 text-xs sm:text-sm truncate mt-0.5">
+                            <span className="font-bold text-foreground text-xs sm:text-sm truncate mt-0.5">
                               {e.employerName}
                             </span>
-                            <span className="font-semibold text-slate-700 truncate">{e.jobRole}</span>
-                            <span className="text-[11px] text-slate-500 capitalize mt-0.5">
+                            <span className="font-semibold text-muted-foreground truncate">{e.jobRole}</span>
+                            <span className="text-[11px] text-muted-foreground/80 capitalize mt-0.5">
                               {e.employmentType ? e.employmentType.replace(/_/g, ' ') : 'Full Time Employment'}
                             </span>
                           </div>
                         </div>
 
                         {/* Panel 2: Certified Trade & Location */}
-                        <div className="flex items-start gap-3 rounded-lg bg-white p-3.5 border border-slate-200/90 shadow-2xs">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-800">
+                        <div className="flex items-start gap-3 rounded-lg bg-muted/30 p-3.5 border border-border shadow-2xs">
+                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
                             <GraduationCap className="size-4.5" />
                           </span>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                            <span className="text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
                               Certified Trade & Location
                             </span>
-                            <span className="font-bold text-slate-950 text-xs sm:text-sm truncate mt-0.5">
+                            <span className="font-bold text-foreground text-xs sm:text-sm truncate mt-0.5">
                               {courseName}
                             </span>
-                            <span className="flex items-center gap-1 text-slate-600 font-medium text-[11px] mt-0.5">
-                              <MapPin className="size-3 text-slate-400 shrink-0" /> {candidateDistrict} District
+                            <span className="flex items-center gap-1 text-muted-foreground font-medium text-[11px] mt-0.5">
+                              <MapPin className="size-3 text-muted-foreground/70 shrink-0" /> {candidateDistrict} District
                             </span>
-                            <span className="flex items-center gap-1 text-slate-600 font-medium text-[11px]">
-                              <Calendar className="size-3 text-slate-400 shrink-0" /> Joining Date: {formattedDate}
+                            <span className="flex items-center gap-1 text-muted-foreground font-medium text-[11px]">
+                              <Calendar className="size-3 text-muted-foreground/70 shrink-0" /> Joining Date: {formattedDate}
                             </span>
                           </div>
                         </div>
 
                         {/* Panel 3: Registry Status / Quick Action */}
-                        <div className="flex flex-col justify-center gap-2 rounded-lg bg-white p-3.5 border border-slate-200/90 shadow-2xs md:col-span-2 lg:col-span-1">
+                        <div className="flex flex-col justify-center gap-2 rounded-lg bg-muted/30 p-3.5 border border-border shadow-2xs md:col-span-2 lg:col-span-1">
                           {e.verificationStatus === 'verified' ? (
                             <div className="flex items-center gap-2">
-                              <div className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-100/90 py-2 text-xs font-bold text-emerald-950 shadow-2xs">
-                                <CheckCircle2 className="size-4 text-emerald-700" />
+                              <div className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-success/30 bg-success/15 py-2 text-xs font-bold text-success shadow-2xs">
+                                <CheckCircle2 className="size-4 text-success" />
                                 <span>Authoritative Registry Record</span>
                               </div>
                             </div>
                           ) : e.verificationStatus === 'disputed' ? (
                             <div className="flex items-center gap-2">
-                              <div className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-rose-300 bg-rose-100/90 py-2 text-xs font-bold text-rose-950 shadow-2xs">
-                                <XCircle className="size-4 text-rose-700" />
+                              <div className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-destructive/30 bg-destructive/15 py-2 text-xs font-bold text-destructive shadow-2xs">
+                                <XCircle className="size-4 text-destructive" />
                                 <span>Flagged Audit Dispute</span>
                               </div>
                             </div>
@@ -809,7 +809,7 @@ export default function EmployerPage() {
                                 size="sm"
                                 onClick={() => handleDispute(e._id, 'Trainee did not join on scheduled start date')}
                                 disabled={isItemProcessing}
-                                className="flex-1 border-rose-300 bg-white text-rose-900 hover:bg-rose-50 font-bold text-xs h-9 shadow-2xs"
+                                className="flex-1 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20 font-bold text-xs h-9 shadow-2xs"
                               >
                                 {isItemProcessing ? (
                                   <Loader2 className="size-3.5 animate-spin" />
@@ -821,7 +821,7 @@ export default function EmployerPage() {
                                 size="sm"
                                 onClick={() => handleConfirm(e._id)}
                                 disabled={isItemProcessing}
-                                className="flex-1 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs h-9 shadow-xs"
+                                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-9 shadow-xs"
                               >
                                 {isItemProcessing ? (
                                   <Loader2 className="mr-1.5 size-3.5 animate-spin" />
@@ -838,36 +838,36 @@ export default function EmployerPage() {
                       {/* 3. VERIFIED EVIDENCE SECTION (Emerald Green Treatment) */}
                       {e.verificationStatus === 'verified' && (
                         <div className={cn('rounded-lg border p-4 text-xs shadow-2xs', meta.evidenceBoxClasses)}>
-                          <div className="flex flex-wrap items-center justify-between gap-2 font-bold border-b border-emerald-200/90 pb-2.5">
-                            <span className="flex items-center gap-2 text-emerald-950 text-xs sm:text-[13px]">
-                              <FileCheck2 className="size-4.5 text-emerald-700" />
+                          <div className="flex flex-wrap items-center justify-between gap-2 font-bold border-b border-success/20 pb-2.5">
+                            <span className="flex items-center gap-2 text-success text-xs sm:text-[13px]">
+                              <FileCheck2 className="size-4.5 text-success" />
                               <span>✓ AUTHORITATIVE REGISTRY EVIDENCE</span>
                             </span>
                             {verifiedAtDate && (
-                              <span className="text-emerald-950 text-[11px] font-bold bg-emerald-100 px-2.5 py-0.5 rounded border border-emerald-300">
+                              <span className="text-success text-[11px] font-bold bg-success/20 px-2.5 py-0.5 rounded border border-success/30">
                                 Verified: {verifiedAtDate}
                               </span>
                             )}
                           </div>
 
-                          <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800">
+                          <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-foreground">
                             <div>
-                              <span className="text-slate-600 font-semibold">Verified By: </span>
-                              <strong className="font-bold text-slate-950">{e.verificationMetadata?.verifiedBy || 'Employer HR'}</strong>
+                              <span className="text-muted-foreground font-semibold">Verified By: </span>
+                              <strong className="font-bold text-foreground">{e.verificationMetadata?.verifiedBy || 'Employer HR'}</strong>
                             </div>
                             <div>
-                              <span className="text-slate-600 font-semibold">Audit Channel: </span>
-                              <strong className="font-bold text-slate-950">{verificationMethodStr}</strong>
+                              <span className="text-muted-foreground font-semibold">Audit Channel: </span>
+                              <strong className="font-bold text-foreground">{verificationMethodStr}</strong>
                             </div>
                           </div>
 
                           {e.verificationMetadata?.remarks && (
-                            <div className="mt-2.5 rounded-md bg-white p-3 text-xs font-medium text-slate-900 italic border border-emerald-300 shadow-2xs">
+                            <div className="mt-2.5 rounded-md bg-background/60 p-3 text-xs font-medium text-foreground italic border border-success/20 shadow-2xs">
                               &ldquo;{e.verificationMetadata.remarks}&rdquo;
                             </div>
                           )}
 
-                          <div className="mt-2 text-[11px] text-emerald-900 font-bold pt-1">
+                          <div className="mt-2 text-[11px] text-success font-semibold pt-1">
                             Joining and wage outcome confirmed and stamped into longitudinal retention tracking ledger.
                           </div>
                         </div>
@@ -876,23 +876,23 @@ export default function EmployerPage() {
                       {/* 4. DISPUTED SECTION (Rose Red Treatment — Surfacing WHY it failed) */}
                       {e.verificationStatus === 'disputed' && (
                         <div className={cn('rounded-lg border p-4 text-xs shadow-2xs', meta.evidenceBoxClasses)}>
-                          <div className="flex items-center gap-2 font-black text-rose-950 border-b border-rose-200/90 pb-2.5">
-                            <AlertTriangle className="size-4.5 text-rose-700 shrink-0" />
+                          <div className="flex items-center gap-2 font-black text-destructive border-b border-destructive/20 pb-2.5">
+                            <AlertTriangle className="size-4.5 text-destructive shrink-0" />
                             <span className="text-xs sm:text-[13px] uppercase tracking-wider">⚠ OFFICIAL DISPUTE REASON</span>
                           </div>
 
-                          <div className="mt-2.5 rounded-md bg-white p-3 border border-rose-300 shadow-2xs">
-                            <p className="text-sm font-black text-rose-950">
+                          <div className="mt-2.5 rounded-md bg-background/60 p-3 border border-destructive/20 shadow-2xs">
+                            <p className="text-sm font-bold text-destructive">
                               {e.verificationMetadata?.disputeReason || 'Trainee did not join on scheduled start date'}
                             </p>
                             {e.verificationMetadata?.remarks && (
-                              <p className="mt-1.5 text-xs font-medium text-slate-800 italic pt-1.5 border-t border-rose-100">
+                              <p className="mt-1.5 text-xs font-medium text-muted-foreground italic pt-1.5 border-t border-border">
                                 &ldquo;{e.verificationMetadata.remarks}&rdquo;
                               </p>
                             )}
                           </div>
 
-                          <div className="mt-2 text-[11px] text-rose-950 font-bold pt-1">
+                          <div className="mt-2 text-[11px] text-destructive font-semibold pt-1">
                             Flagged for Maharashtra State Skill Development Society (MSSDS) coordinator and placement cell intervention.
                           </div>
                         </div>
@@ -901,13 +901,13 @@ export default function EmployerPage() {
                       {/* 5. PENDING ACTION BANNER (Amber Treatment) */}
                       {e.verificationStatus === 'pending' && (
                         <div className={cn('flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-lg border p-3.5 text-xs shadow-2xs', meta.evidenceBoxClasses)}>
-                          <div className="flex items-center gap-2.5 font-medium text-amber-950">
-                            <Clock className="size-4.5 text-amber-700 shrink-0" />
+                          <div className="flex items-center gap-2.5 font-medium text-foreground">
+                            <Clock className="size-4.5 text-warning shrink-0" />
                             <span>
-                              <strong className="font-bold">Action Required:</strong> Review reported job offer and confirm candidate has joined with reported wage, or dispute claim.
+                              <strong className="font-bold text-warning">Action Required:</strong> Review reported job offer and confirm candidate has joined with reported wage, or dispute claim.
                             </span>
                           </div>
-                          <span className="font-black text-[11px] uppercase tracking-wider text-amber-950 bg-amber-200 px-2.5 py-1 rounded border border-amber-300 shrink-0 self-start sm:self-auto shadow-2xs">
+                          <span className="font-bold text-[11px] uppercase tracking-wider text-warning bg-warning/20 px-2.5 py-1 rounded border border-warning/30 shrink-0 self-start sm:self-auto shadow-2xs">
                             Awaiting Employer Action
                           </span>
                         </div>
@@ -919,14 +919,14 @@ export default function EmployerPage() {
                           className={cn(
                             'flex items-center gap-2 rounded-lg p-3 text-xs font-bold shadow-2xs',
                             itemFeedback.type === 'success'
-                              ? 'border border-emerald-300 bg-emerald-100 text-emerald-950'
-                              : 'border border-rose-300 bg-rose-100 text-rose-950'
+                              ? 'border border-success/30 bg-success/10 text-success'
+                              : 'border border-destructive/30 bg-destructive/10 text-destructive'
                           )}
                         >
                           {itemFeedback.type === 'success' ? (
-                            <CheckCircle2 className="size-4 text-emerald-700 shrink-0" />
+                            <CheckCircle2 className="size-4 text-success shrink-0" />
                           ) : (
-                            <XCircle className="size-4 text-rose-700 shrink-0" />
+                            <XCircle className="size-4 text-destructive shrink-0" />
                           )}
                           <span>{itemFeedback.message}</span>
                         </div>
