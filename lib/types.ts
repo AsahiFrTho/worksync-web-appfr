@@ -217,3 +217,120 @@ export interface MergedLearner extends TraineeLite {
   trainingPeriodStart?: string;
   trainingPeriodEnd?: string;
 }
+
+// ── WorkSync Skill Gap Intelligence Engine Types ─────────────────────────────
+
+export type SkillGapPriority = "Critical" | "High" | "Medium" | "Low";
+
+export interface SkillGapIntelligenceItem {
+  skill: string;
+  demandScore: number;
+  coverageScore: number;
+  gapScore: number;
+  priority: SkillGapPriority;
+  candidatesAffected: number;
+  highSeverityReports: number;
+  mediumSeverityReports: number;
+  lowSeverityReports: number;
+  totalReports: number;
+  topReportingCourse: string;
+  topReportingDistrict: string;
+  placementPenaltyPct: number;
+  recommendedAction: string;
+}
+
+export interface CourseSkillGapProfile {
+  course: string;
+  traineesTracked: number;
+  placedCount: number;
+  placementRate: number;
+  trainingCoverage: number;
+  employerDemand: number;
+  gap: number;
+  topMissingSkills: string[];
+  lowRelevancePlacedShare: number;
+}
+
+export interface DistrictSkillGapProfile {
+  district: string;
+  traineesTracked: number;
+  gapReports: number;
+  topSkillGap: string;
+  priority: SkillGapPriority;
+  affectedCandidates: number;
+}
+
+export interface InterventionSimulationResult {
+  skillName: string;
+  currentPlacementRate: number;
+  projectedPlacementRate: number;
+  liftPercentagePoints: number;
+  additionalPlacedEstimated: number;
+  affectedCandidates: number;
+  targetCourses: string[];
+  notes: string;
+}
+
+export interface BridgeModuleStructure {
+  moduleNumber: number;
+  title: string;
+  durationHours: number;
+  topics: string[];
+}
+
+export interface PolicyActionItem {
+  step: string;
+  title: string;
+  description: string;
+  owner: string;
+  timeline: string;
+}
+
+export interface ClosedLoopMeasurementStep {
+  phase: string;
+  label: string;
+  metric: string;
+  currentValue: string;
+  projectedValue: string;
+}
+
+export interface CurriculumActionPlan {
+  skillName: string;
+  targetCourse: string;
+  priority: SkillGapPriority;
+  demandScore: number;
+  coverageScore: number;
+  deficitScore: number;
+  candidatesAffected: number;
+  placementPenaltyPct: number;
+  projectedPlacementRate: number;
+  liftPercentagePoints: number;
+  additionalPlacedEstimated: number;
+  
+  // Bridge module design
+  moduleTitle: string;
+  totalDurationHours: number;
+  deliveryMode: string;
+  prerequisites: string[];
+  learningObjectives: string[];
+  modules: BridgeModuleStructure[];
+  practicalProject: string;
+  assessmentMethod: string;
+  successMetric: string;
+  rationale: string;
+  
+  // Policy actions
+  policyActions: PolicyActionItem[];
+  
+  // Closed-loop measurement
+  closedLoopSteps: ClosedLoopMeasurementStep[];
+  
+  // Data Provenance tags
+  provenance: {
+    demandSource: string;
+    coverageSource: string;
+    deficitMetric: string;
+    affectedCandidatesSource: string;
+    simulationModel: string;
+  };
+}

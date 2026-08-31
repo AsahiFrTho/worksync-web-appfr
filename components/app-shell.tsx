@@ -62,6 +62,13 @@ const stakeholderPortals = [
 
 const intelligenceTools = [
   {
+    label: 'Skill Gap Intelligence',
+    href: '/skillgaps',
+    icon: Puzzle,
+    hint: 'Competency deficit engine',
+    roleBadge: 'Engine',
+  },
+  {
     label: 'AI Insights & Policy',
     href: '/insights',
     icon: Sparkles,
@@ -91,13 +98,6 @@ const operationsTools = [
     icon: BadgeCheck,
     hint: 'Approve / reject / evidence',
     roleBadge: 'Verifier',
-  },
-  {
-    label: 'Skill Gaps',
-    href: '/skillgaps',
-    icon: Puzzle,
-    hint: 'Gap analysis & recommendations',
-    roleBadge: 'Curriculum',
   },
   {
     label: 'Provider Scorecard',

@@ -1,5 +1,5 @@
-'use client'
-
+import Link from 'next/link'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
@@ -79,16 +79,24 @@ export function SkillGapIndicators({ data }: { data: SkillGapDatum[] }) {
       <CardHeader className="border-b border-border pb-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Skill-Gap Indicators</CardTitle>
+            <div className="flex items-center gap-2">
+              <CardTitle>Skill-Gap Indicators</CardTitle>
+              <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                <Sparkles className="size-3" />
+                Intelligence
+              </span>
+            </div>
             <CardDescription className="mt-0.5">
-              Skills most reported missing, by employers, learners and trainers
+              Skills most reported missing vs. employer requirements
             </CardDescription>
           </div>
-          {data.length > 0 && (
-            <Badge variant="destructive" className="text-[10px] px-2 py-0.2">
-              Priority Alert
-            </Badge>
-          )}
+          <Link
+            href="/skillgaps"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-primary/40 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary/20 hover:text-primary transition-all duration-200"
+          >
+            <span>Analyze Gaps</span>
+            <ArrowRight className="size-3.5" />
+          </Link>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-2.5 pt-4">
@@ -114,12 +122,25 @@ export function SkillGapIndicators({ data }: { data: SkillGapDatum[] }) {
                   </span>
                 </div>
               </div>
-              <Badge variant={s.high > 0 ? 'destructive' : 'warning'} className="text-xs px-2 py-0.5 shrink-0">
-                {s.total} report{s.total === 1 ? '' : 's'}
-              </Badge>
+              <div className="flex items-center gap-2 shrink-0">
+                <Badge variant={s.high > 0 ? 'destructive' : 'warning'} className="text-xs px-2 py-0.5">
+                  {s.total} report{s.total === 1 ? '' : 's'}
+                </Badge>
+              </div>
             </div>
           ))
         )}
+
+        <div className="mt-2 pt-2 border-t border-border flex items-center justify-between text-xs">
+          <span className="text-muted-foreground">Why are candidates not placed?</span>
+          <Link
+            href="/skillgaps"
+            className="font-bold text-primary hover:underline flex items-center gap-1"
+          >
+            <span>Open Skill Gap Engine</span>
+            <ArrowRight className="size-3" />
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )
