@@ -36,7 +36,7 @@ export function BarVertical({
 }) {
   return (
     <div style={{ height }} className="w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
         <BarChart data={data} margin={{ left: 8, right: 12, top: 8, bottom: 12 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
           <XAxis

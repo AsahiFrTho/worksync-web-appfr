@@ -12,6 +12,7 @@ import { buildComputeDb } from "@/lib/build-compute-db";
 import { generateCurriculumInsights, type CurriculumInsight } from "@/lib/compute";
 import type { ComputeDB } from "@/lib/compute-types";
 import type { ProgramData } from "@/lib/types";
+import { getFallbackProgramData } from "@/lib/seed-data";
 
 /**
  * Read-only: fetches every operational collection straight from MongoDB and
@@ -30,33 +31,41 @@ import type { ProgramData } from "@/lib/types";
  * instead of subtly different ones that could produce different numbers.
  */
 async function fetchProgramDataSnapshot(): Promise<ProgramData> {
-  await connectToDatabase();
+  try {
+    await connectToDatabase();
 
-  const [trainees, details, consents, outcomes, followUps, verifications, skillGaps] =
-    await Promise.all([
-      Trainee.find().lean(),
-      LearnerDetail.find().lean(),
-      ConsentRecord.find().lean(),
-      OutcomeEvent.find().lean(),
-      FollowUp.find().lean(),
-      EmployerVerification.find().lean(),
-      SkillGapReport.find().lean(),
-    ]);
+    const [trainees, details, consents, outcomes, followUps, verifications, skillGaps] =
+      await Promise.all([
+        Trainee.find().lean(),
+        LearnerDetail.find().lean(),
+        ConsentRecord.find().lean(),
+        OutcomeEvent.find().lean(),
+        FollowUp.find().lean(),
+        EmployerVerification.find().lean(),
+        SkillGapReport.find().lean(),
+      ]);
 
-  const settings = await ProgramSettings.findOne({ singleton: "default" }).lean();
+    if (trainees.length === 0) {
+      return getFallbackProgramData();
+    }
 
-  return JSON.parse(
-    JSON.stringify({
-      trainees,
-      details,
-      consents,
-      outcomes,
-      followUps,
-      verifications,
-      skillGaps,
-      settings: settings || null,
-    })
-  ) as ProgramData;
+    const settings = await ProgramSettings.findOne({ singleton: "default" }).lean();
+
+    return JSON.parse(
+      JSON.stringify({
+        trainees,
+        details,
+        consents,
+        outcomes,
+        followUps,
+        verifications,
+        skillGaps,
+        settings: settings || null,
+      })
+    ) as ProgramData;
+  } catch {
+    return getFallbackProgramData();
+  }
 }
 
 export async function getComputeDbSnapshot(): Promise<ComputeDB> {

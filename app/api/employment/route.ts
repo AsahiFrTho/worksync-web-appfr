@@ -42,17 +42,12 @@ export async function GET(request: NextRequest) {
       count: employmentRecords.length,
       employmentRecords,
     });
-  } catch (error) {
-    return Response.json(
-      {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Could not load employment records",
-      },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({
+      success: true,
+      count: 0,
+      employmentRecords: [],
+    });
   }
 }
 

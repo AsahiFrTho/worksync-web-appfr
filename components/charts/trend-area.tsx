@@ -23,7 +23,7 @@ export function TrendArea({
 }) {
   return (
     <div style={{ height }} className="w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
         <AreaChart data={data} margin={{ left: 8, right: 12, top: 8, bottom: 0 }}>
           <defs>
             {lines.map((l) => (

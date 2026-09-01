@@ -24,7 +24,10 @@ export async function GET(request: NextRequest) {
             skillCounts[g.skillName] = { total: 0, high: 0, medium: 0, low: 0, trainees: new Set() };
           }
           skillCounts[g.skillName].total += 1;
-          skillCounts[g.skillName][g.severity] += 1;
+          const sev = g.severity as "high" | "medium" | "low";
+          if (sev === "high" || sev === "medium" || sev === "low") {
+            skillCounts[g.skillName][sev] += 1;
+          }
           skillCounts[g.skillName].trainees.add(g.traineeId);
         });
       }

@@ -52,7 +52,7 @@ export function EmploymentTypeChart({ data }: { data: EmploymentTypeDatum[] }) {
       <CardContent className="pt-4">
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="h-44 w-44 shrink-0 relative flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie
                   data={data}

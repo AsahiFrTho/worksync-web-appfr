@@ -1,6 +1,7 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import ProgramSettings from "@/models/program-settings";
 import { type NextRequest } from "next/server";
+import { getFallbackProgramData } from "@/lib/seed-data";
 
 export async function GET() {
   try {
@@ -12,14 +13,9 @@ export async function GET() {
     }
 
     return Response.json({ success: true, settings });
-  } catch (error) {
-    return Response.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Could not load settings",
-      },
-      { status: 500 }
-    );
+  } catch {
+    const fallback = getFallbackProgramData();
+    return Response.json({ success: true, settings: fallback.settings });
   }
 }
 

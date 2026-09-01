@@ -30,7 +30,7 @@ export function CoverageComparisonChart({ courseFilter }: { courseFilter?: strin
       </CardHeader>
       <CardContent className="pt-4">
         <div className="h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <BarChart data={view} margin={{ left: 0, right: 8, top: 4, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
               <XAxis

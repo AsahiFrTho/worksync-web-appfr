@@ -4,148 +4,138 @@ import { useEffect, useState, type FormEvent } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
-  Building2,
+  Landmark,
   GraduationCap,
   Briefcase,
   IdCard,
+  Building2,
+  MapPin,
+  CheckCircle2,
   ArrowRight,
   ShieldCheck,
-  CheckCircle2,
-  Users,
-  Sparkles,
-  Info,
-  Check,
-  Lock,
-  MapPin,
+  Fingerprint,
+  BarChart3,
   Loader2,
-  AlertTriangle,
-  Clock,
-  KeyRound,
+  Lock,
   Mail,
+  KeyRound,
+  AlertTriangle,
+  Info,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react'
-import { summary } from '@/lib/mock-data'
-import { cn } from '@/lib/utils'
 import { ROLES, type Role } from '@/lib/auth/roles'
+import { cn } from '@/lib/utils'
 
-interface RoleOption {
+interface RoleDossier {
   id: Role
+  name: string
   title: string
-  marathiTitle: string
-  category: string
-  icon: typeof Building2
-  persona: {
-    name: string
-    designation: string
-    organization: string
-    location: string
-  }
-  description: string
-  highlights: string[]
   badgeText: string
+  organization: string
+  location: string
+  secondaryOrgLine?: string
+  description: string
+  capabilities: string[]
   demoEmail: string
+  buttonLabel: string
+  icon: typeof Landmark
 }
 
-const roles: RoleOption[] = [
+const ROLE_DOSSIERS: RoleDossier[] = [
   {
     id: 'admin',
-    title: 'Government / Administrator',
-    marathiTitle: 'शासकीय / प्रशासक',
-    category: 'State & District Directorate',
-    icon: Building2,
-    persona: {
-      name: 'Dr. Sanjay Patil',
-      designation: 'Director of Policy & Analytics',
-      organization: 'Maharashtra State Skill Development Society (MSSDS)',
-      location: 'Mantralaya, Mumbai',
-    },
+    name: 'Dr. Sanjay Patil',
+    title: 'Director of Policy & Analytics',
+    badgeText: 'Executive Oversight',
+    organization: 'Maharashtra State Skill Development Society (MSSDS)',
+    location: 'Mantralaya, Mumbai',
     description:
       'Statewide longitudinal outcomes, 12-district comparative analytics, certification-to-placement funnels, wage growth indices, and 6-month retention monitoring.',
-    highlights: [
+    capabilities: [
       'Executive KPI Funnel (Enrolled → Certified → Retained)',
       '12-District & Course-Wise Performance Benchmarks',
       'Longitudinal Wage Growth & 6-Month Retention Audits',
     ],
-    badgeText: 'Executive Oversight',
     demoEmail: 'admin@worksync.gov',
+    buttonLabel: 'Sign in as Government',
+    icon: Landmark,
   },
   {
     id: 'provider',
-    title: 'Training Provider',
-    marathiTitle: 'प्रशिक्षण संस्था',
-    category: 'VTPs, ITIs & Implementing Agencies',
-    icon: GraduationCap,
-    persona: {
-      name: 'Sahyadri Vocational Institute',
-      designation: 'Centre Head / Training Officer',
-      organization: 'Affiliated to MSSDS (Pune & Nashik Centres)',
-      location: 'Pune Center (96 Active VTPs)',
-    },
+    name: 'Sahyadri Vocational Institute',
+    title: 'Centre Head / Training Officer',
+    badgeText: 'Curriculum & Gaps',
+    organization: 'Affiliated to MSSDS (Pune & Nashik Centres)',
+    location: 'Pune Center (96 Active VTPs)',
     description:
       'Batch certification outcomes, skill gap diagnostics mapped against live employer demand, trade-wise placement rates, and candidate non-placement root causes.',
-    highlights: [
+    capabilities: [
       'Trade Skill-Gap Matrix vs. Industry Demand',
       'Course Placement Rates & Median Wage Metrics',
       'Dropout & Unplaced Trainee Diagnostic Signals',
     ],
-    badgeText: 'Curriculum & Gaps',
     demoEmail: 'provider@worksync.gov',
+    buttonLabel: 'Sign in as Training Provider',
+    icon: GraduationCap,
   },
   {
     id: 'employer',
-    title: 'Employer',
-    marathiTitle: 'नियोक्ता / उद्योग भागीदार',
-    category: 'Industry & Hiring Partners',
-    icon: Briefcase,
-    persona: {
-      name: 'Deccan Electricals Pvt. Ltd.',
-      designation: 'HR Operations & Talent Verification Cell',
-      organization: 'Chakan Industrial Area, Pune',
-      location: 'Manufacturing & Power Sector',
-    },
+    name: 'Deccan Electricals Pvt. Ltd.',
+    title: 'HR Operations & Talent Verification Cell',
+    badgeText: 'Verification & Retention',
+    organization: 'Chakan Industrial Area, Pune',
+    location: 'Manufacturing & Power Sector',
     description:
       'Direct candidate employment confirmation, wage verification, 30/90/180-day retention milestone audits, and trade relevance validation.',
-    highlights: [
+    capabilities: [
       '1-Click Employment & Wage Record Confirmation',
       '30-Day, 90-Day & 180-Day Retention Milestones',
       'Direct Trade Alignment & Dispute Flagging',
     ],
-    badgeText: 'Verification & Retention',
     demoEmail: 'employer@worksync.gov',
+    buttonLabel: 'Sign in as Employer',
+    icon: Briefcase,
   },
   {
     id: 'trainee',
-    title: 'Trainee',
-    marathiTitle: 'प्रशिक्षणार्थी उमेदवार',
-    category: 'Certified Candidate & Alumni',
-    icon: IdCard,
-    persona: {
-      name: 'Rahul Pawar',
-      designation: 'Trainee ID: KP-0001 (Electrician)',
-      organization: 'Yashaswi Skill Academy, Pune',
-      location: 'Employed at Deccan Electricals (₹16,800/mo)',
-    },
+    name: 'Rahul Pawar',
+    title: 'Trainee ID: KP-0001 (Electrician)',
+    badgeText: 'Outcome Passport',
+    organization: 'Yashaswi Skill Academy, Pune',
+    location: 'Employed at Deccan Electricals (₹16,800/mo)',
     description:
       'Verifiable Trainee Outcome Passport, NSQF Level 4 certification records, verified multi-stage employment timeline, and AI Career Intelligence recommendations.',
-    highlights: [
+    capabilities: [
       'Verifiable Digital Outcome Passport (NSQF Level 4)',
       'Multi-Stage Retention & Monthly Wage Timeline',
       'AI Career Intelligence & Upskilling Pathways',
     ],
-    badgeText: 'Outcome Passport',
     demoEmail: 'trainee@worksync.gov',
+    buttonLabel: 'Sign in as Trainee',
+    icon: IdCard,
   },
 ]
 
 export default function LoginPage() {
   const router = useRouter()
-  const [selectedRoleId, setSelectedRoleId] = useState<Role>('admin')
-  const [email, setEmail] = useState(roles[0].demoEmail)
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [loadingRole, setLoadingRole] = useState<Role | null>(null)
+  const [isCustomAuthLoading, setIsCustomAuthLoading] = useState(false)
   const [checkingSession, setCheckingSession] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [showCustomLogin, setShowCustomLogin] = useState(false)
 
-  const selectedRole = roles.find((r) => r.id === selectedRoleId) ?? roles[0]
+  // Per-card form states prefilled with demo credentials
+  const [credentials, setCredentials] = useState<Record<Role, { email: string; password: string }>>({
+    admin: { email: 'admin@worksync.gov', password: 'sih2024' },
+    provider: { email: 'provider@worksync.gov', password: 'sih2024' },
+    employer: { email: 'employer@worksync.gov', password: 'sih2024' },
+    trainee: { email: 'trainee@worksync.gov', password: 'sih2024' },
+  })
+
+  // Custom login state
+  const [customEmail, setCustomEmail] = useState('')
+  const [customPassword, setCustomPassword] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -168,19 +158,14 @@ export default function LoginPage() {
     }
   }, [router])
 
-  const selectRole = (roleId: Role) => {
-    setSelectedRoleId(roleId)
+  const executeLogin = async (email: string, password: string, roleForLoader?: Role) => {
     setError(null)
-    const role = roles.find((r) => r.id === roleId)
-    if (role) setEmail(role.demoEmail)
-  }
+    if (roleForLoader) {
+      setLoadingRole(roleForLoader)
+    } else {
+      setIsCustomAuthLoading(true)
+    }
 
-  const fillDemoPassword = () => setPassword('sih2024')
-
-  const handleLogin = async (e: FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -189,454 +174,438 @@ export default function LoginPage() {
       })
       const json = await res.json()
       if (!json.success) {
-        setError(json.error || 'Invalid email or password.')
-        setIsLoading(false)
+        setError(json.error || 'Invalid credentials. Please try again.')
+        setLoadingRole(null)
+        setIsCustomAuthLoading(false)
         return
       }
       const from = new URLSearchParams(window.location.search).get('from')
       router.push(from || json.redirectTo)
     } catch {
-      setError('Could not reach the server. Please try again.')
-      setIsLoading(false)
+      setError('Could not connect to the authentication server. Please try again.')
+      setLoadingRole(null)
+      setIsCustomAuthLoading(false)
     }
+  }
+
+  const handleCardSubmit = (e: FormEvent, roleId: Role) => {
+    e.preventDefault()
+    const { email, password } = credentials[roleId]
+    executeLogin(email, password, roleId)
+  }
+
+  const handleFillDemoPassword = (roleId: Role) => {
+    setCredentials((prev) => ({
+      ...prev,
+      [roleId]: { ...prev[roleId], password: 'sih2024' },
+    }))
+  }
+
+  const handleCustomSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (!customEmail.trim() || !customPassword) {
+      setError('Please provide both email and password.')
+      return
+    }
+    executeLogin(customEmail, customPassword)
   }
 
   if (checkingSession) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#070605]">
-        <Loader2 className="size-6 animate-spin text-[#c9a24a]" />
+      <div className="flex min-h-screen items-center justify-center bg-[#07090e]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-7 animate-spin text-[#c5a059]" />
+          <span className="text-xs font-semibold text-zinc-300">Verifying session…</span>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#070605] text-foreground font-sans antialiased selection:bg-[#c9a24a]/30 selection:text-white">
+    <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden text-foreground font-sans antialiased selection:bg-[#c5a059]/30 selection:text-white bg-[#06090e]">
+      
       {/* ========================================================================= */}
-      {/* BACKGROUND ARTWORK & ATMOSPHERIC COMPOSITION (Pure Black & Gold Theme)   */}
+      {/* BACKGROUND IMAGE: public/UIUX.png (Brighter & Positioned Slightly Upward)  */}
       {/* ========================================================================= */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none" aria-hidden="true">
-        {/* Render the artwork: 25% larger scale, shifted left & slightly lifted, warm gold filter */}
-        <div className="relative h-full w-full">
-          <img
-            src="/rwex.png"
-            alt=""
-            className="absolute left-[-4%] sm:left-[-3%] md:left-[-4%] lg:left-[-5%] xl:left-[-3%] bottom-[-2%] md:bottom-[-1%] h-[112vh] sm:h-[118vh] md:h-[122vh] w-auto max-w-none object-contain object-left-bottom opacity-75 sm:opacity-88 md:opacity-95"
-            style={{
-              filter: 'grayscale(100%) sepia(90%) hue-rotate(5deg) saturate(210%) brightness(0.84) contrast(1.22)',
-            }}
-          />
-        </div>
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-no-repeat pointer-events-none select-none"
+        style={{
+          backgroundImage: "url('/UIUX.png')",
+          backgroundPosition: 'center 58%',
+        }}
+        aria-hidden="true"
+      />
 
-        {/* Bottom-Up Gradient: softens lower edge while keeping bridge & architecture clearly visible */}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            background:
-              'linear-gradient(0deg, rgba(7, 6, 5, 0.72) 0%, rgba(7, 6, 5, 0.35) 16%, transparent 36%)',
-          }}
-        />
+      {/* Subtle, restrained institutional dark gradient to keep artwork crisp and text 100% readable */}
+      <div
+        className="fixed inset-0 z-1 pointer-events-none select-none bg-gradient-to-b from-black/35 via-black/15 to-black/50"
+        aria-hidden="true"
+      />
 
-        {/* Horizontal Gradient Overlay: crystal clear across left India map, smoothly darkens right side behind login card */}
-        <div
-          className="absolute inset-0 z-15"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent 0%, transparent 35%, rgba(7, 6, 5, 0.35) 55%, rgba(7, 6, 5, 0.82) 80%, rgba(7, 6, 5, 0.96) 94%, #070605 100%)',
-          }}
-        />
-
-        {/* Atmospheric Grounding Vignette & Ambient Warm Gold Radial Glow over India Map */}
-        <div
-          className="absolute inset-0 z-20"
-          style={{
-            background:
-              'radial-gradient(circle at 24% 28%, rgba(201, 162, 74, 0.18) 0%, transparent 52%), radial-gradient(circle at 85% 65%, rgba(201, 162, 74, 0.04) 0%, transparent 45%), linear-gradient(180deg, rgba(7, 6, 5, 0.30) 0%, transparent 12%, transparent 88%, rgba(7, 6, 5, 0.75) 100%)',
-          }}
-        />
-      </div>
-
-      {/* Main Unified 2-Column Responsive Workspace strictly constrained within 1440px viewport */}
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-6 sm:py-8 lg:py-10 grid min-h-screen grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14">
+      {/* ========================================================================= */}
+      {/* MAIN VIEWPORT CONTAINER                                                   */}
+      {/* ========================================================================= */}
+      <div className="relative z-10 flex flex-col justify-between min-h-screen w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 max-w-[1520px] mx-auto">
         
         {/* ========================================================================= */}
-        {/* LEFT / BRAND & INSTITUTIONAL OVERVIEW (6 of 12 Columns, ~48-50%)          */}
+        {/* TOP: WORKSYNC INSTITUTIONAL HEADER & BRANDING                             */}
         {/* ========================================================================= */}
-        <div className="w-full min-w-0 flex flex-col justify-between space-y-5 lg:col-span-6 lg:py-2">
-          <div className="space-y-6">
-            {/* WorkSync Logo & Department Header */}
-            <div className="flex items-center gap-3.5">
-              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-black border border-[#c9a24a]/30 shadow-md ring-1 ring-[#c9a24a]/20">
-                <Image
-                  src="/favicon.png"
-                  alt="WorkSync Logo"
-                  width={48}
-                  height={48}
-                  className="size-full object-cover"
-                  priority
-                />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-black tracking-tight text-white">WORKSYNC</span>
-                  <span className="text-[#c9a24a]/50 font-light">|</span>
-                  <span className="text-xs font-bold text-zinc-300">महाराष्ट्र शासन</span>
-                </div>
-                <p className="text-[11px] font-semibold text-[#a7a29a]">
-                  Department of Skills, Employment & Innovation
-                </p>
-              </div>
+        <header className="flex flex-col items-center text-center space-y-2 pt-2 sm:pt-4">
+          <div className="flex items-center gap-3">
+            <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-black/90 border border-[#c5a059]/50 shadow-md ring-1 ring-[#c5a059]/30">
+              <Image
+                src="/favicon.png"
+                alt="WorkSync Institutional Crest"
+                width={48}
+                height={48}
+                className="size-full object-cover"
+                priority
+              />
             </div>
 
-            {/* Platform Badge & Main Headline */}
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#c9a24a]/30 bg-[#1a150c]/80 px-3.5 py-1 text-xs font-bold text-[#d4af5a] backdrop-blur-md shadow-2xs">
-                <Sparkles className="size-3.5 text-[#c9a24a]" />
-                <span>Skilling Outcome Intelligence Platform</span>
-              </div>
-
-              <h1 className="mt-3.5 text-2xl sm:text-3xl lg:text-[31px] font-extrabold tracking-tight text-white leading-[1.22] text-balance">
-                From training and certification to{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-[#d4af5a]">
-                  verified employment, retention and wage progression.
+            <div className="text-left">
+              <div className="flex items-center gap-2">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase drop-shadow-sm">
+                  WorkSync
                 </span>
-              </h1>
-
-              <p className="mt-2.5 text-xs sm:text-sm font-normal leading-relaxed text-[#a7a29a]">
-                A unified, verifiable outcome monitoring platform tracking every candidate across the longitudinal skill-to-employment trajectory in Maharashtra.
+                <span className="text-[#c5a059] font-light text-sm">|</span>
+                <span className="text-xs sm:text-sm font-bold text-[#c5a059] tracking-wide">
+                  महाराष्ट्र शासन
+                </span>
+              </div>
+              <p className="text-[11px] sm:text-xs font-semibold text-zinc-200 drop-shadow-sm">
+                Department of Skills, Employment, Entrepreneurship &amp; Innovation
               </p>
             </div>
+          </div>
 
-            {/* Longitudinal Skilling Journey */}
-            <div className="rounded-2xl border border-[#c9a24a]/20 bg-[#0c0a07]/75 p-4 backdrop-blur-md shadow-xl">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#c9a24a] block mb-2.5">
-                Longitudinal Skilling Journey
-              </span>
-              <div className="grid grid-cols-6 gap-1.5 text-center text-[10px] font-bold">
-                <div className="rounded-lg bg-[#14120e]/80 p-2 text-zinc-300 border border-white/5">
-                  <span className="block text-[#c9a24a]/70 text-[8px] font-mono">01</span>
-                  <span>Train</span>
-                </div>
-                <div className="rounded-lg bg-[#14120e]/80 p-2 text-zinc-300 border border-white/5">
-                  <span className="block text-[#c9a24a]/70 text-[8px] font-mono">02</span>
-                  <span>Certify</span>
-                </div>
-                <div className="rounded-lg bg-[#14120e]/80 p-2 text-zinc-300 border border-white/5">
-                  <span className="block text-[#c9a24a]/70 text-[8px] font-mono">03</span>
-                  <span>Place</span>
-                </div>
-                <div className="rounded-lg bg-[#241a0b]/90 p-2 text-white border border-[#c9a24a]/50 shadow-[0_0_10px_rgba(201,162,74,0.15)]">
-                  <span className="block text-[#c9a24a] text-[8px] font-mono">04</span>
-                  <span>Verify</span>
-                </div>
-                <div className="rounded-lg bg-[#241a0b]/90 p-2 text-white border border-[#c9a24a]/50 shadow-[0_0_10px_rgba(201,162,74,0.15)]">
-                  <span className="block text-[#c9a24a] text-[8px] font-mono">05</span>
-                  <span>Retain</span>
-                </div>
-                <div className="rounded-lg bg-[#241a0b]/90 p-2 text-white border border-[#c9a24a]/50 shadow-[0_0_10px_rgba(201,162,74,0.15)]">
-                  <span className="block text-[#c9a24a] text-[8px] font-mono">06</span>
-                  <span>Progress</span>
-                </div>
-              </div>
-            </div>
+          <div className="space-y-0.5 max-w-xl">
+            <p className="text-xs sm:text-sm font-bold text-[#d4af5a] tracking-wider uppercase drop-shadow-sm">
+              One Platform. Many Opportunities.
+            </p>
+          </div>
+        </header>
 
-            {/* Evidence-Led Outcome Monitoring */}
-            <div className="space-y-2 rounded-2xl border border-[#c9a24a]/20 bg-[#0c0a07]/75 p-4 text-xs backdrop-blur-md shadow-xl">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#c9a24a] block mb-1">
-                Evidence-Led Outcome Monitoring
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-zinc-200 font-medium">
-                <div className="flex items-center gap-2">
-                  <div className="flex size-4 items-center justify-center rounded-full bg-[#c9a24a]/15 text-[#c9a24a]">
-                    <Check className="size-2.5 stroke-[3]" />
-                  </div>
-                  <span>Verified Employment</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex size-4 items-center justify-center rounded-full bg-[#c9a24a]/15 text-[#c9a24a]">
-                    <Check className="size-2.5 stroke-[3]" />
-                  </div>
-                  <span>Longitudinal Retention</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex size-4 items-center justify-center rounded-full bg-[#c9a24a]/15 text-[#c9a24a]">
-                    <Check className="size-2.5 stroke-[3]" />
-                  </div>
-                  <span>Wage Progression</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex size-4 items-center justify-center rounded-full bg-[#c9a24a]/15 text-[#c9a24a]">
-                    <Check className="size-2.5 stroke-[3]" />
-                  </div>
-                  <span>Programme Intelligence</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Statewide Aggregates Metric Highlights */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-[#c9a24a]/20 bg-[#0c0a07]/75 p-3.5 backdrop-blur-md shadow-xl">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#c9a24a]">
-                  <span>Tracked Candidates</span>
-                  <Users className="size-3.5 text-[#c9a24a]" />
-                </div>
-                <p className="mt-1 text-2xl font-black text-white tabular-nums">
-                  {summary.totalTrainees.toLocaleString('en-IN')}
-                </p>
-                <span className="text-[10px] text-[#a7a29a] font-medium block mt-0.5">{summary.activeDistricts} Active Districts</span>
-              </div>
-
-              <div className="rounded-2xl border border-[#c9a24a]/30 bg-[#120e09]/80 p-3.5 backdrop-blur-md shadow-xl ring-1 ring-[#c9a24a]/20">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#c9a24a]">
-                  <span>Verified Retention</span>
-                  <ShieldCheck className="size-3.5 text-[#c9a24a]" />
-                </div>
-                <p className="mt-1 text-2xl font-black text-white tabular-nums">
-                  {summary.retentionRate}%
-                </p>
-                <span className="text-[10px] text-[#a7a29a] font-medium block mt-0.5">6-Month Stability</span>
-              </div>
-            </div>
-
-            <p className="text-[10px] font-medium text-zinc-500 italic">
-              Illustrative statewide figures for demonstration — see the live prototype cohort count after signing in.
+        {/* ========================================================================= */}
+        {/* CENTER / MAIN: DETAILED ROLE LOGIN PANELS (SOURCE OF TRUTH)               */}
+        {/* ========================================================================= */}
+        <main className="my-auto py-6 sm:py-8 w-full mx-auto flex flex-col items-center">
+          
+          {/* Section Titles */}
+          <div className="text-center mb-6 sm:mb-8 space-y-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white uppercase drop-shadow-md">
+              Login to Your Account
+            </h1>
+            <p className="text-xs sm:text-sm font-semibold text-zinc-200 drop-shadow-sm">
+              Choose your role to continue
             </p>
           </div>
 
-          {/* Left Footer Info */}
-          <div className="pt-4 border-t border-white/8 text-[11px] text-[#a7a29a] flex items-center justify-between">
-            <span>Maharashtra State Skill Development Society (MSSDS)</span>
-            <span className="font-mono text-[10px] bg-[#14100a] px-2.5 py-0.5 rounded-full border border-[#c9a24a]/30 text-[#d4af5a]">
-              MSSDS • EVALUATION
-            </span>
-          </div>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* RIGHT / MAIN LOGIN & STAKEHOLDER PORTAL FORM (6 of 12 Columns, ~42-45%)   */}
-        {/* ========================================================================= */}
-        <div className="w-full min-w-0 lg:col-span-6 lg:max-w-[580px] lg:ml-auto lg:py-2">
-          <div className="w-full rounded-2xl border border-[#c9a24a]/28 bg-[#0c0a07]/90 p-5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_35px_rgba(201,162,74,0.06)] backdrop-blur-xl space-y-4 sm:space-y-5">
-
-            {/* Header & Status Badges */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/8 pb-4">
-              <div>
-                <h2 className="text-2xl sm:text-[26px] font-bold tracking-tight text-white">
-                  Sign in to WorkSync
-                </h2>
-                <p className="mt-0.5 text-xs sm:text-sm font-medium text-[#a7a29a]">
-                  Access your skilling outcome intelligence workspace.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5">
-                <div className="flex items-center gap-1.5 rounded-full border border-[#c9a24a]/30 bg-[#1a150c]/80 px-3 py-1 text-xs font-bold text-[#d4af5a] shadow-2xs">
-                  <ShieldCheck className="size-3.5 text-[#c9a24a]" />
-                  <span>Authorized Gateway</span>
-                </div>
-                <div className="flex items-center gap-1.5 rounded-full border border-[#c9a24a]/20 bg-[#1a150c]/80 px-3 py-1 text-xs font-bold text-[#a7a29a] shadow-2xs">
-                  <Clock className="size-3.5 text-[#c9a24a]" />
-                  <span>Coming Soon: State SSO / Aadhaar e-KYC</span>
-                </div>
-              </div>
+          {/* Global Error Notification */}
+          {error && (
+            <div className="mb-6 w-full max-w-lg flex items-start gap-2.5 rounded-xl border border-red-500/50 bg-red-950/90 p-3 text-xs font-medium text-red-100 shadow-xl backdrop-blur-md">
+              <AlertTriangle className="size-4 shrink-0 text-red-400 mt-0.5" />
+              <div className="flex-1">{error}</div>
             </div>
+          )}
 
-            {/* Stakeholder Persona Selection */}
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#c9a24a] block mb-2">
-                Select Stakeholder Persona:
-              </span>
+          {/* 4 Rich Role Panels (Horizontal on Desktop, 2x2 Tablet, 1-col Mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6 w-full">
+            {ROLE_DOSSIERS.map((role) => {
+              const Icon = role.icon
+              const isCurrentLoading = loadingRole === role.id
+              const roleCreds = credentials[role.id]
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {roles.map((role) => {
-                  const Icon = role.icon
-                  const isSelected = selectedRoleId === role.id
+              return (
+                <div
+                  key={role.id}
+                  className="flex flex-col justify-between rounded-2xl border border-[#c5a059]/30 bg-[#0a1016]/90 backdrop-blur-md p-5 sm:p-6 transition-all duration-200 hover:border-[#c5a059]/75 hover:bg-[#0d141e]/94 shadow-[0_12px_36px_rgba(0,0,0,0.55)] hover:shadow-[0_16px_42px_rgba(0,0,0,0.7),0_0_24px_rgba(197,160,89,0.18)]"
+                >
+                  <div className="space-y-4">
+                    {/* Header: Icon, Person/Org Name, Title & Outlined Gold Badge */}
+                    <div className="flex items-start justify-between gap-3 border-b border-white/8 pb-3.5">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-[#c5a059]/40 bg-[#141b26] text-[#c5a059] shadow-inner">
+                          <Icon className="size-5.5 text-[#c5a059]" />
+                        </div>
+                        <div className="min-w-0">
+                          <h2 className="text-base font-bold text-white tracking-tight truncate leading-tight">
+                            {role.name}
+                          </h2>
+                          <p className="text-xs font-semibold text-[#d4af5a] truncate mt-0.5">
+                            {role.title}
+                          </p>
+                        </div>
+                      </div>
 
-                  return (
+                      <span className="shrink-0 inline-flex items-center rounded-full border border-[#c5a059]/40 bg-[#1b170e]/80 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#d4af5a] shadow-2xs">
+                        {role.badgeText}
+                      </span>
+                    </div>
+
+                    {/* Organization & Location Meta */}
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-center gap-2 text-zinc-100 font-medium">
+                        <Building2 className="size-3.5 text-[#c5a059] shrink-0" />
+                        <span className="truncate">{role.organization}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-zinc-300">
+                        <MapPin className="size-3.5 text-[#c5a059]/70 shrink-0" />
+                        <span className="truncate">{role.location}</span>
+                      </div>
+                    </div>
+
+                    {/* Role Description */}
+                    <p className="text-xs text-zinc-300 leading-relaxed min-h-[56px]">
+                      {role.description}
+                    </p>
+
+                    {/* Operational Capabilities Checklist */}
+                    <div className="space-y-2 border-t border-white/8 pt-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#c5a059] block">
+                        Operational Capabilities:
+                      </span>
+                      <div className="space-y-1.5">
+                        {role.capabilities.map((cap, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-xs text-zinc-200">
+                            <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-[#c5a059]" />
+                            <span className="leading-snug">{cap}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Role Authentication Form */}
+                  <form
+                    onSubmit={(e) => handleCardSubmit(e, role.id)}
+                    className="mt-5 pt-3.5 border-t border-white/8 space-y-3"
+                  >
+                    {/* Email Field */}
+                    <div>
+                      <label
+                        htmlFor={`email-${role.id}`}
+                        className="text-[10px] font-bold uppercase tracking-wider text-[#c5a059] block mb-1"
+                      >
+                        Email
+                      </label>
+                      <div className="relative">
+                        <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-[#c5a059]" />
+                        <input
+                          id={`email-${role.id}`}
+                          type="email"
+                          required
+                          value={roleCreds.email}
+                          onChange={(e) =>
+                            setCredentials((prev) => ({
+                              ...prev,
+                              [role.id]: { ...prev[role.id], email: e.target.value },
+                            }))
+                          }
+                          className="w-full rounded-xl border border-white/10 bg-[#080d14] py-2 pl-8.5 pr-3 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059]/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Password Field */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label
+                          htmlFor={`password-${role.id}`}
+                          className="text-[10px] font-bold uppercase tracking-wider text-[#c5a059] block"
+                        >
+                          Password
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => handleFillDemoPassword(role.id)}
+                          className="text-[10px] font-semibold text-[#c5a059] hover:text-[#d4af5a] transition-colors cursor-pointer"
+                        >
+                          Use demo password
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <KeyRound className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-[#c5a059]" />
+                        <input
+                          id={`password-${role.id}`}
+                          type="password"
+                          required
+                          value={roleCreds.password}
+                          onChange={(e) =>
+                            setCredentials((prev) => ({
+                              ...prev,
+                              [role.id]: { ...prev[role.id], password: e.target.value },
+                            }))
+                          }
+                          className="w-full rounded-xl border border-white/10 bg-[#080d14] py-2 pl-8.5 pr-3 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059]/50 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
                     <button
-                      key={role.id}
-                      type="button"
-                      onClick={() => selectRole(role.id)}
+                      type="submit"
+                      disabled={loadingRole !== null || isCustomAuthLoading}
                       className={cn(
-                        'flex items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 cursor-pointer',
-                        isSelected
-                          ? 'border-[#cda041]/75 bg-[#281f10]/85 ring-1 ring-[#cda041]/40 shadow-[0_0_20px_rgba(205,160,65,0.18)]'
-                          : 'border-white/7 bg-[#12100c]/75 hover:border-[#c9a24a]/30 hover:bg-[#18140e]/90 text-zinc-300'
+                        'w-full h-11 rounded-xl bg-[#c5a059] hover:bg-[#d8b568] active:bg-[#b89345] text-black font-bold text-xs sm:text-sm flex items-center justify-center gap-2 px-4 shadow-[0_2px_12px_rgba(197,160,89,0.22)] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
                       )}
                     >
-                      <span
-                        className={cn(
-                          'flex size-9 shrink-0 items-center justify-center rounded-lg border text-xs font-bold transition-colors',
-                          isSelected
-                            ? 'border-[#c9a24a]/40 bg-[#c9a24a] text-black'
-                            : 'border-white/10 bg-[#1a1610] text-[#c9a24a]'
-                        )}
-                      >
-                        <Icon className="size-4.5" />
-                      </span>
-
-                      <div className="flex flex-1 flex-col min-w-0">
-                        <div className="flex items-center justify-between gap-1">
-                          <span className="font-bold text-xs sm:text-sm text-white truncate">
-                            {role.title.split('/')[0].trim()}
-                          </span>
-                          {isSelected && (
-                            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-[#c9a24a] text-black">
-                              <Check className="size-2.5 stroke-[3]" />
-                            </span>
-                          )}
-                        </div>
-                        <span className={cn('text-[11px] font-medium truncate mt-0.5', isSelected ? 'text-[#d4af5a]' : 'text-[#a7a29a]')}>
-                          {role.marathiTitle}
-                        </span>
-                      </div>
+                      {isCurrentLoading ? (
+                        <>
+                          <Loader2 className="size-4 animate-spin text-black" />
+                          <span>Signing in…</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>{role.buttonLabel}</span>
+                          <ArrowRight className="size-3.5 text-black" />
+                        </>
+                      )}
                     </button>
-                  )
-                })}
+
+                    {/* Evaluator Credentials Note */}
+                    <p className="text-center text-[10px] text-zinc-400">
+                      Demo: <code className="text-[#d4af5a] font-mono">{role.demoEmail}</code> · password <code className="text-[#d4af5a] font-mono">sih2024</code>
+                    </p>
+                  </form>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Prototype Access Architecture Notice (Restrained & Institutional) */}
+          <div className="mt-8 w-full max-w-4xl rounded-xl border border-[#c5a059]/25 bg-[#080d14]/85 p-3.5 backdrop-blur-sm text-xs">
+            <div className="flex items-start gap-2.5">
+              <Info className="size-4 text-[#c5a059] shrink-0 mt-0.5" />
+              <div className="text-zinc-300 font-normal leading-relaxed text-[11px] sm:text-xs">
+                <strong className="font-semibold text-white">Prototype Access Architecture: </strong>
+                This evaluation portal uses a real password-checked, signed-cookie session (see the Sign In forms above) —
+                it is not a one-click role switcher. In production, this same login step would be replaced by
+                State Single Sign-On (SSO) and Aadhaar e-KYC verified candidate registries.
               </div>
             </div>
+          </div>
 
-            {/* Selected Persona Dossier & Credentials Card */}
-            <div className="rounded-2xl border border-[#c9a24a]/25 bg-[#0e0c08]/90 p-4 sm:p-5 shadow-lg space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-3.5">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a24a] to-[#a88233] text-black font-bold shrink-0 shadow-sm">
-                    {selectedRole.icon && <selectedRole.icon className="size-5" />}
-                  </span>
-                  <div>
-                    <h3 className="text-base font-bold text-white leading-tight">
-                      {selectedRole.persona.name}
-                    </h3>
-                    <p className="text-xs font-semibold text-[#d4af5a] mt-0.5">
-                      {selectedRole.persona.designation}
-                    </p>
-                  </div>
+          {/* Collapsible Custom Credentials Login Link */}
+          <div className="mt-5 w-full max-w-md flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => setShowCustomLogin(!showCustomLogin)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-300 hover:text-[#d4af5a] transition-colors py-1.5 px-3 rounded-lg bg-black/40 hover:bg-black/60 border border-white/10 backdrop-blur-sm cursor-pointer shadow-sm"
+            >
+              <Lock className="size-3.5 text-[#c5a059]" />
+              <span>{showCustomLogin ? 'Hide Custom Credentials Form' : 'Login with Custom Credentials'}</span>
+              {showCustomLogin ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+            </button>
+
+            {showCustomLogin && (
+              <form
+                onSubmit={handleCustomSubmit}
+                className="mt-3 w-full rounded-2xl border border-[#c5a059]/40 bg-[#0a1016]/95 p-5 backdrop-blur-xl shadow-2xl space-y-3.5 transition-all"
+              >
+                <div className="text-left border-b border-white/10 pb-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#c5a059]">
+                    Official Gateway Sign-In
+                  </h3>
+                  <p className="text-[11px] text-zinc-300">
+                    Enter your authorized official email and password.
+                  </p>
                 </div>
 
-                <span className="inline-flex items-center rounded-full border border-[#c9a24a]/40 bg-[#241a0b] px-2.5 py-0.5 text-xs font-bold text-[#d4af5a] self-start sm:self-auto shadow-2xs">
-                  {selectedRole.badgeText}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium">
-                <span className="flex items-center gap-1.5 text-white font-medium">
-                  <Building2 className="size-3.5 text-[#c9a24a] shrink-0" />
-                  <span>{selectedRole.persona.organization}</span>
-                </span>
-                <span className="flex items-center gap-1.5 text-[#a7a29a]">
-                  <MapPin className="size-3.5 text-[#c9a24a]/70 shrink-0" />
-                  <span>{selectedRole.persona.location}</span>
-                </span>
-              </div>
-
-              <p className="text-xs leading-relaxed font-normal text-[#a7a29a]">
-                {selectedRole.description}
-              </p>
-
-              <div className="space-y-1.5 border-t border-white/8 pt-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#c9a24a] block mb-1">
-                  Operational Capabilities:
-                </span>
-                {selectedRole.highlights.map((h, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-xs font-medium text-zinc-200">
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-[#c9a24a]" />
-                    <span>{h}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Real Credential Form */}
-              <form onSubmit={handleLogin} className="mt-4 pt-3.5 border-t border-white/8 space-y-3.5">
-                <div>
-                  <label htmlFor="login-email" className="text-[10px] font-bold uppercase tracking-wider text-[#c9a24a] block mb-1">
-                    Email
+                <div className="text-left">
+                  <label htmlFor="custom-email" className="text-[10px] font-bold uppercase tracking-wider text-zinc-300 block mb-1">
+                    Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#c9a24a]" />
+                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#c5a059]" />
                     <input
-                      id="login-email"
+                      id="custom-email"
                       type="email"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-xl border border-white/10 bg-[#080807]/90 py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c9a24a] focus:ring-1 focus:ring-[#c9a24a]/50 transition-all"
-                      placeholder="you@worksync.gov"
+                      value={customEmail}
+                      onChange={(e) => setCustomEmail(e.target.value)}
+                      className="w-full rounded-xl border border-white/15 bg-[#121822] py-2 pl-9 pr-3 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059]/50"
+                      placeholder="e.g. admin@worksync.gov"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label htmlFor="login-password" className="text-[10px] font-bold uppercase tracking-wider text-[#c9a24a] block">
-                      Password
-                    </label>
-                    <button
-                      type="button"
-                      onClick={fillDemoPassword}
-                      className="text-[10px] font-bold text-[#c9a24a] hover:text-[#d4af5a] transition-colors cursor-pointer"
-                    >
-                      Use demo password
-                    </button>
-                  </div>
+                <div className="text-left">
+                  <label htmlFor="custom-password" className="text-[10px] font-bold uppercase tracking-wider text-zinc-300 block mb-1">
+                    Password
+                  </label>
                   <div className="relative">
-                    <KeyRound className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#c9a24a]" />
+                    <KeyRound className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#c5a059]" />
                     <input
-                      id="login-password"
+                      id="custom-password"
                       type="password"
                       required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full rounded-xl border border-white/10 bg-[#080807]/90 py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c9a24a] focus:ring-1 focus:ring-[#c9a24a]/50 transition-all"
-                      placeholder="Demo password"
+                      value={customPassword}
+                      onChange={(e) => setCustomPassword(e.target.value)}
+                      className="w-full rounded-xl border border-white/15 bg-[#121822] py-2 pl-9 pr-3 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059]/50"
+                      placeholder="Enter password"
                     />
                   </div>
                 </div>
-
-                {error && (
-                  <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-950/40 p-2.5 text-xs font-medium text-red-300">
-                    <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
-                    <span>{error}</span>
-                  </div>
-                )}
 
                 <button
                   type="submit"
-                  disabled={isLoading}
-                  className="w-full h-12 rounded-xl bg-gradient-to-r from-[#c9a24a] via-[#d4af5a] to-[#c9a24a] hover:from-[#d4af5a] hover:to-[#dfbb68] text-black font-bold text-sm flex items-center justify-between px-5 shadow-[0_4px_20px_rgba(201,162,74,0.22)] transition-all duration-200 cursor-pointer disabled:opacity-50"
+                  disabled={isCustomAuthLoading || loadingRole !== null}
+                  className="w-full h-10 rounded-xl bg-[#c5a059] hover:bg-[#d8b568] text-black font-bold text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
                 >
-                  <span className="flex items-center gap-2">
-                    {isLoading ? <Loader2 className="size-4 animate-spin text-black" /> : <Lock className="size-4 text-black" />}
-                    <span>{isLoading ? 'Authenticating…' : `Sign in as ${selectedRole.title.split('/')[0].trim()}`}</span>
-                  </span>
-                  <ArrowRight className="size-4 text-black" />
+                  {isCustomAuthLoading ? (
+                    <Loader2 className="size-4 animate-spin text-black" />
+                  ) : (
+                    <>
+                      <span>Authorize &amp; Sign In</span>
+                      <ArrowRight className="size-3.5 text-black" />
+                    </>
+                  )}
                 </button>
-
-                <p className="text-center text-[10px] font-medium text-[#a7a29a]">
-                  Demo credentials for evaluators: <code className="rounded bg-[#16130e] border border-[#c9a24a]/20 px-1.5 py-0.5 font-mono text-[#d4af5a]">{selectedRole.demoEmail}</code> ·{' '}
-                  password <code className="rounded bg-[#16130e] border border-[#c9a24a]/20 px-1.5 py-0.5 font-mono text-[#d4af5a]">sih2024</code>
-                </p>
               </form>
-            </div>
-
-            {/* Prototype & Governance Notice */}
-            <div className="rounded-xl border border-[#c9a24a]/20 bg-[#100d08]/80 p-3.5 text-xs">
-              <div className="flex items-start gap-2.5">
-                <Info className="size-4 text-[#c9a24a] shrink-0 mt-0.5" />
-                <div className="text-[#a7a29a] font-normal leading-relaxed text-[11px] sm:text-xs">
-                  <strong className="font-semibold text-white">Prototype Access Architecture: </strong>
-                  This evaluation portal uses a real password-checked, signed-cookie session (see the Sign In form above) —
-                  it is not a one-click role switcher. In production, this same login step would be replaced by
-                  State Single Sign-On (SSO) and Aadhaar e-KYC verified candidate registries, which are not yet integrated.
-                </div>
-              </div>
-            </div>
-
-            <footer className="pt-2 text-center text-xs text-[#a7a29a] font-medium">
-              <p>
-                Department of Skills, Employment, Entrepreneurship & Innovation • Government of Maharashtra
-              </p>
-            </footer>
+            )}
           </div>
-        </div>
+        </main>
+
+        {/* ========================================================================= */}
+        {/* BOTTOM: RESTRAINED INSTITUTIONAL TRUST STRIP & FOOTER                      */}
+        {/* ========================================================================= */}
+        <footer className="w-full pt-4 pb-2 space-y-3">
+          
+          {/* Institutional Trust Strip */}
+          <div className="w-full max-w-4xl mx-auto rounded-xl border border-[#c5a059]/25 bg-[#080c12]/85 backdrop-blur-md px-4 py-2.5 shadow-md">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+              
+              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-zinc-100">
+                <ShieldCheck className="size-4 text-[#c5a059] shrink-0" />
+                <span>Secure &amp; Trusted</span>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-zinc-100">
+                <Fingerprint className="size-4 text-[#c5a059] shrink-0" />
+                <span>Aadhaar e-KYC Ready</span>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-zinc-100">
+                <Landmark className="size-4 text-[#c5a059] shrink-0" />
+                <span>State SSO Ready</span>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-zinc-100">
+                <BarChart3 className="size-4 text-[#c5a059] shrink-0" />
+                <span>Data-Driven Impact</span>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Official Footer Text */}
+          <div className="text-center text-[11px] text-zinc-300 space-y-0.5 drop-shadow-sm">
+            <p>
+              Department of Skills, Employment, Entrepreneurship &amp; Innovation • Government of Maharashtra
+            </p>
+          </div>
+        </footer>
 
       </div>
     </div>
