@@ -52,6 +52,7 @@ export interface TraineeLite {
     issuer?: string;
     grade?: string;
   };
+  skills?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
